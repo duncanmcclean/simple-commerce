@@ -17,6 +17,7 @@ use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\HasTotals;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Carbon;
@@ -140,6 +141,15 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             ->args(func_get_args());
     }
 
+    public function shippingOption(): ?ShippingOption
+    {
+        if (! $this->shippingMethod() || ! $this->get('shipping_option')) {
+            return null;
+        }
+
+        return $this->shippingMethod()->options($this)->firstWhere('handle', $this->get('shipping_option'));
+    }
+
     public function lineItems($lineItems = null)
     {
         return $this
@@ -260,7 +270,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'customer' => $this->customer(),
             'coupon' => $this->coupon(),
             'line_items' => $this->lineItems()->map->toArray()->all(),
-            'shipping_method' => $this->get('shipping_method'),
+            'shipping_method' => $this->shippingMethod(),
         ];
 
         return sha1(json_encode($payload));

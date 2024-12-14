@@ -22,7 +22,7 @@ class ShippingMethodFieldtype extends Relationship
 
     public function augment($values)
     {
-        if ($this->config('max_items') == 1) {
+        if ($this->config('max_items') === 1) {
             $shippingMethod = ShippingMethod::find($values);
 
             return [
@@ -51,5 +51,14 @@ class ShippingMethodFieldtype extends Relationship
                 'title' => $shippingMethod->name(),
             ];
         });
+    }
+
+    public function rules(): array
+    {
+        if ($this->config('max_items') === 1) {
+            return ['string'];
+        }
+
+        return parent::rules();
     }
 }

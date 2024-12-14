@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Extend\HasHandle;
 use Statamic\Extend\RegistersItself;
@@ -22,7 +23,5 @@ abstract class ShippingMethod implements Contract
         return null;
     }
 
-    abstract public function isAvailable(Cart $cart): bool;
-
-    abstract function cost(Cart $cart): int;
+    abstract public function options(Cart $cart): Collection;
 }

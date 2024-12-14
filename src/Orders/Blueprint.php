@@ -45,7 +45,7 @@ class Blueprint
                     'display' => __('Shipping'),
                     'sections' => [
                         [
-                            'display' => __('Shipping Method'),
+                            'display' => __('Shipping Option'),
                             'fields' => [
                                 [
                                     'handle' => 'shipping_details',
@@ -169,7 +169,11 @@ class Blueprint
                                 ],
                                 [
                                     'handle' => 'shipping_method',
-                                    'field' => ['type' => 'shipping_method', 'display' => __('Shipping Method'), 'visibility' => 'hidden', 'listable' => 'hidden'],
+                                    'field' => ['type' => 'shipping_method', 'display' => __('Shipping Method'), 'visibility' => 'hidden', 'listable' => 'hidden', 'max_items' => 1],
+                                ],
+                                [
+                                    'handle' => 'shipping_option',
+                                    'field' => ['type' => 'text', 'display' => __('Shipping Option'), 'visibility' => 'hidden', 'listable' => 'hidden'],
                                 ],
                                 [
                                     'handle' => 'tracking_number',

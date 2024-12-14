@@ -19,11 +19,21 @@ class ShippingDetailsFieldtype extends Fieldtype
     {
         $order = $this->field->parent();
 
+        if (! $order->shippingOption()) {
+            return ['has_shipping_option' => false];
+        }
+
         return [
-            'has_shipping_method' => $order->shippingMethod() ? true : false,
-            'name' => $order->shippingMethod()?->name(),
-            'logo' => $order->shippingMethod()?->logo(),
+            'has_shipping_option' => true,
+            'name' => $order->shippingOption()->name(),
+            'handle' => $order->shippingOption()->handle(),
             'total' => Money::format($order->shippingTotal(), $order->site()),
+            'tracking_number' => $order->get('tracking_number'),
+            'shipping_method' => [
+                'name' => $order->shippingMethod()->name(),
+                'handle' => $order->shippingMethod()->handle(),
+                'logo' => $order->shippingMethod()->logo(),
+            ],
         ];
     }
 

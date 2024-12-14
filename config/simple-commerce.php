@@ -44,7 +44,7 @@ return [
         // Determines how tax is calculated on shipping costs. Options:
         // - highest_tax_rate: Charge the highest tax rate from the products in the cart.
         // - tax_class: When enabled, a new tax class will be created for shipping, allowing you to set a specific tax rate for shipping.
-        'shipping_tax_behaviour' => 'none',
+        'shipping_tax_behaviour' => 'tax_class',
     ],
 
     'orders' => [
@@ -53,12 +53,6 @@ return [
 
     'coupons' => [
         'directory' => base_path('content/coupons'),
-    ],
-
-    'shipping' => [
-        'default_method' => 'free_shipping',
-
-        'methods' => ['free_shipping'],
     ],
 
     'payments' => [

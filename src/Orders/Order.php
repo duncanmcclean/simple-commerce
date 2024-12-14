@@ -14,8 +14,10 @@ use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Statamic\Contracts\Data\Augmentable;
 use Statamic\Contracts\Data\Augmented;
@@ -227,6 +229,20 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
                 return $shippingMethod;
             })
             ->args(func_get_args());
+    }
+
+    public function shippingOption(): ?ShippingOption
+    {
+        if (! $this->shippingMethod() || ! $this->get('shipping_option')) {
+            return null;
+        }
+
+        $data = $this->get('shipping_option');
+
+        return ShippingOption::make($this->shippingMethod())
+            ->handle(Arr::pull($data, 'handle'))
+            ->name(Arr::pull($data, 'name'))
+            ->price(Arr::pull($data, 'price'));
     }
 
     public function shippingAddress(): Address

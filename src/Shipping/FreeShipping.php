@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
+use Illuminate\Support\Collection;
 
 class FreeShipping extends ShippingMethod
 {
@@ -11,13 +12,12 @@ class FreeShipping extends ShippingMethod
         return __('Free Shipping');
     }
 
-    public function isAvailable(Cart $cart): bool
+    public function options(Cart $cart): Collection
     {
-        return true;
-    }
-
-    public function cost(Cart $cart): int
-    {
-        return 0;
+        return collect([
+            ShippingOption::make($this)
+                ->name(__('Free Shipping'))
+                ->price(0),
+        ]);
     }
 }

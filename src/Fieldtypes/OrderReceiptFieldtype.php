@@ -44,8 +44,8 @@ class OrderReceiptFieldtype extends Fieldtype
                 'code' => $order->coupon()->code(),
                 'discount' => $order->coupon()->discountText(),
             ] : null,
-            'shipping' => $order->shippingMethod() ? [
-                'name' => $order->shippingMethod()->name(),
+            'shipping' => $order->shippingOption() ? [
+                'name' => $order->shippingOption()->name(),
             ] : null,
             'totals' => [
                 'sub_total' => Money::format($order->subTotal(), Site::selected()),

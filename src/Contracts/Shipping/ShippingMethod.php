@@ -3,12 +3,11 @@
 namespace DuncanMcClean\SimpleCommerce\Contracts\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
+use Illuminate\Support\Collection;
 
 interface ShippingMethod
 {
     public function name(): string;
 
-    public function isAvailable(Cart $cart): bool;
-
-    public function cost(Cart $cart): int;
+    public function options(Cart $cart): Collection;
 }
