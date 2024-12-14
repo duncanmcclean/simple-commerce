@@ -2,11 +2,12 @@
 
 namespace DuncanMcClean\SimpleCommerce\Customers;
 
+use Statamic\Contracts\Data\Augmentable;
 use Statamic\Data\ContainsData;
 use Statamic\Data\HasAugmentedData;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
-class GuestCustomer
+class GuestCustomer implements Augmentable
 {
     use FluentlyGetsAndSets, ContainsData, HasAugmentedData;
 
