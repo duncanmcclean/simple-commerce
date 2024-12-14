@@ -2,12 +2,14 @@
 
 namespace DuncanMcClean\SimpleCommerce\Products;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Purchasable;
+use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Entries\Entry;
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as Contract;
 
-class Product extends Entry implements Contract
+class Product extends Entry implements Contract, Purchasable
 {
     public function type(): ProductType
     {
@@ -18,7 +20,7 @@ class Product extends Entry implements Contract
         return ProductType::Product;
     }
 
-    public function price(): ?int
+    public function price(): int
     {
         if ($this->type() === ProductType::Variant) {
             throw new \Exception("The Product::price() method can not be called on a variant product.");
@@ -56,18 +58,15 @@ class Product extends Entry implements Contract
 
         return collect(Arr::get($this->value('product_variants'), 'options'))
             ->map(function ($variantOption) {
-                $productVariant = (new ProductVariant)
+                return (new ProductVariant)
                     ->key($variantOption['key'])
                     ->product($this)
                     ->name($variantOption['variant'])
                     ->price($variantOption['price'])
+                    ->when(isset($variantOption['stock']), function ($productVariant) use ($variantOption) {
+                        $productVariant->stock($variantOption['stock']);
+                    })
                     ->data(Arr::except($variantOption, ['key', 'variant', 'price', 'stock']));
-
-                if (isset($variantOption['stock'])) {
-                    $productVariant->stock($variantOption['stock']);
-                }
-
-                return $productVariant;
             });
     }
 
@@ -81,5 +80,15 @@ class Product extends Entry implements Contract
     public function fresh(): self
     {
         return \DuncanMcClean\SimpleCommerce\Facades\Product::find($this->id);
+    }
+
+    public function purchasablePrice(): int
+    {
+        return $this->price();
+    }
+
+    public function purchasableTaxClass(): ?TaxClass
+    {
+        return $this->value('tax_class');
     }
 }

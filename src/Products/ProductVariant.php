@@ -3,13 +3,16 @@
 namespace DuncanMcClean\SimpleCommerce\Products;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as ProductContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Purchasable;
+use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
+use Illuminate\Support\Traits\Conditionable;
 use Statamic\Data\ContainsData;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
-class ProductVariant
+class ProductVariant implements Purchasable
 {
-    use FluentlyGetsAndSets, ContainsData;
+    use FluentlyGetsAndSets, ContainsData, Conditionable;
 
     public $key;
     public $product;
@@ -79,5 +82,15 @@ class ProductVariant
                 return (int) $value;
             })
             ->args(func_get_args());
+    }
+
+    public function purchasablePrice(): int
+    {
+        return $this->price();
+    }
+
+    public function purchasableTaxClass(): ?TaxClass
+    {
+        return $this->product()->value('tax_class');
     }
 }

@@ -182,6 +182,10 @@ class StripeGateway extends BaseGateway implements Gateway
 
         $data = $payload['data']['object'];
 
+        if (! isset($data['metadata']['order_id'])) {
+            return new Response('Webhook received but no order_id found', 202);
+        }
+
         if ($method === 'handlePaymentIntentSucceeded') {
             $order = Order::find($data['metadata']['order_id']);
 
