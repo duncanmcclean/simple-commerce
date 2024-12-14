@@ -47,7 +47,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
     protected $customer;
     protected $coupon;
     protected $lineItems;
-    protected $shippingMethod;
     protected $initialPath;
 
     public function __construct()
@@ -211,24 +210,13 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             ->args(func_get_args());
     }
 
-    public function shippingMethod($shippingMethod = null)
+    public function shippingMethod(): ?ShippingMethodContract
     {
-        return $this->fluentlyGetOrSet('shippingMethod')
-            ->getter(function ($shippingMethod) {
-                if (! $shippingMethod) {
-                    return null;
-                }
+        if (! $this->get('shipping_method')) {
+            return null;
+        }
 
-                return ShippingMethod::find($shippingMethod);
-            })
-            ->setter(function ($shippingMethod) {
-                if ($shippingMethod instanceof ShippingMethodContract) {
-                    return $shippingMethod->handle();
-                }
-
-                return $shippingMethod;
-            })
-            ->args(func_get_args());
+        return ShippingMethod::find($this->get('shipping_method'));
     }
 
     public function shippingOption(): ?ShippingOption
@@ -331,7 +319,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             'status' => $this->status()->value,
             'customer' => $this->customer,
             'coupon' => $this->coupon,
-            'shipping_method' => $this->shippingMethod,
             'line_items' => $this->lineItems()->map->fileData()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
@@ -375,7 +362,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             'status' => $this->status()?->value,
             'customer' => $this->customer(),
             'coupon' => $this->coupon(),
-            'shipping_method' => $this->shippingMethod(),
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),

@@ -61,15 +61,12 @@ class OrderRepository implements RepositoryContract
             ->customer($cart->customer())
             ->coupon($cart->coupon())
             ->lineItems($cart->lineItems())
-            ->shippingMethod($cart->shippingMethod())
             ->grandTotal($cart->grandTotal())
             ->subTotal($cart->subTotal())
             ->discountTotal($cart->discountTotal())
             ->taxTotal($cart->taxTotal())
             ->shippingTotal($cart->shippingTotal())
-            ->data($cart->data()->merge([
-                'shipping_option' => $cart->shippingOption()?->toArray(),
-            ])->toArray());
+            ->data($cart->data()->toArray());
     }
 
     public function save(Order $order): void

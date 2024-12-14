@@ -39,13 +39,13 @@ class MakeOrderFromCartTest extends TestCase
             ->lineItems([
                 ['id' => '1', 'product' => $product->id(), 'quantity' => 2, 'unit_price' => 1000, 'total' => 2000],
             ])
-            ->shippingMethod('free_shipping')
             ->grandTotal(2500)
             ->subTotal(2000)
             ->discountTotal(100)
             ->taxTotal(400)
             ->shippingTotal(200)
             ->data([
+                'shipping_method' => 'free_shipping',
                 'shipping_option' => 'free_shipping',
                 'shuffling' => 'is fun',
             ]);
@@ -68,11 +68,7 @@ class MakeOrderFromCartTest extends TestCase
             'discount_total' => 100,
             'tax_total' => 400,
             'shipping_total' => 200,
-            'shipping_option' => [
-                'name' => 'Free Shipping',
-                'handle' => 'free_shipping',
-                'price' => 0,
-            ],
+            'shipping_option' => 'free_shipping',
             'shuffling' => 'is fun',
             'status' => 'payment_pending',
         ], $order->fileData());

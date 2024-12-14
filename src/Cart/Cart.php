@@ -44,7 +44,6 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
     protected $id;
     protected $customer;
     protected $coupon;
-    protected $shippingMethod;
     protected $lineItems;
     protected $initialPath;
     private bool $withoutRecalculating = false;
@@ -121,24 +120,13 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             ->args(func_get_args());
     }
 
-    public function shippingMethod($shippingMethod = null)
+    public function shippingMethod(): ?ShippingMethodContract
     {
-        return $this->fluentlyGetOrSet('shippingMethod')
-            ->getter(function ($shippingMethod) {
-                if (! $shippingMethod) {
-                    return null;
-                }
+        if (! $this->get('shipping_method')) {
+            return null;
+        }
 
-                return ShippingMethod::find($shippingMethod);
-            })
-            ->setter(function ($shippingMethod) {
-                if ($shippingMethod instanceof ShippingMethodContract) {
-                    return $shippingMethod->handle();
-                }
-
-                return $shippingMethod;
-            })
-            ->args(func_get_args());
+        return ShippingMethod::find($this->get('shipping_method'));
     }
 
     public function shippingOption(): ?ShippingOption
@@ -229,7 +217,6 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'id' => $this->id(),
             'customer' => $this->customer,
             'coupon' => $this->coupon,
-            'shipping_method' => $this->shippingMethod,
             'line_items' => $this->lineItems()->map->fileData()->all(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),
@@ -270,7 +257,8 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'customer' => $this->customer(),
             'coupon' => $this->coupon(),
             'line_items' => $this->lineItems()->map->toArray()->all(),
-            'shipping_method' => $this->shippingMethod(),
+            'shipping_method' => $this->get('shipping_method'),
+            'shipping_option' => $this->get('shipping_option'),
         ];
 
         return sha1(json_encode($payload));
@@ -297,7 +285,6 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         return array_merge([
             'customer' => $this->customer(),
             'coupon' => $this->coupon(),
-            'shipping_method' => $this->shippingMethod(),
             'line_items' => $this->lineItems(),
             'grand_total' => $this->grandTotal(),
             'sub_total' => $this->subTotal(),

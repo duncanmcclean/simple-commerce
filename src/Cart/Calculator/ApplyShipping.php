@@ -15,7 +15,7 @@ class ApplyShipping
         $shippingOption = $cart->shippingOption();
 
         if (! $shippingMethod || ! $shippingOption) {
-            $cart->shippingMethod(null)->remove('shipping_option');
+            $cart->remove('shipping_method')->remove('shipping_option');
 
             return $next($cart);
         }

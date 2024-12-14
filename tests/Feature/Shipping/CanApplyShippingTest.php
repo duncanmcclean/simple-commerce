@@ -23,7 +23,10 @@ class CanApplyShippingTest extends TestCase
     #[Test]
     public function applies_shipping_cost_to_cart()
     {
-        $cart = Cart::make()->shippingMethod('paid_shipping')->set('shipping_option', 'the_only_option');
+        $cart = Cart::make()->data([
+            'shipping_method' => 'paid_shipping',
+            'shipping_option' => 'the_only_option',
+        ]);
 
         $cart = app(ApplyShipping::class)->handle($cart, fn ($cart) => $cart);
 
@@ -43,7 +46,10 @@ class CanApplyShippingTest extends TestCase
     #[Test]
     public function removes_shipping_keys_when_shipping_option_is_no_longer_available()
     {
-        $cart = Cart::make()->shippingMethod('paid_shipping')->set('shipping_option', 'a_non_existent_option');
+        $cart = Cart::make()->data([
+            'shipping_method' => 'paid_shipping',
+            'shipping_option' => 'a_non_existent_option',
+        ]);
 
         $cart = app(ApplyShipping::class)->handle($cart, fn ($cart) => $cart);
 

@@ -85,7 +85,7 @@ class MigrateOrders extends Command
                             ->shippingTotal(Arr::pull($data, 'shipping_total'))
                             ->paymentGateway(Arr::pull($data, 'gateway.use'))
                             ->paymentData(Arr::pull($data, 'gateway.data'))
-                            ->shippingMethod(Arr::pull($data, 'shipping_method'))
+//                            ->shippingMethod(Arr::pull($data, 'shipping_method'))
                             ->data($data)
                             ->save();
                     });
