@@ -14,6 +14,7 @@ class TaxClassFieldtype extends Relationship
     protected $canSearch = true;
     protected $selectable = false;
     protected $formComponent = 'tax-class-publish-form';
+    protected $formStackSize = 'narrow';
 
     protected $formComponentProps = [
         'initialActions' => 'actions',
@@ -21,7 +22,6 @@ class TaxClassFieldtype extends Relationship
         'initialFieldset' => 'blueprint',
         'initialValues' => 'values',
         'initialMeta' => 'meta',
-        'breadcrumbs' => 'breadcrumbs',
     ];
 
     protected function toItemArray($id)
