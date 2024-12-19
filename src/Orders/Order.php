@@ -8,6 +8,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
 use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod as ShippingMethodContract;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
+use DuncanMcClean\SimpleCommerce\Data\HasAddresses;
 use DuncanMcClean\SimpleCommerce\Events\OrderCreated;
 use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
 use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
@@ -37,7 +38,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {
-    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, HasTotals;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, HasTotals, HasAddresses;
 
     protected $id;
     protected $orderNumber;
@@ -231,34 +232,6 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             ->handle(Arr::pull($data, 'handle'))
             ->name(Arr::pull($data, 'name'))
             ->price(Arr::pull($data, 'price'));
-    }
-
-    public function shippingAddress(): Address
-    {
-        return new Address(
-            line1: $this->get('shipping_line_1'),
-            line2: $this->get('shipping_line_2'),
-            city: $this->get('shipping_city'),
-            postcode: $this->get('shipping_postcode'),
-            country: $this->get('shipping_country'),
-            region: $this->get('shipping_region'),
-        );
-    }
-
-    public function billingAddress(): Address
-    {
-        if ($this->get('use_shipping_address_for_billing')) {
-            return $this->shippingAddress();
-        }
-
-        return new Address(
-            line1: $this->get('billing_line_1'),
-            line2: $this->get('billing_line_2'),
-            city: $this->get('billing_city'),
-            postcode: $this->get('billing_postcode'),
-            country: $this->get('billing_country'),
-            region: $this->get('billing_region'),
-        );
     }
 
     // TODO: Change this when we add support for multi-site.

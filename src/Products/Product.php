@@ -3,7 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Products;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Purchasable;
-use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
+use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass as TaxClassContract;
+use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Entries\Entry;
@@ -87,8 +88,8 @@ class Product extends Entry implements Contract, Purchasable
         return $this->price();
     }
 
-    public function purchasableTaxClass(): ?TaxClass
+    public function purchasableTaxClass(): ?TaxClassContract
     {
-        return $this->value('tax_class');
+        return TaxClass::find($this->value('tax_class'));
     }
 }

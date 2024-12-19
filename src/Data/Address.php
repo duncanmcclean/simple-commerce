@@ -1,6 +1,6 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Orders;
+namespace DuncanMcClean\SimpleCommerce\Data;
 
 class Address
 {
@@ -10,7 +10,7 @@ class Address
         public ?string $city = null,
         public ?string $postcode = null,
         public ?string $country = null,
-        public ?string $region = null,
+        public ?string $state = null,
     )
     {}
 }

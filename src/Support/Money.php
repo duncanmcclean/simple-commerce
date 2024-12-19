@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Support;
 
-use DuncanMcClean\SimpleCommerce\Currencies;
+use DuncanMcClean\SimpleCommerce\Data\Currencies;
 use DuncanMcClean\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
 use DuncanMcClean\SimpleCommerce\Exceptions\SiteNotConfiguredException;
 use Illuminate\Support\Facades\Config;

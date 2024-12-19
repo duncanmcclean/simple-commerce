@@ -1,6 +1,6 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce;
+namespace DuncanMcClean\SimpleCommerce\Data;
 
 class Currencies
 {

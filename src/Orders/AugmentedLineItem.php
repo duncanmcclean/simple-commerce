@@ -40,7 +40,7 @@ class AugmentedLineItem extends AbstractAugmented
     {
         // These fields have methods on the LineItem class. However, we don't want to call those methods,
         // we want to use the underlying properties.
-        if (in_array($handle, ['product', 'variant', 'quantity', 'unit_price', 'total'])) {
+        if (in_array($handle, ['product', 'variant', 'quantity', 'unit_price', 'total', 'tax_total'])) {
             $value = new Value(
                 fn () => $this->data->{Str::camel($handle)},
                 $handle,
