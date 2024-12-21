@@ -99,17 +99,19 @@ class ServiceProvider extends AddonServiceProvider
                 ->icon('tags')
                 ->can('view coupons');
 
-            $nav->create(__('Tax Classes'))
-                ->section(__('Simple Commerce'))
-                ->route('simple-commerce.tax-classes.index')
-                ->icon(SimpleCommerce::svg('money-cash-file-dollar'))
-                ->can('manage taxes');
+            if (SimpleCommerce::usingDefaultTaxDriver()) {
+                $nav->create(__('Tax Classes'))
+                    ->section(__('Simple Commerce'))
+                    ->route('simple-commerce.tax-classes.index')
+                    ->icon(SimpleCommerce::svg('money-cash-file-dollar'))
+                    ->can('manage taxes');
 
-            $nav->create(__('Tax Zones'))
-                ->section(__('Simple Commerce'))
-                ->route('simple-commerce.tax-zones.index')
-                ->icon(SimpleCommerce::svg('money-cash-file-dollar'))
-                ->can('manage taxes');
+                $nav->create(__('Tax Zones'))
+                    ->section(__('Simple Commerce'))
+                    ->route('simple-commerce.tax-zones.index')
+                    ->icon(SimpleCommerce::svg('money-cash-file-dollar'))
+                    ->can('manage taxes');
+            }
         });
 
         Permission::extend(function () {
@@ -133,7 +135,9 @@ class ServiceProvider extends AddonServiceProvider
                     ]);
                 });
 
-                Permission::register('manage taxes')->label(__('Manage Taxes'));
+                if (SimpleCommerce::usingDefaultTaxDriver()) {
+                    Permission::register('manage taxes')->label(__('Manage Taxes'));
+                }
             });
         });
 

@@ -2,13 +2,14 @@
 
 namespace DuncanMcClean\SimpleCommerce\Listeners;
 
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Events\EntryBlueprintFound;
 
 class EnsureProductFields
 {
     public function handle(EntryBlueprintFound $event)
     {
-        if (! $event->blueprint->hasField('tax_class')) {
+        if (SimpleCommerce::usingDefaultTaxDriver() && ! $event->blueprint->hasField('tax_class')) {
             $event->blueprint->ensureField('tax_class', [
                 'type' => 'tax_class',
                 'display' => 'Tax Class',

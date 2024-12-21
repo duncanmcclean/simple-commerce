@@ -21,4 +21,9 @@ class SimpleCommerce
     {
         return File::get(__DIR__.'/../resources/svg/'.$name.'.svg');
     }
+
+    public static function usingDefaultTaxDriver(): bool
+    {
+        return app()->bound(Contracts\Taxes\Driver::class) && app(Contracts\Taxes\Driver::class) instanceof Taxes\DefaultTaxDriver;
+    }
 }
