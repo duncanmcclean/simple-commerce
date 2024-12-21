@@ -497,7 +497,7 @@ class CanCalculateTaxesTest extends TestCase
     }
 
     #[Test]
-    public function calculates_shipping_tax_class_when_price_excludes_tax()
+    public function calculates_shipping_tax_when_price_excludes_tax()
     {
         $cart = Cart::make()
             ->shippingTotal(500)
@@ -530,7 +530,7 @@ class CanCalculateTaxesTest extends TestCase
     }
 
     #[Test]
-    public function calculates_shipping_tax_class_using_multiple_tax_rates()
+    public function calculates_shipping_tax_using_multiple_tax_rates()
     {
         $cart = Cart::make()
             ->shippingTotal(500)
@@ -581,7 +581,7 @@ class CanCalculateTaxesTest extends TestCase
     }
 
     #[Test]
-    public function calculates_shipping_tax_class_when_tax_rate_is_a_floating_point_number()
+    public function calculates_shipping_tax_when_tax_rate_is_a_floating_point_number()
     {
         $cart = Cart::make()
             ->shippingTotal(500)
