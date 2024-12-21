@@ -12,6 +12,10 @@ class DefaultTaxDriver implements DriverContract
     // todo: add this method to the interface once we have the signature down
     public function getBreakdown(Cart $cart, Purchasable $purchasable, int $total): Collection
     {
+        if (! $purchasable->purchasableTaxClass()) {
+            return collect();
+        }
+
         $breakdown = collect();
         $taxRates = (new GetTaxRates)($cart, $purchasable->purchasableTaxClass());
 
@@ -24,8 +28,8 @@ class DefaultTaxDriver implements DriverContract
 
                 $breakdown->push([
                     'rate' => $taxRate,
-                    'description' => 'TODO',
-                    'zone' => 'TODO',
+                    'description' => 'TODO', // todo
+                    'zone' => 'TODO', // todo
                     'amount' => $taxAmount,
                 ]);
             }
@@ -38,8 +42,8 @@ class DefaultTaxDriver implements DriverContract
 
             $breakdown->push([
                 'rate' => $taxRate,
-                'description' => 'TODO',
-                'zone' => 'TODO',
+                'description' => 'TODO', // todo
+                'zone' => 'TODO', // todo
                 'amount' => $taxAmount,
             ]);
         }

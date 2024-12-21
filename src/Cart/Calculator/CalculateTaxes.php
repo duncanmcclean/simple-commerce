@@ -15,7 +15,6 @@ class CalculateTaxes
 
         $cart->lineItems()->each(function (LineItem $lineItem) use ($cart, &$taxBreakdowns) {
             $lineItemTotal = $lineItem->total();
-            $quantity = $lineItem->quantity();
 
             if ($lineItem->get('discount_amount')) {
                 $lineItemTotal -= $lineItem->get('discount_amount');
@@ -30,7 +29,7 @@ class CalculateTaxes
             $taxBreakdowns = $taxBreakdowns->merge($taxBreakdown);
 
             $lineItem->set('tax_breakdown', $taxBreakdown->all());
-            $lineItem->taxTotal($taxBreakdown->sum('amount')); // todo: should we be multiplying this by the quantity? lunar does that, but not sure how that'll work if the $lineItemTotal we pass includes the quantity
+            $lineItem->taxTotal($taxBreakdown->sum('amount'));
 
             if (config('statamic.simple-commerce.taxes.price_includes_tax')) {
                 $lineItem->total($lineItemTotal);

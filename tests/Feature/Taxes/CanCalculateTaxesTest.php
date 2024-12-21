@@ -3,7 +3,9 @@
 namespace Feature\Taxes;
 
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\CalculateTaxes;
+use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
 use Illuminate\Support\Facades\File;
@@ -30,12 +32,73 @@ class CanCalculateTaxesTest extends TestCase
 
         File::delete($path);
         File::ensureDirectoryExists(Str::beforeLast($path, '/'));
+
+        config(['statamic.simple-commerce.taxes.price_includes_tax' => false]);
     }
 
-    // todo: tax calculations for line items with quantities
-    // todo: multiple tax line items - tax total should be the sum of all tax line items
-    // todo: multiple tax rates for a single line item
-    // todo: doesn't calculate taxes when no tax zone is set / no tax rates are available
+    #[Test]
+    public function tax_totals_are_zero_when_no_tax_zone_is_available()
+    {
+        $product = Entry::make()->collection('products')->data(['price' => 10000, 'tax_class' => 'standard']);
+        $product->save();
+
+        $cart = Cart::make()
+            ->lineItems([
+                ['id' => 'one', 'product' => $product->id(), 'quantity' => 1, 'total' => 10000],
+            ])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'GBR',
+                'shipping_state' => 'GLG',
+            ]);
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $lineItem = $cart->lineItems()->find('one');
+
+        $this->assertEquals([], $lineItem->get('tax_breakdown'));
+
+        $this->assertEquals(0, $lineItem->taxTotal());
+        $this->assertEquals(10000, $lineItem->total());
+        $this->assertEquals(0, $cart->taxTotal());
+    }
+
+    #[Test]
+    public function tax_totals_are_zero_when_no_tax_rate_is_available_for_tax_class()
+    {
+        $product = Entry::make()->collection('products')->data(['price' => 10000, 'tax_class' => 'standard']);
+        $product->save();
+
+        $cart = Cart::make()
+            ->lineItems([
+                ['id' => 'one', 'product' => $product->id(), 'quantity' => 1, 'total' => 10000],
+            ])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'GBR',
+                'shipping_state' => 'GLG',
+            ]);
+
+        TaxZone::make()->handle('uk')->data([
+            'type' => 'countries',
+            'countries' => ['GBR'],
+            'rates' => [],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $lineItem = $cart->lineItems()->find('one');
+
+        $this->assertEquals([], $lineItem->get('tax_breakdown'));
+
+        $this->assertEquals(0, $lineItem->taxTotal());
+        $this->assertEquals(10000, $lineItem->total());
+        $this->assertEquals(0, $cart->taxTotal());
+    }
 
     #[Test]
     public function calculates_line_item_tax_when_price_includes_tax()
@@ -79,8 +142,6 @@ class CanCalculateTaxesTest extends TestCase
     #[Test]
     public function calculates_line_item_tax_when_price_excludes_tax()
     {
-        config(['statamic.simple-commerce.taxes.price_includes_tax' => false]);
-
         $product = Entry::make()->collection('products')->data(['price' => 10000, 'tax_class' => 'standard']);
         $product->save();
 
@@ -118,8 +179,226 @@ class CanCalculateTaxesTest extends TestCase
     #[Test]
     public function calculates_line_item_tax_when_discount_is_applied()
     {
-        $this->markTestIncomplete();
+        $coupon = tap(Coupon::make()->code('foobar')->type(CouponType::Fixed)->amount(500))->save();
+
+        $product = Entry::make()->collection('products')->data(['price' => 2500, 'tax_class' => 'standard']);
+        $product->save();
+
+        $cart = Cart::make()
+            ->coupon($coupon->id())
+            ->lineItems([
+                ['id' => 'one', 'product' => $product->id(), 'quantity' => 1, 'total' => 2500, 'discount_amount' => 500],
+            ])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['standard' => 20],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $lineItem = $cart->lineItems()->find('one');
+
+        $this->assertEquals([
+            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 400],
+        ], $lineItem->get('tax_breakdown'));
+
+        // Tax Total should be calculated based on the total *after* the discount has been applied.
+        $this->assertEquals(400, $lineItem->taxTotal());
+        $this->assertEquals(2400, $lineItem->total());
+        $this->assertEquals(400, $cart->taxTotal());
+    }
+
+    #[Test]
+    public function calculates_line_item_tax_with_multiple_quantities()
+    {
+        $product = Entry::make()->collection('products')->data(['price' => 10000, 'tax_class' => 'standard']);
+        $product->save();
+
+        $cart = Cart::make()
+            ->lineItems([
+                ['id' => 'one', 'product' => $product->id(), 'quantity' => 5, 'total' => 50000],
+            ])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['standard' => 20],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $lineItem = $cart->lineItems()->find('one');
+
+        $this->assertEquals([
+            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 10000],
+        ], $lineItem->get('tax_breakdown'));
+
+        $this->assertEquals(10000, $lineItem->taxTotal());
+        $this->assertEquals(60000, $lineItem->total());
+        $this->assertEquals(10000, $cart->taxTotal());
+    }
+
+    #[Test]
+    public function calculates_line_item_tax_using_multiple_tax_rates()
+    {
+        $product = Entry::make()->collection('products')->data(['price' => 10000, 'tax_class' => 'standard']);
+        $product->save();
+
+        $cart = Cart::make()
+            ->lineItems([
+                ['id' => 'one', 'product' => $product->id(), 'quantity' => 1, 'total' => 10000],
+            ])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['standard' => 20],
+        ])->save();
+
+        TaxZone::make()->handle('california')->data([
+            'type' => 'states',
+            'countries' => ['USA'],
+            'states' => ['CA'],
+            'rates' => ['standard' => 5],
+        ])->save();
+
+        TaxZone::make()->handle('ca_fa')->data([
+            'type' => 'postcodes',
+            'countries' => ['USA'],
+            'postcodes' => ['FA*'],
+            'rates' => ['standard' => 2],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $lineItem = $cart->lineItems()->find('one');
+
+        $this->assertEquals([
+            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 2000],
+            ['rate' => 5, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 500],
+            ['rate' => 2, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 200],
+        ], $lineItem->get('tax_breakdown'));
+
+        $this->assertEquals(2700, $lineItem->taxTotal());
+        $this->assertEquals(12700, $lineItem->total());
+        $this->assertEquals(2700, $cart->taxTotal());
+    }
+
+    #[Test]
+    public function calculate_line_item_tax_when_rate_is_a_floating_point_number()
+    {
+        $product = Entry::make()->collection('products')->data(['price' => 10000, 'tax_class' => 'standard']);
+        $product->save();
+
+        $cart = Cart::make()
+            ->lineItems([
+                ['id' => 'one', 'product' => $product->id(), 'quantity' => 1, 'total' => 10000],
+            ])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['standard' => 25.5],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $lineItem = $cart->lineItems()->find('one');
+
+        $this->assertEquals([
+            ['rate' => 25.5, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 2550],
+        ], $lineItem->get('tax_breakdown'));
+
+        $this->assertEquals(2550, $lineItem->taxTotal());
+        $this->assertEquals(12550, $lineItem->total());
+        $this->assertEquals(2550, $cart->taxTotal());
+    }
+
+    #[Test]
+    public function calculates_tax_for_multiple_line_items()
+    {
+        TaxClass::make()->handle('reduced')->save();
+
+        $productA = Entry::make()->collection('products')->data(['price' => 10000, 'tax_class' => 'standard']);
+        $productA->save();
+
+        $productB = Entry::make()->collection('products')->data(['price' => 5000, 'tax_class' => 'reduced']);
+        $productB->save();
+
+        $cart = Cart::make()
+            ->lineItems([
+                ['id' => 'one', 'product' => $productA->id(), 'quantity' => 1, 'total' => 10000],
+                ['id' => 'two', 'product' => $productB->id(), 'quantity' => 1, 'total' => 5000],
+            ])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['standard' => 20, 'reduced' => 15],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        // Standard: 20% tax
+        $lineItemOne = $cart->lineItems()->find('one');
+
+        $this->assertEquals([
+            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 2000],
+        ], $lineItemOne->get('tax_breakdown'));
+
+        $this->assertEquals(2000, $lineItemOne->taxTotal());
+        $this->assertEquals(12000, $lineItemOne->total());
+
+        // Reduced: 15% tax
+        $lineItemTwo = $cart->lineItems()->find('two');
+
+        $this->assertEquals([
+            ['rate' => 15, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 750],
+        ], $lineItemTwo->get('tax_breakdown'));
+
+        $this->assertEquals(750, $lineItemTwo->taxTotal());
+        $this->assertEquals(5750, $lineItemTwo->total());
+
+        $this->assertEquals(2750, $cart->taxTotal());
     }
 
     // todo: shipping
+    // todo: calculates using custom tax driver
 }
