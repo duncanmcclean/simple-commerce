@@ -20,11 +20,11 @@ class CalculateTaxes
                 $lineItemTotal -= $lineItem->get('discount_amount');
             }
 
-            $taxBreakdown = app(TaxDriver::class)->getBreakdown(
-                $cart,
-                $lineItem->variant() ?? $lineItem->product(),
-                $lineItemTotal
-            );
+            $taxBreakdown = app(TaxDriver::class)
+                ->setAddress($cart->taxableAddress())
+                ->setPurchasable($lineItem->variant() ?? $lineItem->product())
+                ->setLineItem($lineItem)
+                ->getBreakdown($lineItemTotal);
 
             $taxBreakdowns = $taxBreakdowns->merge($taxBreakdown);
 

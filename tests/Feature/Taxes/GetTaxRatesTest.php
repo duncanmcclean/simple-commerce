@@ -42,7 +42,7 @@ class GetTaxRatesTest extends TestCase
             'rates' => ['standard' => 12],
         ])->save();
 
-        $taxRates = (new GetTaxRates)($cart, $taxClass);
+        $taxRates = (new GetTaxRates)($cart->shippingAddress(), $taxClass);
 
         $this->assertEquals([
             'usa' => 12,
@@ -69,7 +69,7 @@ class GetTaxRatesTest extends TestCase
             'rates' => ['standard' => 12],
         ])->save();
 
-        $taxRates = (new GetTaxRates)($cart, $taxClass);
+        $taxRates = (new GetTaxRates)($cart->shippingAddress(), $taxClass);
 
         $this->assertEquals([
             'cal_flor_newy' => 12,
@@ -96,7 +96,7 @@ class GetTaxRatesTest extends TestCase
             'rates' => ['standard' => 12],
         ])->save();
 
-        $taxRates = (new GetTaxRates)($cart, $taxClass);
+        $taxRates = (new GetTaxRates)($cart->shippingAddress(), $taxClass);
 
         $this->assertEquals([
             'postcodes' => 12,
@@ -123,7 +123,7 @@ class GetTaxRatesTest extends TestCase
             'rates' => ['standard' => 12],
         ])->save();
 
-        $taxRates = (new GetTaxRates)($cart, $taxClass);
+        $taxRates = (new GetTaxRates)($cart->shippingAddress(), $taxClass);
 
         $this->assertEquals([
             'postcodes' => 12,
@@ -163,7 +163,7 @@ class GetTaxRatesTest extends TestCase
             'rates' => ['standard' => 2],
         ])->save();
 
-        $taxRates = (new GetTaxRates)($cart, $taxClass);
+        $taxRates = (new GetTaxRates)($cart->shippingAddress(), $taxClass);
 
         $this->assertEquals([
             'usa' => 12,

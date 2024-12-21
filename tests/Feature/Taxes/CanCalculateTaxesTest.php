@@ -8,6 +8,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Taxes\TaxCalculation;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
@@ -408,6 +409,55 @@ class CanCalculateTaxesTest extends TestCase
         $this->assertEquals(2750, $cart->taxTotal());
     }
 
+    #[Test]
+    public function uses_custom_tax_driver()
+    {
+        $taxDriver = new class implements \DuncanMcClean\SimpleCommerce\Contracts\Taxes\Driver {
+            public function setAddress($address): self
+            {
+                return $this;
+            }
+
+            public function setPurchasable($purchasable): self
+            {
+                return $this;
+            }
+
+            public function setLineItem($lineItem): self
+            {
+                return $this;
+            }
+
+            public function getBreakdown(int $total): \Illuminate\Support\Collection
+            {
+                return collect([
+                    TaxCalculation::make(rate: 10, description: 'Custom', zone: 'Custom', amount: 1000),
+                ]);
+            }
+        };
+
+        app()->instance(\DuncanMcClean\SimpleCommerce\Contracts\Taxes\Driver::class, $taxDriver);
+
+        $product = Entry::make()->collection('products')->data(['price' => 10000]);
+        $product->save();
+
+        $cart = Cart::make()
+            ->lineItems([
+                ['id' => 'one', 'product' => $product->id(), 'quantity' => 1, 'total' => 10000],
+            ]);
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $lineItem = $cart->lineItems()->find('one');
+
+        $this->assertEquals([
+            ['rate' => 10, 'description' => 'Custom', 'zone' => 'Custom', 'amount' => 1000],
+        ], $lineItem->get('tax_breakdown'));
+
+        $this->assertEquals(1000, $lineItem->taxTotal());
+        $this->assertEquals(11000, $lineItem->total());
+        $this->assertEquals(1000, $cart->taxTotal());
+    }
+
     // todo: shipping
-    // todo: calculates using custom tax driver
 }
