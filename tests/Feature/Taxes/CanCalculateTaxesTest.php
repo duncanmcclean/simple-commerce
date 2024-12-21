@@ -663,6 +663,11 @@ class CanCalculateTaxesTest extends TestCase
                 ['id' => 'one', 'product' => $product->id(), 'quantity' => 1, 'total' => 10000],
             ])
             ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
                 'shipping_method' => 'paid_shipping',
                 'shipping_option' => 'the_only_option',
             ]);

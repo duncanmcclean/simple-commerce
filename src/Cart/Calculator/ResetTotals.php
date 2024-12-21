@@ -16,8 +16,15 @@ class ResetTotals
         $cart->shippingTotal(0);
         $cart->discountTotal(0);
 
+        $cart->remove('shipping_tax_total');
+        $cart->remove('shipping_tax_breakdown');
+
         $cart->lineItems()->transform(function (LineItem $lineItem) {
             $lineItem->total(0);
+            $lineItem->unitPrice(0);
+            $lineItem->taxTotal(0);
+
+            $lineItem->remove('tax_breakdown');
 
             return $lineItem;
         });
