@@ -5,6 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Taxes;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Purchasable;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\Driver as DriverContract;
+use DuncanMcClean\SimpleCommerce\Facades\TaxZone as TaxZoneFacade;
 use Illuminate\Support\Collection;
 
 class DefaultTaxDriver implements DriverContract
@@ -23,29 +24,33 @@ class DefaultTaxDriver implements DriverContract
             $totalTaxPercentage = $taxRates->sum() / 100; // E.g. 0.2 for 20%
             $priceExcludingTax = round($total / (1 + $totalTaxPercentage));
 
-            foreach ($taxRates as $taxRate) {
+            foreach ($taxRates as $taxZone => $taxRate) {
                 $taxAmount = round($priceExcludingTax * ($taxRate / 100));
 
-                $breakdown->push([
-                    'rate' => $taxRate,
-                    'description' => 'TODO', // todo
-                    'zone' => 'TODO', // todo
-                    'amount' => $taxAmount,
-                ]);
+                $taxZone = TaxZoneFacade::find($taxZone);
+
+                $breakdown->push(TaxCalculation::make(
+                    rate: $taxRate,
+                    description: $purchasable->purchasableTaxClass()->get('name'),
+                    zone: $taxZone->get('name'),
+                    amount: $taxAmount
+                ));
             }
 
             return $breakdown;
         }
 
-        foreach ($taxRates as $taxRate) {
+        foreach ($taxRates as $taxZone => $taxRate) {
             $taxAmount = round($total * ($taxRate / 100));
 
-            $breakdown->push([
-                'rate' => $taxRate,
-                'description' => 'TODO', // todo
-                'zone' => 'TODO', // todo
-                'amount' => $taxAmount,
-            ]);
+            $taxZone = TaxZoneFacade::find($taxZone);
+
+            $breakdown->push(TaxCalculation::make(
+                rate: $taxRate,
+                description: $purchasable->purchasableTaxClass()->get('name'),
+                zone: $taxZone->get('name'),
+                amount: $taxAmount
+            ));
         }
 
         return $breakdown;

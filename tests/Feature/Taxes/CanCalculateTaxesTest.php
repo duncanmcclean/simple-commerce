@@ -26,7 +26,7 @@ class CanCalculateTaxesTest extends TestCase
 
         Collection::make('products')->save();
 
-        TaxClass::make()->handle('standard')->save();
+        TaxClass::make()->handle('standard')->set('name', 'Standard')->save();
 
         $path = base_path('content/simple-commerce/tax-zones.yaml');
 
@@ -121,6 +121,7 @@ class CanCalculateTaxesTest extends TestCase
             ]);
 
         TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
             'type' => 'countries',
             'countries' => ['USA'],
             'rates' => ['standard' => 20],
@@ -131,7 +132,7 @@ class CanCalculateTaxesTest extends TestCase
         $lineItem = $cart->lineItems()->find('one');
 
         $this->assertEquals([
-            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 1667],
+            ['rate' => 20, 'description' => 'Standard', 'zone' => 'USA', 'amount' => 1667],
         ], $lineItem->get('tax_breakdown'));
 
         $this->assertEquals(1667, $lineItem->taxTotal());
@@ -158,6 +159,7 @@ class CanCalculateTaxesTest extends TestCase
             ]);
 
         TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
             'type' => 'countries',
             'countries' => ['USA'],
             'rates' => ['standard' => 20],
@@ -168,7 +170,7 @@ class CanCalculateTaxesTest extends TestCase
         $lineItem = $cart->lineItems()->find('one');
 
         $this->assertEquals([
-            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 2000],
+            ['rate' => 20, 'description' => 'Standard', 'zone' => 'USA', 'amount' => 2000],
         ], $lineItem->get('tax_breakdown'));
 
         $this->assertEquals(2000, $lineItem->taxTotal());
@@ -198,6 +200,7 @@ class CanCalculateTaxesTest extends TestCase
             ]);
 
         TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
             'type' => 'countries',
             'countries' => ['USA'],
             'rates' => ['standard' => 20],
@@ -208,7 +211,7 @@ class CanCalculateTaxesTest extends TestCase
         $lineItem = $cart->lineItems()->find('one');
 
         $this->assertEquals([
-            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 400],
+            ['rate' => 20, 'description' => 'Standard', 'zone' => 'USA', 'amount' => 400],
         ], $lineItem->get('tax_breakdown'));
 
         // Tax Total should be calculated based on the total *after* the discount has been applied.
@@ -236,6 +239,7 @@ class CanCalculateTaxesTest extends TestCase
             ]);
 
         TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
             'type' => 'countries',
             'countries' => ['USA'],
             'rates' => ['standard' => 20],
@@ -246,7 +250,7 @@ class CanCalculateTaxesTest extends TestCase
         $lineItem = $cart->lineItems()->find('one');
 
         $this->assertEquals([
-            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 10000],
+            ['rate' => 20, 'description' => 'Standard', 'zone' => 'USA', 'amount' => 10000],
         ], $lineItem->get('tax_breakdown'));
 
         $this->assertEquals(10000, $lineItem->taxTotal());
@@ -273,12 +277,14 @@ class CanCalculateTaxesTest extends TestCase
             ]);
 
         TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
             'type' => 'countries',
             'countries' => ['USA'],
             'rates' => ['standard' => 20],
         ])->save();
 
         TaxZone::make()->handle('california')->data([
+            'name' => 'California',
             'type' => 'states',
             'countries' => ['USA'],
             'states' => ['CA'],
@@ -286,6 +292,7 @@ class CanCalculateTaxesTest extends TestCase
         ])->save();
 
         TaxZone::make()->handle('ca_fa')->data([
+            'name' => 'CA FA',
             'type' => 'postcodes',
             'countries' => ['USA'],
             'postcodes' => ['FA*'],
@@ -297,9 +304,9 @@ class CanCalculateTaxesTest extends TestCase
         $lineItem = $cart->lineItems()->find('one');
 
         $this->assertEquals([
-            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 2000],
-            ['rate' => 5, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 500],
-            ['rate' => 2, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 200],
+            ['rate' => 20, 'description' => 'Standard', 'zone' => 'USA', 'amount' => 2000],
+            ['rate' => 5, 'description' => 'Standard', 'zone' => 'California', 'amount' => 500],
+            ['rate' => 2, 'description' => 'Standard', 'zone' => 'CA FA', 'amount' => 200],
         ], $lineItem->get('tax_breakdown'));
 
         $this->assertEquals(2700, $lineItem->taxTotal());
@@ -326,6 +333,7 @@ class CanCalculateTaxesTest extends TestCase
             ]);
 
         TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
             'type' => 'countries',
             'countries' => ['USA'],
             'rates' => ['standard' => 25.5],
@@ -336,7 +344,7 @@ class CanCalculateTaxesTest extends TestCase
         $lineItem = $cart->lineItems()->find('one');
 
         $this->assertEquals([
-            ['rate' => 25.5, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 2550],
+            ['rate' => 25.5, 'description' => 'Standard', 'zone' => 'USA', 'amount' => 2550],
         ], $lineItem->get('tax_breakdown'));
 
         $this->assertEquals(2550, $lineItem->taxTotal());
@@ -347,7 +355,7 @@ class CanCalculateTaxesTest extends TestCase
     #[Test]
     public function calculates_tax_for_multiple_line_items()
     {
-        TaxClass::make()->handle('reduced')->save();
+        TaxClass::make()->handle('reduced')->set('name', 'Reduced')->save();
 
         $productA = Entry::make()->collection('products')->data(['price' => 10000, 'tax_class' => 'standard']);
         $productA->save();
@@ -369,6 +377,7 @@ class CanCalculateTaxesTest extends TestCase
             ]);
 
         TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
             'type' => 'countries',
             'countries' => ['USA'],
             'rates' => ['standard' => 20, 'reduced' => 15],
@@ -380,7 +389,7 @@ class CanCalculateTaxesTest extends TestCase
         $lineItemOne = $cart->lineItems()->find('one');
 
         $this->assertEquals([
-            ['rate' => 20, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 2000],
+            ['rate' => 20, 'description' => 'Standard', 'zone' => 'USA', 'amount' => 2000],
         ], $lineItemOne->get('tax_breakdown'));
 
         $this->assertEquals(2000, $lineItemOne->taxTotal());
@@ -390,7 +399,7 @@ class CanCalculateTaxesTest extends TestCase
         $lineItemTwo = $cart->lineItems()->find('two');
 
         $this->assertEquals([
-            ['rate' => 15, 'description' => 'TODO', 'zone' => 'TODO', 'amount' => 750],
+            ['rate' => 15, 'description' => 'Reduced', 'zone' => 'USA', 'amount' => 750],
         ], $lineItemTwo->get('tax_breakdown'));
 
         $this->assertEquals(750, $lineItemTwo->taxTotal());

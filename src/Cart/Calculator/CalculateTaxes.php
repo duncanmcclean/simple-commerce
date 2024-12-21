@@ -28,7 +28,7 @@ class CalculateTaxes
 
             $taxBreakdowns = $taxBreakdowns->merge($taxBreakdown);
 
-            $lineItem->set('tax_breakdown', $taxBreakdown->all());
+            $lineItem->set('tax_breakdown', $taxBreakdown->toArray());
             $lineItem->taxTotal($taxBreakdown->sum('amount'));
 
             if (config('statamic.simple-commerce.taxes.price_includes_tax')) {
