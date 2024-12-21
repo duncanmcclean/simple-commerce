@@ -4,13 +4,17 @@ namespace DuncanMcClean\SimpleCommerce\Data;
 
 trait HasAddresses
 {
-    public function taxableAddress(): Address
+    public function taxableAddress(): ?Address
     {
         if ($this->hasShippingAddress()) {
             return $this->shippingAddress();
         }
 
-        return $this->billingAddress();
+        if ($this->hasBillingAddress()) {
+            return $this->billingAddress();
+        }
+
+        return null;
     }
 
     public function shippingAddress(): Address

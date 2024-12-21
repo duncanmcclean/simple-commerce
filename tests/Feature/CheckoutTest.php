@@ -35,6 +35,22 @@ class CheckoutTest extends TestCase
     }
 
     #[Test]
+    public function cant_checkout_without_taxable_address()
+    {
+        Collection::make('products')->save();
+        Entry::make()->collection('products')->id('product-1')->data(['price' => 5000])->save();
+
+        $cart = tap($this->makeCart()
+            ->customer(['name' => 'John Doe', 'email' => 'john.doe@example.com'])
+            ->lineItems([['product' => 'product-1', 'total' => 5000, 'quantity' => 1]])
+        )->save();
+
+        $this
+            ->post('/!/simple-commerce/checkout')
+            ->assertSessionHasErrors('shipping_line_1');
+    }
+
+    #[Test]
     public function can_redeem_coupon()
     {
         Event::fake();

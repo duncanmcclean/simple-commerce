@@ -11,6 +11,10 @@ class CalculateTaxes
 {
     public function handle(Cart $cart, Closure $next)
     {
+        if (! $cart->taxableAddress()) {
+            return $next($cart);
+        }
+
         $taxBreakdowns = collect();
 
         $cart->lineItems()->each(function (LineItem $lineItem) use ($cart, &$taxBreakdowns) {

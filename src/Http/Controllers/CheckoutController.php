@@ -39,6 +39,12 @@ class CheckoutController
             ]);
         }
 
+        if (! $cart->taxableAddress()) {
+            throw ValidationException::withMessages([
+                'shipping_line_1' => __("Order cannot be created without an address."),
+            ]);
+        }
+
         $cart->merge($validated);
         $cart->save();
 
