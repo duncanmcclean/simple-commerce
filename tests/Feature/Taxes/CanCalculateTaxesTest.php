@@ -3,11 +3,14 @@
 namespace Feature\Taxes;
 
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\CalculateTaxes;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as CartContract;
 use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use DuncanMcClean\SimpleCommerce\Taxes\TaxCalculation;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -25,6 +28,8 @@ class CanCalculateTaxesTest extends TestCase
     {
         parent::setUp();
 
+        PaidShipping::register();
+
         Collection::make('products')->save();
 
         TaxClass::make()->handle('standard')->set('name', 'Standard')->save();
@@ -34,7 +39,10 @@ class CanCalculateTaxesTest extends TestCase
         File::delete($path);
         File::ensureDirectoryExists(Str::beforeLast($path, '/'));
 
-        config(['statamic.simple-commerce.taxes.price_includes_tax' => false]);
+        config()->set('statamic.simple-commerce.taxes', [
+            'price_includes_tax' => false,
+            'shipping_tax_behaviour' => 'tax_class',
+        ]);
     }
 
     #[Test]
@@ -410,9 +418,207 @@ class CanCalculateTaxesTest extends TestCase
     }
 
     #[Test]
+    public function calculates_line_item_tax_for_variant_products()
+    {
+        $product = Entry::make()->collection('products')->data([
+            'tax_class' => 'standard',
+            'product_variants' => [
+                'variants' => [['name' => 'Colour', 'values' => ['Red']]],
+                'options' => [['key' => 'Red', 'variant' => 'Red', 'price' => 10000]],
+            ],
+        ]);
+        $product->save();
+
+        $cart = Cart::make()
+            ->lineItems([
+                ['id' => 'one', 'product' => $product->id(), 'variant' => 'Red', 'quantity' => 1, 'total' => 10000],
+            ])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['standard' => 20],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $lineItem = $cart->lineItems()->find('one');
+
+        $this->assertEquals([
+            ['rate' => 20, 'description' => 'Standard', 'zone' => 'USA', 'amount' => 2000],
+        ], $lineItem->get('tax_breakdown'));
+
+        $this->assertEquals(2000, $lineItem->taxTotal());
+        $this->assertEquals(12000, $lineItem->total());
+        $this->assertEquals(2000, $cart->taxTotal());
+    }
+
+    #[Test]
+    public function calculates_shipping_tax_when_price_includes_tax()
+    {
+        config(['statamic.simple-commerce.taxes.price_includes_tax' => true]);
+
+        $cart = Cart::make()
+            ->shippingTotal(500)
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+                'shipping_method' => 'paid_shipping',
+                'shipping_option' => 'the_only_option',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['shipping' => 20],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $this->assertEquals([
+            ['rate' => 20, 'description' => 'Shipping', 'zone' => 'USA', 'amount' => 83],
+        ], $cart->get('shipping_tax_breakdown'));
+
+        $this->assertEquals(83, $cart->get('shipping_tax_total'));
+        $this->assertEquals(500, $cart->shippingTotal());
+        $this->assertEquals(83, $cart->taxTotal());
+    }
+
+    #[Test]
+    public function calculates_shipping_tax_class_when_price_excludes_tax()
+    {
+        $cart = Cart::make()
+            ->shippingTotal(500)
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+                'shipping_method' => 'paid_shipping',
+                'shipping_option' => 'the_only_option',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['shipping' => 20],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $this->assertEquals([
+            ['rate' => 20, 'description' => 'Shipping', 'zone' => 'USA', 'amount' => 100],
+        ], $cart->get('shipping_tax_breakdown'));
+
+        $this->assertEquals(100, $cart->get('shipping_tax_total'));
+        $this->assertEquals(600, $cart->shippingTotal());
+        $this->assertEquals(100, $cart->taxTotal());
+    }
+
+    #[Test]
+    public function calculates_shipping_tax_class_using_multiple_tax_rates()
+    {
+        $cart = Cart::make()
+            ->shippingTotal(500)
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+                'shipping_method' => 'paid_shipping',
+                'shipping_option' => 'the_only_option',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['shipping' => 20],
+        ])->save();
+
+        TaxZone::make()->handle('california')->data([
+            'name' => 'California',
+            'type' => 'states',
+            'countries' => ['USA'],
+            'states' => ['CA'],
+            'rates' => ['shipping' => 5],
+        ])->save();
+
+        TaxZone::make()->handle('ca_fa')->data([
+            'name' => 'CA FA',
+            'type' => 'postcodes',
+            'countries' => ['USA'],
+            'postcodes' => ['FA*'],
+            'rates' => ['shipping' => 2],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $this->assertEquals([
+            ['rate' => 20, 'description' => 'Shipping', 'zone' => 'USA', 'amount' => 100],
+            ['rate' => 5, 'description' => 'Shipping', 'zone' => 'California', 'amount' => 25],
+            ['rate' => 2, 'description' => 'Shipping', 'zone' => 'CA FA', 'amount' => 10],
+        ], $cart->get('shipping_tax_breakdown'));
+
+        $this->assertEquals(135, $cart->get('shipping_tax_total'));
+        $this->assertEquals(635, $cart->shippingTotal());
+        $this->assertEquals(135, $cart->taxTotal());
+    }
+
+    #[Test]
+    public function calculates_shipping_tax_class_when_tax_rate_is_a_floating_point_number()
+    {
+        $cart = Cart::make()
+            ->shippingTotal(500)
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Fakeville',
+                'shipping_postcode' => 'FA 1234',
+                'shipping_country' => 'USA',
+                'shipping_state' => 'CA',
+                'shipping_method' => 'paid_shipping',
+                'shipping_option' => 'the_only_option',
+            ]);
+
+        TaxZone::make()->handle('usa')->data([
+            'name' => 'USA',
+            'type' => 'countries',
+            'countries' => ['USA'],
+            'rates' => ['shipping' => 25.5],
+        ])->save();
+
+        $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
+
+        $this->assertEquals([
+            ['rate' => 25.5, 'description' => 'Shipping', 'zone' => 'USA', 'amount' => 128],
+        ], $cart->get('shipping_tax_breakdown'));
+
+        $this->assertEquals(128, $cart->get('shipping_tax_total'));
+        $this->assertEquals(628, $cart->shippingTotal());
+        $this->assertEquals(128, $cart->taxTotal());
+    }
+
+    #[Test]
     public function uses_custom_tax_driver()
     {
         $taxDriver = new class implements \DuncanMcClean\SimpleCommerce\Contracts\Taxes\Driver {
+            public $lineItem;
+
             public function setAddress($address): self
             {
                 return $this;
@@ -425,13 +631,23 @@ class CanCalculateTaxesTest extends TestCase
 
             public function setLineItem($lineItem): self
             {
+                $this->lineItem = $lineItem;
+
                 return $this;
             }
 
             public function getBreakdown(int $total): \Illuminate\Support\Collection
             {
+                if ($this->lineItem) {
+                    $this->lineItem = null;
+
+                    return collect([
+                        TaxCalculation::make(rate: 10, description: 'Line Item Tax', zone: 'Custom', amount: 1000),
+                    ]);
+                }
+
                 return collect([
-                    TaxCalculation::make(rate: 10, description: 'Custom', zone: 'Custom', amount: 1000),
+                    TaxCalculation::make(rate: 50, description: 'Shipping Tax', zone: 'Custom', amount: 250),
                 ]);
             }
         };
@@ -442,8 +658,13 @@ class CanCalculateTaxesTest extends TestCase
         $product->save();
 
         $cart = Cart::make()
+            ->shippingTotal(500)
             ->lineItems([
                 ['id' => 'one', 'product' => $product->id(), 'quantity' => 1, 'total' => 10000],
+            ])
+            ->data([
+                'shipping_method' => 'paid_shipping',
+                'shipping_option' => 'the_only_option',
             ]);
 
         $cart = app(CalculateTaxes::class)->handle($cart, fn ($cart) => $cart);
@@ -451,13 +672,31 @@ class CanCalculateTaxesTest extends TestCase
         $lineItem = $cart->lineItems()->find('one');
 
         $this->assertEquals([
-            ['rate' => 10, 'description' => 'Custom', 'zone' => 'Custom', 'amount' => 1000],
+            ['rate' => 10, 'description' => 'Line Item Tax', 'zone' => 'Custom', 'amount' => 1000],
         ], $lineItem->get('tax_breakdown'));
 
         $this->assertEquals(1000, $lineItem->taxTotal());
         $this->assertEquals(11000, $lineItem->total());
-        $this->assertEquals(1000, $cart->taxTotal());
-    }
 
-    // todo: shipping
+        $this->assertEquals([
+            ['rate' => 50, 'description' => 'Shipping Tax', 'zone' => 'Custom', 'amount' => 250],
+        ], $cart->get('shipping_tax_breakdown'));
+
+        $this->assertEquals(250, $cart->get('shipping_tax_total'));
+        $this->assertEquals(750, $cart->shippingTotal());
+
+        $this->assertEquals(1250, $cart->taxTotal());
+    }
+}
+
+class PaidShipping extends ShippingMethod
+{
+    public function options(CartContract $cart): \Illuminate\Support\Collection
+    {
+        return collect([
+            ShippingOption::make($this)
+                ->name('The Only Option')
+                ->price(500),
+        ]);
+    }
 }

@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CouponQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;

@@ -38,7 +38,27 @@ class CalculateTaxes
             }
         });
 
-        // todo: shipping
+        $shippingOption = $cart->shippingOption();
+
+        if ($shippingOption) {
+            $shippingTotal = $cart->shippingTotal();
+
+            $shippingTaxBreakdown = app(TaxDriver::class)
+                ->setAddress($cart->taxableAddress())
+                ->setPurchasable($shippingOption)
+                ->getBreakdown($shippingTotal);
+
+            $taxBreakdowns = $taxBreakdowns->merge($shippingTaxBreakdown);
+
+            $cart->set('shipping_tax_breakdown', $shippingTaxBreakdown->toArray());
+            $cart->set('shipping_tax_total', $shippingTaxTotal = $shippingTaxBreakdown->sum('amount'));
+
+            if (config('statamic.simple-commerce.taxes.price_includes_tax')) {
+                $cart->shippingTotal($shippingTotal);
+            } else {
+                $cart->shippingTotal($shippingTotal + $shippingTaxTotal);
+            }
+        }
 
         $cart->taxTotal($taxBreakdowns->sum('amount'));
 
