@@ -6,7 +6,6 @@ use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Statamic\Exceptions\NotFoundHttpException;
 
 class UpdateLineItemRequest extends FormRequest
@@ -23,17 +22,17 @@ class UpdateLineItemRequest extends FormRequest
         return [
             'variant' => [
                 'nullable',
-//                function ($attribute, $value, $fail) {
-//                    $product = Product::find($this->product);
-//
-//                    if ($product->type() === ProductType::Variant) {
-//                        $variant = $product->variant($value);
-//
-//                        if (! $variant) {
-//                            return $fail(__('The variant is invalid.'));
-//                        }
-//                    }
-//                }
+                //                function ($attribute, $value, $fail) {
+                //                    $product = Product::find($this->product);
+                //
+                //                    if ($product->type() === ProductType::Variant) {
+                //                        $variant = $product->variant($value);
+                //
+                //                        if (! $variant) {
+                //                            return $fail(__('The variant is invalid.'));
+                //                        }
+                //                    }
+                //                }
             ],
             'quantity' => ['nullable', 'integer', 'gt:0'],
         ];

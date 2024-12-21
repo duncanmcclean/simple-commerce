@@ -5,9 +5,9 @@ namespace DuncanMcClean\SimpleCommerce\Taxes;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClassRepository as Contract;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\YAML;
-use Illuminate\Support\Facades\File;
 
 class TaxClassRepository implements Contract
 {

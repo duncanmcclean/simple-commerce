@@ -3,12 +3,11 @@
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
-use Illuminate\Contracts\Support\Arrayable;
+use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod as Contract;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Extend\HasHandle;
 use Statamic\Extend\RegistersItself;
-use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod as Contract;
 
 abstract class ShippingMethod implements Contract
 {

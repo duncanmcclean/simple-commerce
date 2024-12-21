@@ -19,7 +19,7 @@ class StateFieldtype extends Fieldtype
         ];
     }
 
-    public function getStates(string|array $country = null): array
+    public function getStates(string|array|null $country = null): array
     {
         if (! $country) {
             return [];

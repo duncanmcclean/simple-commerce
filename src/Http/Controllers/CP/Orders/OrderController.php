@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders\Order as OrderResource;
 use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders\Orders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -14,7 +15,6 @@ use Statamic\Facades\User;
 use Statamic\Http\Controllers\CP\CpController;
 use Statamic\Http\Requests\FilteredRequest;
 use Statamic\Query\Scopes\Filters\Concerns\QueriesFilters;
-use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders\Order as OrderResource;
 
 class OrderController extends CpController
 {

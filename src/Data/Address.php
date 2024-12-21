@@ -11,6 +11,5 @@ class Address
         public ?string $postcode = null,
         public ?string $country = null,
         public ?string $state = null,
-    )
-    {}
+    ) {}
 }

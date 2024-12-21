@@ -2,8 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DuncanMcClean\SimpleCommerce\Cart\Cart;
-use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Support\Collection;
 use Statamic\Data\AbstractAugmented;

@@ -2,10 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
-use DuncanMcClean\SimpleCommerce\Support\Money;
 use Statamic\Data\AbstractAugmented;
-use Statamic\Facades\Site;
 use Statamic\Fields\Value;
 use Statamic\Support\Arr;
 use Statamic\Support\Str;

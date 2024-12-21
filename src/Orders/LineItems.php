@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DuncanMcClean\SimpleCommerce\Facades\Product;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Facades\Stache;

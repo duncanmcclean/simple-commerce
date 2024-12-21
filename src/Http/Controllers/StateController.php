@@ -13,6 +13,6 @@ class StateController
             'country' => ['required', 'string'],
         ]);
 
-        return (new StateFieldtype())->getStates($validated['country']);
+        return (new StateFieldtype)->getStates($validated['country']);
     }
 }

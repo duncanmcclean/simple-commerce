@@ -34,7 +34,7 @@ class Cart extends Tags
             return null;
         }
 
-        $cart = Blink::once("cart", fn () => CartFacade::current());
+        $cart = Blink::once('cart', fn () => CartFacade::current());
 
         if (method_exists($this, $method = Str::camel($field))) {
             return $this->{$method}();
@@ -76,7 +76,7 @@ class Cart extends Tags
     public function updateLineItem()
     {
         if (! $this->params->has('line_item') && ! $this->params->has('product')) {
-            throw new \Exception("You must provide a `line_item` or `product` parameter to the cart:update_line_item tag.");
+            throw new \Exception('You must provide a `line_item` or `product` parameter to the cart:update_line_item tag.');
         }
 
         $lineItem = CartFacade::current()->lineItems()
@@ -101,7 +101,7 @@ class Cart extends Tags
     public function remove()
     {
         if (! $this->params->has('line_item') && ! $this->params->has('product')) {
-            throw new \Exception("You must provide a `line_item` or `product` parameter to the cart:remove tag.");
+            throw new \Exception('You must provide a `line_item` or `product` parameter to the cart:remove tag.');
         }
 
         $lineItem = CartFacade::current()->lineItems()

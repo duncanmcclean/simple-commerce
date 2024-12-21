@@ -2,12 +2,9 @@
 
 namespace Tests\Feature\Cart;
 
-use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use PHPUnit\Framework\Attributes\Test;
-use Statamic\Facades\Blueprint;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\User;
@@ -18,7 +15,7 @@ class CartLineItemsTest extends TestCase
 {
     use PreventsSavingStacheItemsToDisk;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

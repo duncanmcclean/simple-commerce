@@ -2,8 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Coupons;
 
-use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
-use DuncanMcClean\SimpleCommerce\Rules\UniqueCouponValue;
 use Statamic\Fields\Blueprint as FieldsBlueprint;
 use Statamic\Rules\Handle;
 

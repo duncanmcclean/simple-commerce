@@ -3,9 +3,9 @@
 namespace Tests\Fieldtypes;
 
 use DuncanMcClean\SimpleCommerce\Fieldtypes\ProductVariantsFieldtype;
+use PHPUnit\Framework\Attributes\Test;
 use Statamic\Fields\Field;
 use Tests\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 
 class ProductVariantsFieldtypeTest extends TestCase
 {

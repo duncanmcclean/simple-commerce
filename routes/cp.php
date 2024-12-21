@@ -4,9 +4,9 @@ use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\ConvertGuestToUserControlle
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons\CouponActionController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons\CouponController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Fieldtypes\StateFieldtypeController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\DownloadPackingSlipController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderActionController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderController;
-use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\DownloadPackingSlipController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Taxes\TaxClassController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Taxes\TaxZoneController;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;

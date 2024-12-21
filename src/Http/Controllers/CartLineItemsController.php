@@ -13,7 +13,7 @@ use Statamic\Exceptions\NotFoundHttpException;
 
 class CartLineItemsController
 {
-    use Concerns\HandlesCustomerInformation, Concerns\ValidatesStock, Concerns\HandlePrerequisiteProducts;
+    use Concerns\HandlePrerequisiteProducts, Concerns\HandlesCustomerInformation, Concerns\ValidatesStock;
 
     public function store(AddLineItemRequest $request)
     {
@@ -21,7 +21,7 @@ class CartLineItemsController
         $product = Product::find($request->product);
 
         $data = $request->collect()->except([
-            '_token', '_redirect', '_error_redirect', 'product', 'variant', 'quantity', 'first_name', 'last_name'. 'email', 'customer',
+            '_token', '_redirect', '_error_redirect', 'product', 'variant', 'quantity', 'first_name', 'last_name'.'email', 'customer',
         ]);
 
         $this->validateStock($request, $cart);
@@ -78,7 +78,7 @@ class CartLineItemsController
         throw_if(! $lineItem, NotFoundHttpException::class);
 
         $data = $request->collect()->except([
-            '_token', '_redirect', '_error_redirect', 'product', 'variant', 'quantity', 'first_name', 'last_name'. 'email', 'customer',
+            '_token', '_redirect', '_error_redirect', 'product', 'variant', 'quantity', 'first_name', 'last_name'.'email', 'customer',
         ]);
 
         $this->validateStock($request, $cart, $lineItem);
@@ -87,7 +87,7 @@ class CartLineItemsController
             id: $lineItem->id(),
             data: $lineItem->data()->merge($data)->merge([
                 'variant' => $request->variant ?? $lineItem->variant,
-                'quantity' =>  $request->quantity ?? $lineItem->quantity(),
+                'quantity' => $request->quantity ?? $lineItem->quantity(),
             ])->all()
         );
 

@@ -5,7 +5,6 @@ namespace Tests\Data;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
-use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
@@ -99,7 +98,7 @@ class OrderTest extends TestCase
                 'quantity' => 1,
                 'total' => 2500,
                 'bar' => 'baz',
-            ]
+            ],
         ]);
 
         $order->lineItems()->update('abc123', [
@@ -138,7 +137,7 @@ class OrderTest extends TestCase
                 'quantity' => 1,
                 'total' => 2500,
                 'bar' => 'baz',
-            ]
+            ],
         ]);
 
         $this->assertCount(2, $order->lineItems());

@@ -2,8 +2,8 @@
 
 namespace DuncanMcClean\SimpleCommerce\Stache\Repositories;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Cart\CartRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\CartRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\QueryBuilder;
 use DuncanMcClean\SimpleCommerce\Exceptions\CartNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;

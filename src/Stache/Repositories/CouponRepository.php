@@ -2,10 +2,10 @@
 
 namespace DuncanMcClean\SimpleCommerce\Stache\Repositories;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\CouponRepository as RepositoryContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\QueryBuilder;
 use DuncanMcClean\SimpleCommerce\Coupons\Blueprint;
-use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
 use DuncanMcClean\SimpleCommerce\Exceptions\CouponNotFound;
 use Statamic\Fields\Blueprint as StatamicBlueprint;
 use Statamic\Stache\Stache;

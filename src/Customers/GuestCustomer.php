@@ -9,7 +9,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class GuestCustomer implements Augmentable
 {
-    use FluentlyGetsAndSets, ContainsData, HasAugmentedData;
+    use ContainsData, FluentlyGetsAndSets, HasAugmentedData;
 
     public function id(): ?string
     {

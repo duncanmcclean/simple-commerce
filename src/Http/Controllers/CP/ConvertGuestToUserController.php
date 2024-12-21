@@ -35,6 +35,6 @@ class ConvertGuestToUserController extends CpController
             ->get()
             ->each(fn ($order) => $order->customer($user->id())->save());
 
-        return (new CustomerFieldtype())->preProcess($user);
+        return (new CustomerFieldtype)->preProcess($user);
     }
 }

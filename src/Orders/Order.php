@@ -38,7 +38,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {
-    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, HasTotals, HasAddresses;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAddresses, HasAugmentedInstance, HasDirtyState, HasTotals, TracksQueriedColumns, TracksQueriedRelations;
 
     protected $id;
     protected $orderNumber;

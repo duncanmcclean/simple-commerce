@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Facades;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClassRepository as Contract;
- use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Facade;
 
 /**
  * @see \DuncanMcClean\SimpleCommerce\Taxes\TaxClassRepository

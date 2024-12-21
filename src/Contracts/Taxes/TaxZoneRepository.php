@@ -2,7 +2,4 @@
 
 namespace DuncanMcClean\SimpleCommerce\Contracts\Taxes;
 
-interface TaxZoneRepository
-{
-
-}
+interface TaxZoneRepository {}

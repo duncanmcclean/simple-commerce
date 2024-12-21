@@ -10,7 +10,6 @@ use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod as ShippingMe
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Data\HasAddresses;
 use DuncanMcClean\SimpleCommerce\Events\CartSaved;
-use DuncanMcClean\SimpleCommerce\Exceptions\CartHasBeenConvertedToOrderException;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
@@ -40,7 +39,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {
-    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAugmentedInstance, TracksQueriedColumns, TracksQueriedRelations, HasDirtyState, HasTotals, HasAddresses;
+    use ContainsData, ExistsAsFile, FluentlyGetsAndSets, HasAddresses, HasAugmentedInstance, HasDirtyState, HasTotals, TracksQueriedColumns, TracksQueriedRelations;
 
     protected $id;
     protected $customer;

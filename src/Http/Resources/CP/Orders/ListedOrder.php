@@ -3,10 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Resources\CP\Orders;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 use Statamic\Facades\Action;
 use Statamic\Facades\User;
-use Statamic\Fields\Field;
 
 class ListedOrder extends JsonResource
 {

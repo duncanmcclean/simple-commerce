@@ -13,7 +13,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class ProductVariant implements Purchasable
 {
-    use FluentlyGetsAndSets, ContainsData, Conditionable;
+    use Conditionable, ContainsData, FluentlyGetsAndSets;
 
     public $key;
     public $product;

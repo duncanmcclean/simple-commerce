@@ -21,13 +21,13 @@ trait HandlePrerequisiteProducts
             }
 
             $hasPurchasedPrerequisiteProduct = collect($cart->customer()->getComputed('orders'))
-                    ->map(fn ($id) => Order::find($id))
-                    ->filter(function ($order) use ($prerequisiteProduct) {
-                        return $order->lineItems()
-                                ->where('product', $prerequisiteProduct->id())
-                                ->count() > 0;
-                    })
-                    ->count() > 0;
+                ->map(fn ($id) => Order::find($id))
+                ->filter(function ($order) use ($prerequisiteProduct) {
+                    return $order->lineItems()
+                        ->where('product', $prerequisiteProduct->id())
+                        ->count() > 0;
+                })
+                ->count() > 0;
 
             if (! $hasPurchasedPrerequisiteProduct) {
                 throw ValidationException::withMessages([

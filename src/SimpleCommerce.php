@@ -4,7 +4,6 @@ namespace DuncanMcClean\SimpleCommerce;
 
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Addon;
-use Statamic\Statamic;
 
 class SimpleCommerce
 {

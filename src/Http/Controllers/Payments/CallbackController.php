@@ -6,7 +6,6 @@ use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DuncanMcClean\SimpleCommerce\Facades\Gateway;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;

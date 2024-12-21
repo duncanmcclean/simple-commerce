@@ -44,7 +44,7 @@ class AddLineItemRequest extends FormRequest
                         }
                     }
 
-                }
+                },
             ],
             'quantity' => ['nullable', 'integer', 'gt:0'],
         ];

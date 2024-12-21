@@ -2,7 +2,4 @@
 
 namespace DuncanMcClean\SimpleCommerce\Contracts\Coupons;
 
-interface QueryBuilder
-{
-
-}
+interface QueryBuilder {}

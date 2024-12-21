@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use Illuminate\Support\Str;
 use Statamic\Fields\Fieldtype;
 
@@ -17,6 +16,6 @@ class LineItemsFieldtype extends Fieldtype
 
     public function preProcessIndex($data): string
     {
-        return $data->count() . ' ' . Str::plural('line item', $data->count());
+        return $data->count().' '.Str::plural('line item', $data->count());
     }
 }

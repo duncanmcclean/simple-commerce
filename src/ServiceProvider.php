@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CouponQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
@@ -29,7 +28,7 @@ class ServiceProvider extends AddonServiceProvider
     ];
 
     protected $vite = [
-//        'hotFile' => 'vendor/simple-commerce/dist/hot',
+        //        'hotFile' => 'vendor/simple-commerce/dist/hot',
         'hotFile' => 'vendor/simple-commerce/hot',
         'publicDirectory' => 'dist',
         'input' => [
@@ -148,7 +147,7 @@ class ServiceProvider extends AddonServiceProvider
 
         Blueprint::addNamespace('simple-commerce', __DIR__.'/../resources/blueprints');
 
-        if (! Blueprint::find("simple-commerce::order")) {
+        if (! Blueprint::find('simple-commerce::order')) {
             Blueprint::make('order')->setNamespace('simple-commerce')->save();
         }
     }

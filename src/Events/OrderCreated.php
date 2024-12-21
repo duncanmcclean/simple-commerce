@@ -6,7 +6,5 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 
 class OrderCreated
 {
-    public function __construct(public Order $order)
-    {
-    }
+    public function __construct(public Order $order) {}
 }

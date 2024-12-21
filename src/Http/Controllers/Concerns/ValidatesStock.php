@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 trait ValidatesStock
 {
-    protected function validateStock(Request $request, Cart $cart, LineItem $lineItem = null): void
+    protected function validateStock(Request $request, Cart $cart, ?LineItem $lineItem = null): void
     {
         $product = Product::find($request->product ?? $lineItem->product);
         $quantity = $request->quantity ?? $lineItem->quantity();
@@ -22,7 +22,7 @@ trait ValidatesStock
             && $quantity > $product->stock()
         ) {
             throw ValidationException::withMessages([
-                'product' => __("This product is currently out of stock. Please try again later."),
+                'product' => __('This product is currently out of stock. Please try again later.'),
             ]);
         }
 
@@ -31,7 +31,7 @@ trait ValidatesStock
 
             if (is_int($variant->stock()) && $quantity > $variant->stock()) {
                 throw ValidationException::withMessages([
-                    'variant' => __("This variant is currently out of stock. Please try again later."),
+                    'variant' => __('This variant is currently out of stock. Please try again later.'),
                 ]);
             }
         }

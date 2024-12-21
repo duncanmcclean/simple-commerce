@@ -3,15 +3,13 @@
 namespace Tests\Feature\Customers;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
+use Statamic\Facades\Blink;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\User;
-use Statamic\Facades\Blink;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 use Tests\TestCase;
 
@@ -19,7 +17,7 @@ class AssignUserToCartTest extends TestCase
 {
     use PreventsSavingStacheItemsToDisk;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

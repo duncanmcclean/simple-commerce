@@ -16,7 +16,7 @@ class TaxCalculation implements Arrayable
 
     public static function make($rate, $description, $zone, $amount): self
     {
-        return (new self())
+        return (new self)
             ->rate($rate)
             ->description($description)
             ->zone($zone)

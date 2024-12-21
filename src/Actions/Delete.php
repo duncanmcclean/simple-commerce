@@ -2,8 +2,8 @@
 
 namespace DuncanMcClean\SimpleCommerce\Actions;
 
-use Statamic\Actions\Action;
 use DuncanMcClean\SimpleCommerce\Contracts;
+use Statamic\Actions\Action;
 
 class Delete extends Action
 {

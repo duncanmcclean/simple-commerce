@@ -6,10 +6,9 @@ use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxZone;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxZoneRepository as Contract;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\YAML;
-use Illuminate\Support\Facades\File;
-use Statamic\Support\Arr;
 
 class TaxZoneRepository implements Contract
 {
@@ -135,7 +134,7 @@ class TaxZoneRepository implements Contract
                                         ],
                                         'if' => ['type' => 'postcodes'],
                                     ],
-                                ]
+                                ],
                             ],
                         ],
                         [
@@ -162,7 +161,7 @@ class TaxZoneRepository implements Contract
                                     ],
                                 ],
                             ],
-                        ]
+                        ],
                     ],
                 ],
             ],

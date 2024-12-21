@@ -21,7 +21,7 @@ class OrderStatusFieldtype extends Fieldtype
 
         return [
             'value' => $data,
-            'label' => OrderStatus::label($data)
+            'label' => OrderStatus::label($data),
         ];
     }
 

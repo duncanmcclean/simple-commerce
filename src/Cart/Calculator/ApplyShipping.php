@@ -4,8 +4,6 @@ namespace DuncanMcClean\SimpleCommerce\Cart\Calculator;
 
 use Closure;
 use DuncanMcClean\SimpleCommerce\Cart\Cart;
-use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
-use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 
 class ApplyShipping
 {

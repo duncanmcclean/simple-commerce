@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Taxes;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxZone as TaxZoneContract;
 use DuncanMcClean\SimpleCommerce\Data\Address;

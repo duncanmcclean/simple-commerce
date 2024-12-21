@@ -7,9 +7,7 @@ use Statamic\Contracts\Git\ProvidesCommitMessage;
 
 class OrderSaved implements ProvidesCommitMessage
 {
-    public function __construct(public Order $order)
-    {
-    }
+    public function __construct(public Order $order) {}
 
     public function commitMessage()
     {

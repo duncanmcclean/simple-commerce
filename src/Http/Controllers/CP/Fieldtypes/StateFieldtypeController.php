@@ -2,10 +2,10 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Fieldtypes;
 
+use Facades\Statamic\Fields\FieldtypeRepository as Fieldtype;
 use Illuminate\Http\Request;
 use Statamic\Fields\Field;
 use Statamic\Http\Controllers\CP\CpController;
-use Facades\Statamic\Fields\FieldtypeRepository as Fieldtype;
 
 class StateFieldtypeController extends CpController
 {

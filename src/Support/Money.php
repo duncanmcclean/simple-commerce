@@ -57,11 +57,11 @@ class Money
                 $numberFormatter->setSymbol(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, $currencyFormattingConfig['thousand_separator']);
             }
 
-            $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies());
+            $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies);
 
             return $moneyFormatter->format($money);
         } catch (\ErrorException $e) {
-            throw new CurrencyFormatterNotWorking();
+            throw new CurrencyFormatterNotWorking;
         }
     }
 

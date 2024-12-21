@@ -7,9 +7,7 @@ use Statamic\Contracts\Git\ProvidesCommitMessage;
 
 class CouponSaved implements ProvidesCommitMessage
 {
-    public function __construct(public Coupon $coupon)
-    {
-    }
+    public function __construct(public Coupon $coupon) {}
 
     public function commitMessage()
     {

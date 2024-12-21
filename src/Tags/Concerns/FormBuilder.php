@@ -16,8 +16,7 @@ trait FormBuilder
         array $data = [],
         string $method = 'POST',
         array $knownParams = []
-    ): string|array
-    {
+    ): string|array {
         $knownParams = array_merge(static::$knownParams, $knownParams);
 
         if (! $this->parser) {

@@ -14,7 +14,7 @@ class CalculateLineItems
 
     public function handle(Cart $cart, Closure $next)
     {
-        $cart->lineItems()->map(function (LineItem $lineItem) use ($cart) {
+        $cart->lineItems()->map(function (LineItem $lineItem) {
             $product = $lineItem->product();
 
             $price = match ($product->type()) {

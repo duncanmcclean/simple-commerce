@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Coupons;
 
-use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Role;
@@ -14,7 +13,7 @@ class CreateCouponsTest extends TestCase
 {
     use PreventsSavingStacheItemsToDisk;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

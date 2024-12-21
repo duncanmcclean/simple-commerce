@@ -2,7 +2,4 @@
 
 namespace DuncanMcClean\SimpleCommerce\Contracts\Products;
 
-interface ProductRepository
-{
-
-}
+interface ProductRepository {}

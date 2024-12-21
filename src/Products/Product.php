@@ -2,13 +2,13 @@
 
 namespace DuncanMcClean\SimpleCommerce\Products;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as Contract;
 use DuncanMcClean\SimpleCommerce\Contracts\Purchasable;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass as TaxClassContract;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Statamic\Entries\Entry;
-use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as Contract;
 
 class Product extends Entry implements Contract, Purchasable
 {
@@ -24,7 +24,7 @@ class Product extends Entry implements Contract, Purchasable
     public function price(): int
     {
         if ($this->type() === ProductType::Variant) {
-            throw new \Exception("The Product::price() method can not be called on a variant product.");
+            throw new \Exception('The Product::price() method can not be called on a variant product.');
         }
 
         $price = $this->value('price');

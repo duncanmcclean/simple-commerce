@@ -24,7 +24,7 @@ class CanCalculateLineItemsTest extends TestCase
             ['id' => 'a', 'product' => $product->id(), 'quantity' => 2],
         ]);
 
-        (new CalculateLineItems())->handle($cart, fn ($cart) => $cart);
+        (new CalculateLineItems)->handle($cart, fn ($cart) => $cart);
 
         $this->assertEquals(2550, $cart->lineItems()->find('a')->unitPrice());
         $this->assertEquals(5100, $cart->lineItems()->find('a')->total());
@@ -40,7 +40,7 @@ class CanCalculateLineItemsTest extends TestCase
             ['id' => 'a', 'product' => $product->id(), 'quantity' => 2],
         ]);
 
-        (new CalculateLineItems())->handle($cart, fn ($cart) => $cart);
+        (new CalculateLineItems)->handle($cart, fn ($cart) => $cart);
 
         $this->assertEquals(2550, $cart->lineItems()->find('a')->unitPrice());
         $this->assertEquals(5100, $cart->lineItems()->find('a')->total());
@@ -60,7 +60,7 @@ class CanCalculateLineItemsTest extends TestCase
             ['id' => 'a', 'product' => $product->id(), 'variant' => 'Red', 'quantity' => 2],
         ]);
 
-        (new CalculateLineItems())->handle($cart, fn ($cart) => $cart);
+        (new CalculateLineItems)->handle($cart, fn ($cart) => $cart);
 
         $this->assertEquals(2550, $cart->lineItems()->find('a')->unitPrice());
         $this->assertEquals(5100, $cart->lineItems()->find('a')->total());
@@ -80,7 +80,7 @@ class CanCalculateLineItemsTest extends TestCase
             ['id' => 'a', 'product' => $product->id(), 'variant' => 'Red', 'quantity' => 2],
         ]);
 
-        (new CalculateLineItems())->handle($cart, fn ($cart) => $cart);
+        (new CalculateLineItems)->handle($cart, fn ($cart) => $cart);
 
         $this->assertEquals(2550, $cart->lineItems()->find('a')->unitPrice());
         $this->assertEquals(5100, $cart->lineItems()->find('a')->total());

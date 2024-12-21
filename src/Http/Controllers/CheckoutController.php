@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class CheckoutController
 {
-    use Concerns\HandlesCustomerInformation, Concerns\ValidatesStock, Concerns\RedeemsCoupons;
+    use Concerns\HandlesCustomerInformation, Concerns\RedeemsCoupons, Concerns\ValidatesStock;
 
     public function __invoke(Request $request)
     {
@@ -35,13 +35,13 @@ class CheckoutController
 
         if (! $cart->customer()) {
             throw ValidationException::withMessages([
-                'customer' => __("Order cannot be created without customer information."),
+                'customer' => __('Order cannot be created without customer information.'),
             ]);
         }
 
         if (! $cart->taxableAddress()) {
             throw ValidationException::withMessages([
-                'shipping_line_1' => __("Order cannot be created without an address."),
+                'shipping_line_1' => __('Order cannot be created without an address.'),
             ]);
         }
 

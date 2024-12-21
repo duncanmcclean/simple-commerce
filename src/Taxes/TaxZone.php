@@ -2,17 +2,17 @@
 
 namespace DuncanMcClean\SimpleCommerce\Taxes;
 
-use DuncanMcClean\SimpleCommerce\Facades;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxZone as Contract;
+use DuncanMcClean\SimpleCommerce\Facades;
 use Illuminate\Support\Collection;
 use Statamic\Contracts\Data\Augmentable;
 use Statamic\Data\ContainsData;
 use Statamic\Data\HasAugmentedData;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
-class TaxZone implements Contract, Augmentable
+class TaxZone implements Augmentable, Contract
 {
-    use FluentlyGetsAndSets, ContainsData, HasAugmentedData;
+    use ContainsData, FluentlyGetsAndSets, HasAugmentedData;
 
     public $handle;
 

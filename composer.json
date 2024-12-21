@@ -40,8 +40,9 @@
         "stripe/stripe-php": "^16"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0",
+        "laravel/pint": "^1.18",
         "orchestra/testbench": "^8.0 || ^9.0",
+        "phpunit/phpunit": "^10.0",
         "spatie/ray": "^1.17"
     },
     "config": {

@@ -20,11 +20,13 @@ class AssignUserToCart
 
         if (! $recentCart) {
             Cart::current()->customer(User::fromUser($event->user))->save();
+
             return;
         }
 
         if (! Cart::hasCurrentCart()) {
             Cart::setCurrent($recentCart);
+
             return;
         }
 

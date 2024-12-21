@@ -2,13 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Coupons;
 
-use DuncanMcClean\SimpleCommerce\Cart\Cart;
-use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
-use DuncanMcClean\SimpleCommerce\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Support\Money;
-use Illuminate\Support\Collection;
 use Statamic\Data\AbstractAugmented;
-use Statamic\Facades\Site;
 
 class AugmentedCoupon extends AbstractAugmented
 {

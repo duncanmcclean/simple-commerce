@@ -24,7 +24,7 @@ class CanCalculateTaxesTest extends TestCase
 {
     use PreventsSavingStacheItemsToDisk;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -616,7 +616,8 @@ class CanCalculateTaxesTest extends TestCase
     #[Test]
     public function uses_custom_tax_driver()
     {
-        $taxDriver = new class implements \DuncanMcClean\SimpleCommerce\Contracts\Taxes\Driver {
+        $taxDriver = new class implements \DuncanMcClean\SimpleCommerce\Contracts\Taxes\Driver
+        {
             public $lineItem;
 
             public function setAddress($address): self

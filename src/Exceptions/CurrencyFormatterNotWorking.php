@@ -11,7 +11,7 @@ class CurrencyFormatterNotWorking extends Exception implements ProvidesSolution
 {
     public function __construct()
     {
-        parent::__construct("The PHP-intl extension is missing.");
+        parent::__construct('The PHP-intl extension is missing.');
     }
 
     public function getSolution(): Solution

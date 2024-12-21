@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass as TaxClassContract;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use Statamic\Facades\User;
 use Statamic\Fieldtypes\Relationship;

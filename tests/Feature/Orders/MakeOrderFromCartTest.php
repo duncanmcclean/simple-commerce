@@ -3,8 +3,8 @@
 namespace Feature\Orders;
 
 use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
-use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
@@ -16,7 +16,7 @@ class MakeOrderFromCartTest extends TestCase
 {
     use PreventsSavingStacheItemsToDisk;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

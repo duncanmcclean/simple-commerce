@@ -36,9 +36,9 @@ class Blueprint
                                 [
                                     'handle' => 'receipt',
                                     'field' => ['type' => 'order_receipt', 'hide_display' => true, 'listable' => false],
-                                ]
+                                ],
                             ],
-                        ]
+                        ],
                     ],
                 ],
                 'shipping' => [
@@ -99,10 +99,10 @@ class Blueprint
                         [
                             'display' => __('Billing Address'),
                             'fields' => [
-//                                [
-//                                    'handle' => 'use_shipping_address_for_billing',
-//                                    'field' => ['type' => 'toggle', 'display' => __('Use ShippingMethod Address for Billing'), 'listable' => false, 'validate' => 'boolean'],
-//                                ],
+                                //                                [
+                                //                                    'handle' => 'use_shipping_address_for_billing',
+                                //                                    'field' => ['type' => 'toggle', 'display' => __('Use ShippingMethod Address for Billing'), 'listable' => false, 'validate' => 'boolean'],
+                                //                                ],
                                 [
                                     'handle' => 'billing_line_1',
                                     'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],

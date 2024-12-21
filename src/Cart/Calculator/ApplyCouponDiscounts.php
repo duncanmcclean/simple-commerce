@@ -15,6 +15,7 @@ class ApplyCouponDiscounts
             $cart->lineItems()->each(function (LineItem $lineItem) use ($cart, $coupon) {
                 if (! $coupon->isValid($cart, $lineItem)) {
                     $lineItem->remove('discount_amount');
+
                     return;
                 }
 

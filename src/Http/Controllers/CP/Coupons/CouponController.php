@@ -2,11 +2,12 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon as CouponContract;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Coupons\Coupon as CouponResource;
 use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Coupons\Coupons;
 use DuncanMcClean\SimpleCommerce\Rules\UniqueCouponValue;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Statamic\CP\Breadcrumbs;
 use Statamic\Facades\Action;
 use Statamic\Facades\Scope;
@@ -14,8 +15,6 @@ use Statamic\Facades\User;
 use Statamic\Http\Controllers\CP\CpController;
 use Statamic\Http\Requests\FilteredRequest;
 use Statamic\Query\Scopes\Filters\Concerns\QueriesFilters;
-use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon as CouponContract;
-use DuncanMcClean\SimpleCommerce\Http\Resources\CP\Coupons\Coupon as CouponResource;
 
 class CouponController extends CpController
 {
@@ -99,7 +98,7 @@ class CouponController extends CpController
         $values = $fields->values();
 
         $viewData = [
-            'title' => __("Create Coupon"),
+            'title' => __('Create Coupon'),
             'actions' => [
                 'save' => cp_route('simple-commerce.coupons.store'),
             ],
@@ -129,7 +128,7 @@ class CouponController extends CpController
         $fields = $blueprint->fields()->addValues($data);
 
         $fields->validator()->withRules([
-            'code' => [new UniqueCouponValue()],
+            'code' => [new UniqueCouponValue],
         ])->validate();
 
         $values = $fields->process()->values();

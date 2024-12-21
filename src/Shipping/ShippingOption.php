@@ -3,20 +3,15 @@
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Purchasable;
+use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
 use DuncanMcClean\SimpleCommerce\Facades;
-use DuncanMcClean\SimpleCommerce\Fieldtypes\MoneyFieldtype;
-use DuncanMcClean\SimpleCommerce\Support\Money;
-use Statamic\Facades\Blueprint;
-use Statamic\Fields\Value;
 use Illuminate\Support\Str;
 use Statamic\Contracts\Data\Augmentable;
 use Statamic\Data\HasAugmentedData;
-use Statamic\Facades\Site;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
-use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod;
 
-class ShippingOption implements Purchasable, Augmentable
+class ShippingOption implements Augmentable, Purchasable
 {
     use FluentlyGetsAndSets, HasAugmentedData;
 
@@ -27,7 +22,7 @@ class ShippingOption implements Purchasable, Augmentable
 
     public static function make(ShippingMethod $shippingMethod): self
     {
-        return (new self())->shippingMethod($shippingMethod);
+        return (new self)->shippingMethod($shippingMethod);
     }
 
     public function name($name = null)

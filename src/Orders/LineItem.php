@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Products\Product as ProductContract;
-use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Products\ProductVariant;
 use Statamic\Contracts\Data\Augmented;
@@ -14,7 +13,7 @@ use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class LineItem
 {
-    use FluentlyGetsAndSets, ContainsData, HasAugmentedInstance;
+    use ContainsData, FluentlyGetsAndSets, HasAugmentedInstance;
 
     public $id;
     public $product;
