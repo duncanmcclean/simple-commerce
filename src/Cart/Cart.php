@@ -260,6 +260,9 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'line_items' => $this->lineItems()->map->toArray()->all(),
             'shipping_method' => $this->get('shipping_method'),
             'shipping_option' => $this->get('shipping_option'),
+            'taxable_state' => $this->taxableAddress()?->state,
+            'taxable_country' => $this->taxableAddress()?->country,
+            'taxable_post_code' => $this->taxableAddress()?->postcode,
         ];
 
         return sha1(json_encode($payload));
