@@ -33,8 +33,11 @@
                 </div>
                 <div>{{ receipt.totals.shipping_total }}</div>
             </div>
-            <div class="receipt-total">
-                <div>{{ __('Taxes') }}</div>
+            <div v-if="receipt.taxes" class="receipt-total">
+                <div>
+                    <span>{{ __('Taxes') }}</span>
+                    <span v-for="item in receipt.taxes.breakdown" class="help-block mb-0">{{ item.rate }}% {{ item.description }} ({{ item.amount }})</span>
+                </div>
                 <div>{{ receipt.totals.tax_total }}</div>
             </div>
             <div class="receipt-total font-bold">

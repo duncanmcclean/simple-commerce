@@ -147,7 +147,7 @@ class OrderController extends CpController
             $order->status($request->status);
         }
 
-        $order->data($values->all());
+        $order->merge($values->all());
 
         $saved = $order->save();
 

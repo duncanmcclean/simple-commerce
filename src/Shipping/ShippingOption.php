@@ -6,9 +6,14 @@ use DuncanMcClean\SimpleCommerce\Contracts\Purchasable;
 use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
 use DuncanMcClean\SimpleCommerce\Facades;
+use DuncanMcClean\SimpleCommerce\Support\Money;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Contracts\Data\Augmentable;
+use Statamic\Contracts\Data\Augmented;
+use Statamic\Data\AugmentedData;
 use Statamic\Data\HasAugmentedData;
+use Statamic\Facades\Site;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class ShippingOption implements Augmentable, Purchasable
@@ -83,15 +88,26 @@ class ShippingOption implements Augmentable, Purchasable
         return Facades\TaxClass::find('shipping');
     }
 
+    // We're overriding Statamic's AugmentedData class because it calls the price() method on
+    // the ShippingOption class before attempting to get the raw value. In order for us to
+    // format the price, we need to override the price() method on the AugmentedData class.
+    public function newAugmentedInstance(): Augmented
+    {
+        return new class($this, $this->augmentedArrayData()) extends AugmentedData
+        {
+            public function price()
+            {
+                return Money::format($this->data->price(), Site::current());
+            }
+        };
+    }
+
     public function augmentedArrayData(): array
     {
-        // TODO: Ideally, when the option is augmented, a formatted price and a shipping_method array would be returned.
-        // However, because it checks methods with the same name, it returns the values of those instead.
-
         return [
             'name' => $this->name(),
             'handle' => $this->handle(),
-            'price' => $this->price,
+            'price' => $this->price(),
             'shipping_method' => $this->shippingMethod(),
         ];
     }

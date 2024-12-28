@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use Illuminate\Support\Collection;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 trait HasTotals
@@ -43,16 +42,20 @@ trait HasTotals
             ->args(func_get_args());
     }
 
-    public function taxTotals(): Collection
+    public function taxBreakdown(): array
     {
-        // todo: add in shipping taxes here too
-        return $this->lineItems()
-            ->groupBy(fn (LineItem $lineItem) => $lineItem->get('tax_rate'))
-            ->map(fn ($group, $taxRate) => [
-                'rate' => $taxRate,
-                'amount' => (int) $group->sum->get('tax_total'),
+        return collect()
+            ->merge($this->lineItems()->flatMap->get('tax_breakdown')->all())
+            ->merge($this->get('shipping_tax_breakdown'))
+            ->groupBy(fn ($tax) => $tax['rate'].$tax['description'].$tax['zone'])
+            ->map(fn ($group) => [
+                'rate' => $group->first()['rate'],
+                'description' => $group->first()['description'],
+                'zone' => $group->first()['zone'],
+                'amount' => $group->sum('amount'),
             ])
-            ->values();
+            ->values()
+            ->all();
     }
 
     public function shippingTotal($shippingTotal = null)

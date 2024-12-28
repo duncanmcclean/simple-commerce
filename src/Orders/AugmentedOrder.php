@@ -32,7 +32,7 @@ class AugmentedOrder extends AbstractAugmented
             'customer',
             'coupon',
             'shipping_method',
-            'tax_totals',
+            'tax_breakdown',
         ];
 
         if ($this->data instanceof Order) {
@@ -50,13 +50,6 @@ class AugmentedOrder extends AbstractAugmented
     public function free(): bool
     {
         return $this->data->grandTotal() == 0;
-    }
-
-    public function taxTotals(): Collection
-    {
-        return $this->data->taxTotals()->map(fn ($item) => array_merge($item, [
-            'amount' => Money::format($item['amount'], Site::current()),
-        ]));
     }
 
     public function coupon()

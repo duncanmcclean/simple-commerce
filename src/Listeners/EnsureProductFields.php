@@ -14,7 +14,7 @@ class EnsureProductFields
                 'type' => 'tax_class',
                 'display' => 'Tax Class',
                 'instructions' => __('Determines how this product is taxed.'),
-                'listable' => false,
+                'listable' => 'hidden',
                 'max_items' => 1,
                 'create' => true,
                 'validate' => 'required',

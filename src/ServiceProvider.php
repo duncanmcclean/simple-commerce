@@ -142,7 +142,7 @@ class ServiceProvider extends AddonServiceProvider
         });
 
         User::computed('orders', function ($user) {
-            return Order::query()->where('customer', $user->getKey())->pluck('id')->all();
+            return Order::query()->where('customer', $user->getKey())->orderByDesc('date')->pluck('id')->all();
         });
 
         Blueprint::addNamespace('simple-commerce', __DIR__.'/../resources/blueprints');

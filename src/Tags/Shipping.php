@@ -8,7 +8,7 @@ use Statamic\Tags\Tags;
 
 class Shipping extends Tags
 {
-    public function methods()
+    public function options()
     {
         $cart = Cart::current();
 

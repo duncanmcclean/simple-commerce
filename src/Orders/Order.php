@@ -226,12 +226,12 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             return null;
         }
 
-        $data = $this->get('shipping_option');
-
+        // TODO: Maybe we *should* keep this data around for historical
+        // purposes instead of needing to reconstruct it?
         return ShippingOption::make($this->shippingMethod())
-            ->handle(Arr::pull($data, 'handle'))
-            ->name(Arr::pull($data, 'name'))
-            ->price(Arr::pull($data, 'price'));
+            ->name($this->get('shipping_option'))
+            ->handle($this->get('shipping_option'))
+            ->price($this->shippingTotal());
     }
 
     // TODO: Change this when we add support for multi-site.

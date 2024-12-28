@@ -125,7 +125,7 @@ class Blueprint
                                 ],
                                 [
                                     'handle' => 'billing_state',
-                                    'field' => ['type' => 'state', 'from' => 'billing_country', 'display' => __('State'), 'listable' => false, 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'state', 'from' => 'billing_country', 'display' => __('State/County'), 'listable' => false, 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
                                 ],
                             ],
                         ],

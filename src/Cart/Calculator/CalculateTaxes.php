@@ -33,7 +33,7 @@ class CalculateTaxes
             $taxBreakdowns = $taxBreakdowns->merge($taxBreakdown);
 
             $lineItem->set('tax_breakdown', $taxBreakdown->toArray());
-            $lineItem->taxTotal($taxBreakdown->sum('amount'));
+            $lineItem->taxTotal((int) $taxBreakdown->sum('amount'));
 
             if (config('statamic.simple-commerce.taxes.price_includes_tax')) {
                 $lineItem->total($lineItemTotal);
@@ -55,7 +55,7 @@ class CalculateTaxes
             $taxBreakdowns = $taxBreakdowns->merge($shippingTaxBreakdown);
 
             $cart->set('shipping_tax_breakdown', $shippingTaxBreakdown->toArray());
-            $cart->set('shipping_tax_total', $shippingTaxTotal = $shippingTaxBreakdown->sum('amount'));
+            $cart->set('shipping_tax_total', $shippingTaxTotal = (int) $shippingTaxBreakdown->sum('amount'));
 
             if (config('statamic.simple-commerce.taxes.price_includes_tax')) {
                 $cart->shippingTotal($shippingTotal);
