@@ -17,7 +17,7 @@ trait RedeemsCoupons
 
             if (! $coupon) {
                 throw ValidationException::withMessages([
-                    'coupon' => __("This coupon doesn't exist."),
+                    'coupon' => __('Invalid coupon code.'),
                 ]);
             }
 
@@ -25,7 +25,7 @@ trait RedeemsCoupons
 
             if (! $isValid) {
                 throw ValidationException::withMessages([
-                    'coupon' => __("This coupon isn't valid for this cart."),
+                    'coupon' => __('Invalid coupon code.'),
                 ]);
             }
 

@@ -201,7 +201,7 @@ class ProductVariantsFieldtype extends Fieldtype
         ], $variantFieldRules, $optionFieldRules);
     }
 
-    protected function variantFields(): Fields
+    public function variantFields(): Fields
     {
         $variantFields = [
             [
@@ -230,7 +230,7 @@ class ProductVariantsFieldtype extends Fieldtype
         return new Fields($variantFields, $this->field()->parent(), $this->field());
     }
 
-    protected function optionFields(): Fields
+    public function optionFields(): Fields
     {
         $optionFields = collect([
             [

@@ -8,12 +8,16 @@ use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass as TaxClassContract;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use Illuminate\Support\Traits\Conditionable;
+use Statamic\Contracts\Data\Augmentable;
+use Statamic\Contracts\Data\Augmented;
 use Statamic\Data\ContainsData;
+use Statamic\Data\HasAugmentedInstance;
+use Statamic\Facades\Blueprint;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
-class ProductVariant implements Purchasable
+class ProductVariant implements Augmentable, Purchasable
 {
-    use Conditionable, ContainsData, FluentlyGetsAndSets;
+    use Conditionable, ContainsData, FluentlyGetsAndSets, HasAugmentedInstance;
 
     public $key;
     public $product;
@@ -93,5 +97,25 @@ class ProductVariant implements Purchasable
     public function purchasableTaxClass(): ?TaxClassContract
     {
         return TaxClass::find($this->product()->value('tax_class'));
+    }
+
+    public function blueprint()
+    {
+        return Blueprint::makeFromFields($this->product()
+            ->blueprint()
+            ->field('product_variants')
+            ->fieldtype()
+            ->optionFields()
+            ->items());
+    }
+
+    public function shallowAugmentedArrayKeys()
+    {
+        return ['key', 'product', 'name', 'price', 'stock'];
+    }
+
+    public function newAugmentedInstance(): Augmented
+    {
+        return new AugmentedProductVariant($this);
     }
 }

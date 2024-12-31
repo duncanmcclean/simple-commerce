@@ -68,7 +68,7 @@ class UpdateCartRequest extends FormRequest
                 'first_name' => ['nullable', 'string'],
                 'last_name' => ['nullable', 'string'],
                 'email' => ['nullable', 'email'],
-                'coupon' => ['nullable', 'string'], // TODO: Validate whether or not the coupon is valid.
+                'coupon' => ['nullable', 'string'],
                 'shipping_method' => ['nullable', 'string'],
                 'shipping_option' => ['nullable', 'string'],
             ])
