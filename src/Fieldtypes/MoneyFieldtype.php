@@ -84,14 +84,14 @@ class MoneyFieldtype extends Fieldtype
         return Money::format($value, Site::current());
     }
 
-    public function preProcessIndex($value)
+    public function preProcessIndex($data)
     {
-        if (! $value) {
+        if (! $data) {
             return $this->config('save_zero_value', false)
                 ? Money::format(0, Site::selected())
                 : null;
         }
 
-        return Money::format($value, Site::selected());
+        return Money::format($data, Site::selected());
     }
 }

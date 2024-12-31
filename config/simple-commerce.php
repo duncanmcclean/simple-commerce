@@ -4,12 +4,6 @@ use DuncanMcClean\SimpleCommerce\Cart\Calculator;
 
 return [
 
-    'sites' => [
-        'default' => [
-            'currency' => 'GBP',
-        ],
-    ],
-
     'products' => [
         'collections' => ['products'],
     ],

@@ -12,8 +12,14 @@ trait RedeemsCoupons
 {
     public function redeemCoupon(Request $request, Cart $cart): Cart
     {
-        if ($coupon = $request->coupon) {
-            $coupon = Coupon::findByCode($coupon);
+        if ($request->has('coupon')) {
+            if (empty($request->coupon)) {
+                $cart->coupon(null);
+
+                return $cart;
+            }
+
+            $coupon = Coupon::findByCode($request->coupon);
 
             if (! $coupon) {
                 throw ValidationException::withMessages([

@@ -104,7 +104,7 @@ class ProductVariant implements Augmentable, Purchasable
         return Blueprint::makeFromFields($this->product()
             ->blueprint()
             ->field('product_variants')
-            ->fieldtype()
+            ?->fieldtype()
             ->optionFields()
             ->items());
     }

@@ -4,8 +4,6 @@ namespace DuncanMcClean\SimpleCommerce\Support;
 
 use DuncanMcClean\SimpleCommerce\Data\Currencies;
 use DuncanMcClean\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
-use DuncanMcClean\SimpleCommerce\Exceptions\SiteNotConfiguredException;
-use Illuminate\Support\Facades\Config;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
 use Money\Formatter\IntlMoneyFormatter;
@@ -17,15 +15,7 @@ class Money
 {
     public static function get(Site $site): array
     {
-        $siteSettings = collect(Config::get('statamic.simple-commerce.sites'))
-            ->get($site->handle());
-
-        if (! $siteSettings) {
-            throw new SiteNotConfiguredException("Site config not found [{$site->handle()}]");
-        }
-
-        return Currencies::where('code', $siteSettings['currency'])
-            ->first();
+        return Currencies::firstWhere('code', strtoupper($site->attribute('currency')));
     }
 
     public static function format($amount, Site $site): string
@@ -47,14 +37,12 @@ class Money
 
             $numberFormatter = new NumberFormatter($site->locale(), \NumberFormatter::CURRENCY);
 
-            $currencyFormattingConfig = Config::get("simple-commerce.sites.{$site->handle()}.currency_formatting");
-
-            if (isset($currencyFormattingConfig['decimal_separator'])) {
-                $numberFormatter->setSymbol(\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, $currencyFormattingConfig['decimal_separator']);
+            if ($decimalSeparator = $site->attribute('decimal_separator')) {
+                $numberFormatter->setSymbol(\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, $decimalSeparator);
             }
 
-            if (isset($currencyFormattingConfig['thousand_separator'])) {
-                $numberFormatter->setSymbol(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, $currencyFormattingConfig['thousand_separator']);
+            if ($thousandSeparator = $site->attribute('thousand_separator')) {
+                $numberFormatter->setSymbol(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, $thousandSeparator);
             }
 
             $moneyFormatter = new IntlMoneyFormatter($numberFormatter, new ISOCurrencies);

@@ -3,11 +3,30 @@
 namespace Tests;
 
 use DuncanMcClean\SimpleCommerce\ServiceProvider;
+use Statamic\Facades\File;
+use Statamic\Facades\Site;
+use Statamic\Facades\YAML;
 use Statamic\Testing\AddonTestCase;
 
 abstract class TestCase extends AddonTestCase
 {
     protected string $addonServiceProvider = ServiceProvider::class;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        File::put(resource_path('sites.yaml'), YAML::dump([
+            'default' => [
+                'name' => '{{ config:app:name }}',
+                'url' => '/',
+                'locale' => 'en_US',
+                'attributes' => [
+                    'currency' => 'GBP',
+                ],
+            ],
+        ]));
+    }
 
     protected function resolveApplicationConfiguration($app)
     {

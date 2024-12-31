@@ -61,6 +61,13 @@ class CheckoutTest extends TestCase
         $cart = tap($this->makeCart()
             ->customer(['name' => 'John Doe', 'email' => 'john.doe@example.com'])
             ->lineItems([['product' => 'product-1', 'total' => 5000, 'quantity' => 1]])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Glasgow',
+                'shipping_postcode' => 'G1 234',
+                'shipping_country' => 'GBR',
+                'shipping_state' => 'GLS',
+            ])
         )->save();
 
         $coupon = tap(Coupon::make()->code('FOOBAR')->type(CouponType::Percentage)->amount(25))->save();
@@ -87,6 +94,13 @@ class CheckoutTest extends TestCase
         $cart = tap($this->makeCart()
             ->customer(['name' => 'John Doe', 'email' => 'john.doe@example.com'])
             ->lineItems([['product' => 'product-1', 'total' => 5000, 'quantity' => 1]])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Glasgow',
+                'shipping_postcode' => 'G1 234',
+                'shipping_country' => 'GBR',
+                'shipping_state' => 'GLS',
+            ])
         )->save();
 
         $this
@@ -110,6 +124,13 @@ class CheckoutTest extends TestCase
         $cart = tap($this->makeCart()
             ->customer(['name' => 'John Doe', 'email' => 'john.doe@example.com'])
             ->lineItems([['product' => 'product-1', 'total' => 5000, 'quantity' => 1]])
+            ->data([
+                'shipping_line_1' => '123 Fake St',
+                'shipping_city' => 'Glasgow',
+                'shipping_postcode' => 'G1 234',
+                'shipping_country' => 'GBR',
+                'shipping_state' => 'GLS',
+            ])
         )->save();
 
         Coupon::make()->code('FOOBAR')->type(CouponType::Percentage)->amount(25)->set('products', ['product-2'])->save();
