@@ -31,10 +31,6 @@ trait HasAddresses
 
     public function billingAddress(): Address
     {
-        if ($this->get('use_shipping_address_for_billing')) {
-            return $this->shippingAddress();
-        }
-
         return new Address(
             line1: $this->get('billing_line_1'),
             line2: $this->get('billing_line_2'),

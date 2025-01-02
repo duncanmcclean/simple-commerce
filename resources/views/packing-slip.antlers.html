@@ -27,19 +27,11 @@
                 </div>
                 <div class="px-3 py-2 pr-6 text-sm">
                     <p>{{ order:customer:name }}</p>
-                    {{ if order:use_shipping_address_for_billing }}
-                        <p>{{ order:shipping_line_1 }}</p>
-                        <p>{{ order:shipping_line_2 }}</p>
-                        <p>{{ order:shipping_city }}</p>
-                        <p>{{ order:shipping_postcode }}</p>
-                        <p>{{ order:shipping_country:label }}</p>
-                    {{ else }}
-                        <p>{{ order:billing_line_1 }}</p>
-                        <p>{{ order:billing_line_2 }}</p>
-                        <p>{{ order:billing_city }}</p>
-                        <p>{{ order:billing_postcode }}</p>
-                        <p>{{ order:billing_country:label }}</p>
-                    {{ /if }}
+                    <p>{{ order:billing_line_1 }}</p>
+                    <p>{{ order:billing_line_2 }}</p>
+                    <p>{{ order:billing_city }}</p>
+                    <p>{{ order:billing_postcode }}</p>
+                    <p>{{ order:billing_country:label }}</p>
                 </div>
             </div>
             {{# Shipping Address #}}

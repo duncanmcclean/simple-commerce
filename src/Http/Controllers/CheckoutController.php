@@ -18,11 +18,6 @@ class CheckoutController
         $cart = Cart::current();
         $values = $request->all();
 
-        // TODO: This is dumb. Find a better way.
-        if (isset($values['use_shipping_address_for_billing'])) {
-            $values['use_shipping_address_for_billing'] = $values['use_shipping_address_for_billing'] === 'on';
-        }
-
         $validated = Order::blueprint()->fields()->except(['customer', 'coupon'])->addValues($values)->validate();
 
         // TODO: handle this better, instead of one exception per product, collect them all and return them all

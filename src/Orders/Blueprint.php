@@ -99,33 +99,29 @@ class Blueprint
                         [
                             'display' => __('Billing Address'),
                             'fields' => [
-                                //                                [
-                                //                                    'handle' => 'use_shipping_address_for_billing',
-                                //                                    'field' => ['type' => 'toggle', 'display' => __('Use ShippingMethod Address for Billing'), 'listable' => false, 'validate' => 'boolean'],
-                                //                                ],
                                 [
                                     'handle' => 'billing_line_1',
-                                    'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 1'), 'listable' => false, 'width' => 50],
                                 ],
                                 [
                                     'handle' => 'billing_line_2',
-                                    'field' => ['type' => 'text', 'display' => __('Address Line 2'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'text', 'display' => __('Address Line 2'), 'listable' => false, 'width' => 50],
                                 ],
                                 [
                                     'handle' => 'billing_city',
-                                    'field' => ['type' => 'text', 'display' => __('Town/City'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'text', 'display' => __('Town/City'), 'listable' => false, 'width' => 50],
                                 ],
                                 [
                                     'handle' => 'billing_postcode',
-                                    'field' => ['type' => 'text', 'display' => __('Postcode'), 'listable' => false, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'text', 'display' => __('Postcode'), 'listable' => false, 'width' => 50],
                                 ],
                                 [
                                     'handle' => 'billing_country',
-                                    'field' => ['type' => 'dictionary', 'dictionary' => ['type' => 'countries', 'emojis' => false], 'display' => __('Country'), 'listable' => false, 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'dictionary', 'dictionary' => ['type' => 'countries', 'emojis' => false], 'display' => __('Country'), 'listable' => false, 'max_items' => 1, 'width' => 50],
                                 ],
                                 [
                                     'handle' => 'billing_state',
-                                    'field' => ['type' => 'state', 'from' => 'billing_country', 'display' => __('State/County'), 'listable' => false, 'max_items' => 1, 'width' => 50, 'if' => ['use_shipping_address_for_billing' => 'equals false']],
+                                    'field' => ['type' => 'state', 'from' => 'billing_country', 'display' => __('State/County'), 'listable' => false, 'max_items' => 1, 'width' => 50],
                                 ],
                             ],
                         ],
