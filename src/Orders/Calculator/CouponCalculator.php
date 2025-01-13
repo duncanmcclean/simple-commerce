@@ -15,6 +15,9 @@ class CouponCalculator
 
             // Double check coupon is still valid
             if (! $coupon->isValid($order)) {
+                $order->coupon(null);
+                $order->couponTotal(0);
+
                 return $next($order);
             }
 
