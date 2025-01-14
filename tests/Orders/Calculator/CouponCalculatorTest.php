@@ -37,10 +37,11 @@ it('skips calculating coupon total if coupon is not valid', function () {
 
     $order = Order::make()->lineItems([
         ['id' => '123', 'product' => $product->id, 'quantity' => 2, 'total' => 10000],
-    ])->itemsTotal(10000)->coupon($coupon->id)->save();
+    ])->itemsTotal(10000)->couponTotal(5000)->coupon($coupon->id)->save();
 
     $order = Pipeline::send($order)->through([CouponCalculator::class])->thenReturn();
 
+    expect($order->coupon())->toBeNull();
     expect($order->couponTotal())->toBe(0);
 });
 
