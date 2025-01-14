@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.6.3 (2025-01-14)
+
+### What's fixed
+* Remove coupon & reset coupon total when coupon is no longer valid #1196 by @duncanmcclean
+
+
+
 ## v7.6.2 (2024-12-09)
 
 ### What's fixed
