@@ -2,13 +2,16 @@
 
 namespace DuncanMcClean\SimpleCommerce;
 
+use DuncanMcClean\SimpleCommerce\Events\CartRecalculated;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Payments\Gateways\Stripe;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CouponQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CartsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CouponsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\OrdersStore;
+use Illuminate\Support\Facades\Event;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\CP\Nav;
 use Statamic\Facades\Permission;

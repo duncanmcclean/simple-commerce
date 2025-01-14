@@ -2,6 +2,9 @@
 
 namespace DuncanMcClean\SimpleCommerce\Data;
 
+use Statamic\Dictionaries\Item;
+use Statamic\Facades\Dictionary;
+
 class Address
 {
     public function __construct(

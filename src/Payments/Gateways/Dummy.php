@@ -6,7 +6,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\Payments\Gateway;
 use Illuminate\Http\Request;
 
-class DummyGateway extends BaseGateway implements Gateway
+class Dummy extends PaymentGateway implements Gateway
 {
     protected static $handle = 'dummy';
 

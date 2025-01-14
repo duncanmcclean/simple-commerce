@@ -9,6 +9,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
 use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod as ShippingMethodContract;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Data\HasAddresses;
+use DuncanMcClean\SimpleCommerce\Events\CartRecalculated;
 use DuncanMcClean\SimpleCommerce\Events\CartSaved;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
@@ -248,6 +249,8 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         app(Calculator::class)->calculate($this);
 
         $this->set('fingerprint', $this->fingerprint());
+
+        event(new CartRecalculated($this));
     }
 
     public function fingerprint(): string

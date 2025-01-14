@@ -23,7 +23,8 @@
         },
         "laravel": {
             "providers": [
-                "DuncanMcClean\\SimpleCommerce\\ServiceProvider"
+                "DuncanMcClean\\SimpleCommerce\\ServiceProvider",
+                "DuncanMcClean\\SimpleCommerce\\Payments\\PaymentServiceProvider"
             ]
         }
     },

@@ -2,53 +2,58 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Payments;
 
-use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCallbackMethodDoesNotExist;
-use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
-use DuncanMcClean\SimpleCommerce\Facades\Gateway;
+use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
+use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
-use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
-use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Facades\PaymentGateway;
 use Illuminate\Http\Request;
+use Statamic\Exceptions\NotFoundHttpException;
 
 class CallbackController
 {
-    public function __invoke(Request $request, $gateway)
+    public function __invoke(Request $request, string $paymentGateway)
     {
-        if ($request->has('_order_id')) {
-            $order = Order::find($request->get('_order_id'));
-        } else {
-            $order = $this->getCart();
+        $cart = Cart::current();
+        $paymentGateway = PaymentGateway::find($paymentGateway);
+
+        throw_if(! $paymentGateway, NotFoundHttpException::class);
+
+        if (! $cart->customer()) {
+            $paymentGateway->cancel($cart);
+
+            // todo: url should be customizable
+            return redirect('/checkout')->withErrors([
+                'checkout' => __('Order cannot be created without customer information.'),
+            ]);
         }
 
-        $gatewayName = $gateway;
+        if (! $cart->taxableAddress()) {
+            $paymentGateway->cancel($cart);
 
-        $gateway = SimpleCommerce::gateways()
-            ->where('handle', $gateway)
-            ->first();
-
-        if (! $gateway) {
-            throw new GatewayDoesNotExist("Gateway [{$gatewayName}] does not exist.");
+            // todo: url should be customizable
+            return redirect('/checkout')->withErrors([
+                'checkout' => __('Order cannot be created without an address.'),
+            ]);
         }
 
-        try {
-            $callbackSuccess = Gateway::use($gateway['handle'])->callback($request);
-        } catch (GatewayCallbackMethodDoesNotExist $e) {
-            $callbackSuccess = $order->paymentStatus() === PaymentStatus::Paid;
+        $order = Order::query()->where('cart', $cart->id())->first();
+
+        if (! $order) {
+            $order = Order::makeFromCart($cart);
+            $order->save();
+
+            if ($order->coupon()) {
+                event(new CouponRedeemed($order->coupon(), $order)); // todo: consider whether this is the right timing for this event
+            }
         }
 
-        if (! $callbackSuccess) {
-            return $this->withErrors($request, "Order [{$order->get('title')}] has not been marked as paid yet.");
-        }
+        $paymentGateway->process($order, $request);
 
-        $order->status(OrderStatus::Placed)->save();
+        // todo: uncomment this when we figure out how to load the *old* cart on the confirmation
+        // page AND get rid of the cart when we're done with it
+        //        Cart::forgetCurrentCart();
 
-        $this->forgetCart();
-
-        return $this->formSuccess($request, [
-            'success' => __('Checkout Complete!'),
-            'cart' => $order->toAugmentedArray(),
-            'is_checkout_request' => true,
-        ]);
+        // todo: make this configurable (how... i don't know)
+        return redirect("/checkout/complete?order_id={$order->id()}");
     }
 }

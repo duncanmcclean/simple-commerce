@@ -41,6 +41,11 @@ class ListedOrder extends JsonResource
                 'coupon' => $order->coupon()?->id(),
                 'shipping_method' => $order->shippingMethod()?->handle(),
                 'line_items' => $order->lineItems(),
+                'grand_total' => $order->grandTotal(),
+                'sub_total' => $order->subTotal(),
+                'discount_total' => $order->discountTotal(),
+                'tax_total' => $order->taxTotal(),
+                'shipping_total' => $order->shippingTotal(),
             ])),
 
             'edit_url' => $order->editUrl(),

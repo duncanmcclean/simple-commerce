@@ -2,28 +2,20 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Payments;
 
-use DuncanMcClean\SimpleCommerce\Events\GatewayWebhookReceived;
-use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
-use DuncanMcClean\SimpleCommerce\Facades\Gateway;
-use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Facades\PaymentGateway;
 use Illuminate\Http\Request;
+use Statamic\Exceptions\NotFoundHttpException;
 
 class WebhookController
 {
-    public function __invoke(Request $request, $gateway)
+    public function __invoke(Request $request, string $paymentGateway)
     {
-        $gatewayName = $gateway;
+        $paymentGateway = PaymentGateway::find($paymentGateway);
 
-        $gateway = SimpleCommerce::gateways()
-            ->where('handle', $gateway)
-            ->first();
+        throw_if(! $paymentGateway, NotFoundHttpException::class);
 
-        if (! $gateway) {
-            throw new GatewayDoesNotExist("Gateway [{$gatewayName}] does not exist.");
-        }
+        $paymentGateway->webhook($request);
 
-        event(new GatewayWebhookReceived($request->all()));
-
-        return Gateway::use($gateway['handle'])->webhook($request);
+        return 'Webhook handled';
     }
 }

@@ -2,6 +2,7 @@
 
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CartController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CartLineItemsController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CartPaymentGatewaysController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CartShippingController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CheckoutController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
@@ -28,10 +29,10 @@ Route::name('simple-commerce.')->group(function () {
 
     Route::name('payments.')
         ->prefix('payments')
-        ->withoutMiddleware(VerifyCsrfToken::class)
+        ->withoutMiddleware(['App\Http\Middleware\VerifyCsrfToken', 'Illuminate\Foundation\Http\Middleware\VerifyCsrfToken'])
         ->group(function () {
-            Route::get('{gateway}/callback', CallbackController::class)->name('callback');
-            Route::post('{gateway}/webhook', WebhookController::class)->name('webhook');
+            Route::get('{paymentGateway}/callback', CallbackController::class)->name('callback');
+            Route::post('{paymentGateway}/webhook', WebhookController::class)->name('webhook');
         });
 
     Route::name('digital-products')

@@ -17,7 +17,7 @@ use Mollie\Api\Types\PaymentStatus as MolliePaymentStatus;
 use Statamic\Facades\Site;
 use Statamic\Statamic;
 
-class MollieGateway extends BaseGateway implements Gateway
+class Mollie extends PaymentGateway implements Gateway
 {
     protected $mollie;
 

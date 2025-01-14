@@ -5,6 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\PaymentGateway;
 use DuncanMcClean\SimpleCommerce\Http\Resources\API\CartResource;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -45,6 +46,9 @@ class CheckoutController
 
         $order = Order::makeFromCart($cart);
         $order->save();
+
+        $gateway = PaymentGateway::find($cart->get('payment_gateway'));
+        $gateway->process($order, $request);
 
         if ($order->coupon()) {
             event(new CouponRedeemed($order->coupon(), $order));
