@@ -10,7 +10,7 @@ use Statamic\Providers\AddonServiceProvider;
 class PaymentServiceProvider extends AddonServiceProvider
 {
     protected array $paymentGateways = [
-//        Gateways\Dummy::class,
+        Gateways\Dummy::class,
 //        Gateways\Mollie::class,
         Gateways\Stripe::class,
     ];

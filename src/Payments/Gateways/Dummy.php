@@ -2,56 +2,44 @@
 
 namespace DuncanMcClean\SimpleCommerce\Payments\Gateways;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Contracts\Payments\Gateway;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
-class Dummy extends PaymentGateway implements Gateway
+class Dummy extends PaymentGateway
 {
-    protected static $handle = 'dummy';
-
-    public function name(): string
+    public function setup(Cart $cart): array
     {
-        return __('Dummy');
-    }
+        // TODO: Implement setup() method.
 
-    public function prepare(Request $request, Order $order): array
-    {
         return [];
     }
 
-    public function checkout(Request $request, Order $order): array
+    public function process(Order $order): void
     {
-        $this->markOrderAsPaid($order);
-
-        return [
-            'id' => '123456789abcdefg',
-            'last_four' => '4242',
-            'date' => (string) now()->subDays(14),
-            'refunded' => false,
-        ];
+        // TODO: Implement process() method.
     }
 
-    public function checkoutRules(): array
+    public function capture(Order $order): void
     {
-        return [
-            'card_number' => ['required', 'string'],
-            'expiry_month' => ['required'],
-            'expiry_year' => ['required'],
-            'cvc' => ['required'],
-        ];
+        // TODO: Implement capture() method.
     }
 
-    public function refund(Order $order): array
+    public function cancel(Cart $cart): void
     {
-        return [];
+        // TODO: Implement cancel() method.
     }
 
-    public function fieldtypeDisplay($value): array
+    public function webhook(Request $request): Response
     {
-        return [
-            'text' => $value['data']['id'],
-            'url' => null,
-        ];
+        // TODO: Implement webhook() method.
+
+        return response();
+    }
+
+    public function refund(Order $order, int $amount): void
+    {
+        // TODO: Implement refund() method.
     }
 }

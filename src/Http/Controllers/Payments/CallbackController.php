@@ -13,6 +13,9 @@ class CallbackController
 {
     public function __invoke(Request $request, string $paymentGateway)
     {
+        // todo: split this into a pipeline
+        // todo: merge this with the CheckoutController
+
         $cart = Cart::current();
         $paymentGateway = PaymentGateway::find($paymentGateway);
 

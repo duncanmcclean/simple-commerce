@@ -2,10 +2,12 @@
 
 namespace Tests;
 
+use DuncanMcClean\SimpleCommerce\Payments\PaymentServiceProvider;
 use DuncanMcClean\SimpleCommerce\ServiceProvider;
 use Statamic\Facades\File;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
+use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Testing\AddonTestCase;
 
 abstract class TestCase extends AddonTestCase
@@ -41,6 +43,13 @@ abstract class TestCase extends AddonTestCase
         $app['config']->set('statamic.stache.stores.users', [
             'class' => \Statamic\Stache\Stores\UsersStore::class,
             'directory' => __DIR__.'/__fixtures__/users',
+        ]);
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return array_merge(parent::getPackageProviders($app), [
+            PaymentServiceProvider::class,
         ]);
     }
 }

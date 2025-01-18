@@ -2,9 +2,9 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Payments\Gateway;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
-use DuncanMcClean\SimpleCommerce\Facades\PaymentGateway;
+use DuncanMcClean\SimpleCommerce\Facades;
+use DuncanMcClean\SimpleCommerce\Payments\Gateways\PaymentGateway;
 use Statamic\Facades\Blink;
 use Statamic\Tags\Tags;
 
@@ -25,12 +25,12 @@ class PaymentGateways extends Tags
 
     private function getPaymentGateways($cart)
     {
-        return PaymentGateway::all()
-            ->map(function (Gateway $paymentGateway) use ($cart) {
+        return Facades\PaymentGateway::all()
+            ->map(function (PaymentGateway $paymentGateway) use ($cart) {
                 $setup = $paymentGateway->setup($cart);
 
                 return [
-                    'name' => $paymentGateway->name(),
+                    'name' => $paymentGateway->title(),
                     'handle' => $paymentGateway->handle(),
                     'gateway_config' => $paymentGateway->config()->all(),
                     'callback_url' => route('statamic.simple-commerce.payments.callback', $paymentGateway->handle()),

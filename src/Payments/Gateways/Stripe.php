@@ -9,8 +9,11 @@ use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use DuncanMcClean\SimpleCommerce\Support\QueuedClosure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Statamic\Contracts\Auth\User;
 use Stripe\Customer;
+use Stripe\Event;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\PaymentIntent;
 use Stripe\Refund;
@@ -19,11 +22,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Stripe extends PaymentGateway
 {
-    public function name(): string
-    {
-        return __('Stripe');
-    }
-
     public function __construct()
     {
         \Stripe\Stripe::setApiKey($this->config()->get('secret'));
@@ -44,7 +42,7 @@ class Stripe extends PaymentGateway
     {
         $stripeCustomerId = $cart->customer()?->get('stripe_customer_id');
 
-        if ($cart->customer() && ! $stripeCustomerId) {
+        if (! $stripeCustomerId && $cart->customer() instanceof User) {
             $stripeCustomer = Customer::create([
                 'name' => $cart->customer()->name(),
                 'email' => $cart->customer()->email(),
@@ -100,14 +98,7 @@ class Stripe extends PaymentGateway
         ]);
     }
 
-    public function rules(): array
-    {
-        return [
-            'payment_intent' => ['required', 'starts_with:pi_'],
-        ];
-    }
-
-    public function capture(Order $order)
+    public function capture(Order $order): void
     {
         $paymentIntent = PaymentIntent::retrieve($order->get('stripe_payment_intent'));
 
@@ -115,7 +106,7 @@ class Stripe extends PaymentGateway
             'amount_to_capture' => $order->grandTotal(),
         ]);
 
-        if ($paymentIntent->status === 'succeeded') {
+        if ($paymentIntent->status === PaymentIntent::STATUS_SUCCEEDED) {
             $order->status(OrderStatus::PaymentReceived)->save();
         }
     }
@@ -129,20 +120,22 @@ class Stripe extends PaymentGateway
         $cart->remove('stripe_payment_intent')->save();
     }
 
-    public function webhook(Request $request)
+    public function webhook(Request $request): Response
     {
-        try {
-            WebhookSignature::verifyHeader(
-                $request->getContent(),
-                $request->header('Stripe-Signature'),
-                $this->config()->get('webhook_secret'),
-                300
-            );
-        } catch (SignatureVerificationException $exception) {
-            throw new AccessDeniedHttpException($exception->getMessage(), $exception);
+        if ($webhookSecret = $this->config()->get('webhook_secret')) {
+            try {
+                WebhookSignature::verifyHeader(
+                    $request->getContent(),
+                    $request->header('Stripe-Signature'),
+                    $webhookSecret,
+                    300
+                );
+            } catch (SignatureVerificationException $exception) {
+                throw new AccessDeniedHttpException($exception->getMessage(), $exception);
+            }
         }
 
-        if ($request->type === 'payment_intent.amount_capturable_updated') {
+        if ($request->type === Event::PAYMENT_INTENT_AMOUNT_CAPTURABLE_UPDATED) {
             $paymentIntent = PaymentIntent::retrieve($request->data['object']['id']);
 
             // We're queuing this logic so that we can release the job and retry later if
@@ -160,14 +153,29 @@ class Stripe extends PaymentGateway
             });
         }
 
-        if ($request->type === 'payment_intent.refunded') {
-            // TODO: Refunds.
+        if ($request->type === Event::PAYMENT_INTENT_SUCCEEDED) {
+            $paymentIntent = PaymentIntent::retrieve($request->data['object']['id']);
+
+            // We're queuing this logic so that we can release the job and retry later if
+            // the order hasn't been created yet.
+            QueuedClosure::dispatch(function ($job) use ($paymentIntent): void {
+                $order = Facades\Order::query()->where('stripe_payment_intent', $paymentIntent->id)->first();
+
+                if (! $order) {
+                    $job->release(10);
+                    return;
+                }
+
+                if ($order->status() === OrderStatus::PaymentPending) {
+                    $order->status(OrderStatus::PaymentReceived)->save();
+                }
+            });
         }
 
-        // TODO: handle manual captures via the Stripe Dashboard
+        return response('Webhook received', 200);
     }
 
-    public function refund(Order $order, int $amount)
+    public function refund(Order $order, int $amount): void
     {
         // TODO: Refunds. (We probably want to store amount_refunded, reason, refunded at on the order)
         // TODO: Bearing in mind that the webhook will also update the order details after the refund has been processed.

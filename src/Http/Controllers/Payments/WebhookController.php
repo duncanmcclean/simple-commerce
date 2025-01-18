@@ -14,8 +14,6 @@ class WebhookController
 
         throw_if(! $paymentGateway, NotFoundHttpException::class);
 
-        $paymentGateway->webhook($request);
-
-        return 'Webhook handled';
+        return $paymentGateway->webhook($request);
     }
 }

@@ -3,7 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Payments\Gateways;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
-use DuncanMcClean\SimpleCommerce\Contracts\Payments\Gateway;
+use DuncanMcClean\SimpleCommerce\Contracts\Payments\PaymentGateway;
 use DuncanMcClean\SimpleCommerce\Events\OrderPaymentFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\OrderNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
@@ -17,7 +17,7 @@ use Mollie\Api\Types\PaymentStatus as MolliePaymentStatus;
 use Statamic\Facades\Site;
 use Statamic\Statamic;
 
-class Mollie extends PaymentGateway implements Gateway
+class Mollie extends PaymentGateway implements PaymentGateway
 {
     protected $mollie;
 
