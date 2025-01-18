@@ -172,15 +172,23 @@ class Stripe extends PaymentGateway
             });
         }
 
+        if ($request->type === Event::CHARGE_REFUNDED) {
+            $paymentIntent = PaymentIntent::retrieve($request->data['object']['payment_intent']);
+
+            if ($paymentIntent) {
+                $order = Facades\Order::query()->where('stripe_payment_intent', $paymentIntent->id)->first();
+
+                $order?->set('amount_refunded', $request->data['object']['amount_refunded'])->save();
+            }
+        }
+
         return response('Webhook received', 200);
     }
 
     public function refund(Order $order, int $amount): void
     {
-        // TODO: Refunds. (We probably want to store amount_refunded, reason, refunded at on the order)
-        // TODO: Bearing in mind that the webhook will also update the order details after the refund has been processed.
-
         Refund::create([
+            'amount' => $amount,
             'payment_intent' => $order->get('stripe_payment_intent'),
         ]);
     }

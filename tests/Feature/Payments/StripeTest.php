@@ -14,6 +14,7 @@ use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
+use Stripe\Charge;
 use Stripe\Customer;
 use Stripe\PaymentIntent;
 use Tests\TestCase;
@@ -267,15 +268,57 @@ class StripeTest extends TestCase
     }
 
     #[Test]
-    public function it_receives_a_payment_intent_refunded_webhook_event()
+    public function it_receives_a_charge_refunded_webhook_event()
     {
-        $this->markTestIncomplete('TODO Refunds');
+        $stripePaymentIntent = PaymentIntent::create([
+            'amount' => 1000,
+            'currency' => 'gbp',
+            'payment_method_types' => ['card'],
+        ]);
+
+        $stripePaymentIntent->confirm(['payment_method' => 'pm_card_visa']);
+
+        $order = $this->makeOrder();
+        $order->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
+
+        $this
+            ->post(
+                uri: '/!/simple-commerce/payments/stripe/webhook',
+                data: [
+                    'type' => 'charge.refunded',
+                    'data' => [
+                        'object' => [
+                            'id' => $stripePaymentIntent->latest_charge,
+                            'payment_intent' => $stripePaymentIntent->id,
+                            'amount_refunded' => 750,
+                        ],
+                    ],
+                ],
+            )
+            ->assertOk();
+
+        $order->fresh();
+        $this->assertEquals(750, $order->get('amount_refunded'));
     }
 
     #[Test]
     public function it_refunds_a_payment()
     {
-        $this->markTestIncomplete('TODO Refunds');
+        $stripePaymentIntent = PaymentIntent::create([
+            'amount' => 1000,
+            'currency' => 'gbp',
+            'payment_method_types' => ['card'],
+        ]);
+
+        $stripePaymentIntent->confirm(['payment_method' => 'pm_card_visa']);
+
+        $order = $this->makeOrder();
+        $order->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
+
+        (new Stripe)->refund($order, 750);
+
+        $charge = Charge::retrieve($stripePaymentIntent->latest_charge);
+        $this->assertEquals(750, $charge->amount_refunded);
     }
 
     private function makeCartWithGuestCustomer()

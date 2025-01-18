@@ -135,6 +135,7 @@ class ServiceProvider extends AddonServiceProvider
 
                     $permission->children([
                         Permission::make('edit orders')->label(__('Edit Orders')),
+                        Permission::make('refund orders')->label(__('Refund Orders')),
                     ]);
                 });
 

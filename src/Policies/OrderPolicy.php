@@ -24,6 +24,11 @@ class OrderPolicy
         return $user->can('edit orders');
     }
 
+    public function refund($user): bool
+    {
+        return $user->can('refund orders');
+    }
+
     public function delete($user): bool
     {
         return false;

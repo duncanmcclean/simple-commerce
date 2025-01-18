@@ -57,6 +57,7 @@ class OrderReceiptFieldtype extends Fieldtype
                 'shipping_total' => Money::format($order->shippingTotal(), Site::selected()),
                 'tax_total' => Money::format($order->taxTotal(), Site::selected()),
                 'grand_total' => Money::format($order->grandTotal(), Site::selected()),
+                'amount_refunded' => Money::format($order->get('amount_refunded'), Site::selected()),
             ],
         ];
     }

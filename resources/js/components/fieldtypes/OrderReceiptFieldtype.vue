@@ -24,7 +24,7 @@
                     <span>{{ __('Coupon Discount (:code)', {code: receipt.coupon.code}) }}</span>
                     <span class="help-block mb-0">{{ receipt.coupon.discount }}</span>
                 </div>
-                <div>{{ receipt.totals.discount_total }}</div>
+                <div>-{{ receipt.totals.discount_total }}</div>
             </div>
             <div v-if="receipt.shipping" class="receipt-total">
                 <div>
@@ -43,6 +43,10 @@
             <div class="receipt-total font-bold">
                 <div>{{ __('Grand Total') }}</div>
                 <div>{{ receipt.totals.grand_total }}</div>
+            </div>
+            <div class="receipt-total">
+                <div>{{ __('Refund') }}</div>
+                <div>-{{ receipt.totals.amount_refunded }}</div>
             </div>
         </div>
     </div>
