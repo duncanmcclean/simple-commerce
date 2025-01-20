@@ -55,6 +55,5 @@
             "composer/package-versions-deprecated": true,
             "pixelfear/composer-dist-plugin": true
         }
-    },
-    "minimum-stability": "alpha"
+    }
 }
