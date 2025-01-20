@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Orders;
+namespace Tests\Feature\Orders;
 
 use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;

@@ -138,6 +138,8 @@ class CartTest extends TestCase
         $this->assertNull($cart->fresh()->coupon());
     }
 
+    // todo: more coupon tests (ensure now-invalid coupons are removed, ensure code is valid, etc)
+
     #[Test]
     public function it_deletes_the_cart()
     {

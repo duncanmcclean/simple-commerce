@@ -21,6 +21,11 @@ trait HasTotals
             ->args(func_get_args());
     }
 
+    public function isFree(): bool
+    {
+        return $this->grandTotal() === 0;
+    }
+
     public function subTotal($subTotal = null)
     {
         return $this->fluentlyGetOrSet('subTotal')

@@ -1,6 +1,6 @@
 <?php
 
-namespace Data;
+namespace Tests\Data;
 
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;

@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Payments\Gateways;
 
-use DuncanMcClean\SimpleCommerce\Exceptions\PaymentGatewayDoesNotExist;
 use Illuminate\Support\Collection;
 
 class Manager
@@ -15,7 +14,7 @@ class Manager
     public function find(string $handle)
     {
         if (! $this->classes()->has($handle)) {
-            throw new PaymentGatewayDoesNotExist($handle);
+            return;
         }
 
         return app($this->classes()->get($handle));

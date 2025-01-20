@@ -16,6 +16,10 @@ class PaymentGateways extends Tags
     {
         $cart = CartFacade::current();
 
+        if ($cart->isFree()) {
+            return [];
+        }
+
         if (! Blink::has(self::BLINK_KEY)) {
             Blink::put(self::BLINK_KEY, $this->getPaymentGateways($cart));
         }
@@ -33,7 +37,7 @@ class PaymentGateways extends Tags
                     'name' => $paymentGateway->title(),
                     'handle' => $paymentGateway->handle(),
                     'gateway_config' => $paymentGateway->config()->all(),
-                    'callback_url' => route('statamic.simple-commerce.payments.callback', $paymentGateway->handle()),
+                    'checkout_url' => route('statamic.simple-commerce.payments.checkout', $paymentGateway->handle()),
                     ...$setup,
                 ];
             })

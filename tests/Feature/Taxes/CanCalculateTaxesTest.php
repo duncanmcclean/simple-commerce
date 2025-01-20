@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Taxes;
+namespace Tests\Feature\Taxes;
 
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\CalculateTaxes;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as CartContract;

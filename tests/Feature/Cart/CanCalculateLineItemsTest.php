@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Cart;
+namespace Tests\Feature\Cart;
 
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\CalculateLineItems;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;

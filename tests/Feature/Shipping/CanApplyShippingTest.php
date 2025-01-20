@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Shipping;
+namespace Tests\Feature\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\ApplyShipping;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as CartContract;

@@ -28,7 +28,7 @@ class AugmentedOrder extends AbstractAugmented
     {
         $keys = [
             'id',
-            'free',
+            'is_free',
             'customer',
             'coupon',
             'shipping_method',
@@ -45,11 +45,6 @@ class AugmentedOrder extends AbstractAugmented
         }
 
         return $keys;
-    }
-
-    public function free(): bool
-    {
-        return $this->data->grandTotal() == 0;
     }
 
     public function coupon()

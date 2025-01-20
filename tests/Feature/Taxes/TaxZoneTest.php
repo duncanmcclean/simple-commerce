@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Taxes;
+namespace Tests\Feature\Taxes;
 
 use DuncanMcClean\SimpleCommerce\Facades;
 use DuncanMcClean\SimpleCommerce\Taxes\TaxZone;

@@ -22,6 +22,10 @@ class PaymentServiceProvider extends AddonServiceProvider
         }
 
         Event::listen(CartRecalculated::class, function ($event) {
+            if ($event->cart->isFree()) {
+                return;
+            }
+
             PaymentGateway::all()->each(fn ($gateway) => $gateway->afterRecalculating($event->cart));
         });
     }

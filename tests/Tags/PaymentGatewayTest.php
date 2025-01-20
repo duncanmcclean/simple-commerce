@@ -27,7 +27,7 @@ class PaymentGatewayTest extends TestCase
             'dummy' => [],
         ]);
 
-        $cart = tap(Cart::make())->save();
+        $cart = tap(Cart::make()->grandTotal(1000))->saveWithoutRecalculating();
 
         Cart::setCurrent($cart);
 
