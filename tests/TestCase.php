@@ -7,7 +7,6 @@ use DuncanMcClean\SimpleCommerce\ServiceProvider;
 use Statamic\Facades\File;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
-use Statamic\Providers\StatamicServiceProvider;
 use Statamic\Testing\AddonTestCase;
 
 abstract class TestCase extends AddonTestCase
@@ -18,16 +17,14 @@ abstract class TestCase extends AddonTestCase
     {
         parent::setUp();
 
-        File::put(resource_path('sites.yaml'), YAML::dump([
+        Site::setSites([
             'default' => [
                 'name' => '{{ config:app:name }}',
                 'url' => '/',
                 'locale' => 'en_US',
-                'attributes' => [
-                    'currency' => 'GBP',
-                ],
+                'attributes' => ['currency' => 'GBP'],
             ],
-        ]));
+        ])->save();
     }
 
     protected function resolveApplicationConfiguration($app)
