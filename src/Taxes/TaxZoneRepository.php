@@ -37,6 +37,8 @@ class TaxZoneRepository implements Contract
 
     public function save($taxZone): bool
     {
+        File::ensureDirectoryExists(dirname($this->getPath()));
+
         $data = $this->all()
             ->mapWithKeys(fn ($taxZone) => [$taxZone->handle() => $taxZone->fileData()])
             ->put($taxZone->handle(), $taxZone->fileData())

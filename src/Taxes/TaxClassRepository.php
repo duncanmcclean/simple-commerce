@@ -36,6 +36,8 @@ class TaxClassRepository implements Contract
 
     public function save($taxClass): bool
     {
+        File::ensureDirectoryExists(dirname($this->getPath()));
+
         $data = $this->all()
             ->mapWithKeys(fn ($taxClass) => [$taxClass->handle() => $taxClass->fileData()])
             ->put($taxClass->handle(), $taxClass->fileData())

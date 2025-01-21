@@ -3,6 +3,8 @@ name: Test Suite
 on:
   push:
   pull_request:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   php_tests:
@@ -35,7 +37,21 @@ jobs:
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
 
       - name: Run PHPUnit
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --exclude-group=payments
+
+      - name: Get changed files (Payments)
+        id: changed-files-payments
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            src/Payments
+            tests/Feature/Payments
+            composer.json
+            .github/workflows/tests.yml
+
+      - name: Run PHPUnit (Payments)
+        run: vendor/bin/phpunit --group=payments
+        if: steps.changed-files-payments.outputs.any_modified == 'true' || github.event_name == 'schedule'
         env:
           STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
