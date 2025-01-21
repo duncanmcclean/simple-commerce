@@ -44,7 +44,7 @@
         "laravel/pint": "^1.18",
         "orchestra/testbench": "^9.2",
         "phpunit/phpunit": "^10.5.35",
-        "spatie/ray": "^1.17"
+        "spatie/ray": "^1.36.1"
     },
     "config": {
         "optimize-autoloader": true,
