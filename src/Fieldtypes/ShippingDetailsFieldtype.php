@@ -21,8 +21,10 @@ class ShippingDetailsFieldtype extends Fieldtype
             'has_shipping_option' => true,
             'name' => $order->shippingOption()->name(),
             'handle' => $order->shippingOption()->handle(),
-            'total' => Money::format($order->shippingTotal(), $order->site()),
-            'tracking_number' => $order->get('tracking_number'),
+            'details' => array_filter([
+                __('Amount') => Money::format($order->shippingTotal(), $order->site()),
+                __('Tracking Number') => $order->get('tracking_number'),
+            ]),
             'shipping_method' => [
                 'name' => $order->shippingMethod()->name(),
                 'handle' => $order->shippingMethod()->handle(),

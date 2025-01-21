@@ -7,6 +7,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Facades;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use DuncanMcClean\SimpleCommerce\Support\QueuedClosure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -191,5 +192,18 @@ class Stripe extends PaymentGateway
             'amount' => $amount,
             'payment_intent' => $order->get('stripe_payment_intent'),
         ]);
+    }
+
+    public function logo(): ?string
+    {
+        return 'stripe';
+    }
+
+    public function fieldtypeDetails(Order $order): array
+    {
+        return [
+            __('Payment ID') => "<a href='https://dashboard.stripe.com/payments/{$order->get('stripe_payment_intent')}' target='_blank'>{$order->get('stripe_payment_intent')}</a>",
+            __('Amount') => Money::format($order->grandTotal(), $order->site()),
+        ];
     }
 }

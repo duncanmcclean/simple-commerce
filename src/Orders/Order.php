@@ -15,6 +15,7 @@ use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Payments\Gateways\PaymentGateway;
 use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
@@ -35,6 +36,7 @@ use Statamic\Fields\Blueprint as StatamicBlueprint;
 use Statamic\Sites\Site;
 use Statamic\Support\Str;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
+use DuncanMcClean\SimpleCommerce\Facades;
 
 class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {
@@ -232,6 +234,11 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             ->name($this->get('shipping_option'))
             ->handle($this->get('shipping_option'))
             ->price($this->shippingTotal());
+    }
+
+    public function paymentGateway(): ?PaymentGateway
+    {
+        return Facades\PaymentGateway::find($this->get('payment_gateway'));
     }
 
     // TODO: Change this when we add support for multi-site.

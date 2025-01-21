@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Payments\Gateways;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
@@ -31,6 +32,18 @@ abstract class PaymentGateway
     abstract public function webhook(Request $request): Response;
 
     abstract public function refund(Order $order, int $amount): void;
+
+    public function fieldtypeDetails(Order $order): array
+    {
+        return [
+            __('Amount') => Money::format($order->grandTotal(), $order->site()),
+        ];
+    }
+
+    public function logo(): ?string
+    {
+        return null;
+    }
 
     public function config(): Collection
     {

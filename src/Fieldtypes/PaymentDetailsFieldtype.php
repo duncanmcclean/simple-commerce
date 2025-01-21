@@ -12,8 +12,16 @@ class PaymentDetailsFieldtype extends Fieldtype
     {
         $order = $this->field->parent();
 
+        if (! $order->has('payment_gateway')) {
+            return ['has_payment_gateway' => false];
+        }
+
         return [
-            //
+            'has_payment_gateway' => true,
+            'title' => $order->paymentGateway()->title(),
+            'handle' => $order->paymentGateway()->handle(),
+            'logo' => $order->paymentGateway()->logo(),
+            'details' => $order->paymentGateway()->fieldtypeDetails($order),
         ];
     }
 
