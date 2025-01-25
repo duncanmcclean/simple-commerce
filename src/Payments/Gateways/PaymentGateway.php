@@ -49,4 +49,14 @@ abstract class PaymentGateway
     {
         return collect(config("statamic.simple-commerce.payments.gateways.{$this->handle()}"));
     }
+
+    public function checkoutUrl(): string
+    {
+        return route('statamic.simple-commerce.payments.checkout', $this->handle());
+    }
+
+    public function webhookUrl(): string
+    {
+        return route('statamic.simple-commerce.payments.webhook', $this->handle());
+    }
 }

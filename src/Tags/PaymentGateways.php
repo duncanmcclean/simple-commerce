@@ -37,7 +37,7 @@ class PaymentGateways extends Tags
                     'name' => $paymentGateway->title(),
                     'handle' => $paymentGateway->handle(),
                     'gateway_config' => $paymentGateway->config()->all(),
-                    'checkout_url' => route('statamic.simple-commerce.payments.checkout', $paymentGateway->handle()),
+                    'checkout_url' => $paymentGateway->checkoutUrl(),
                     ...$setup,
                 ];
             })

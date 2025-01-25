@@ -15,4 +15,13 @@ class Address
         public ?string $country = null,
         public ?string $state = null,
     ) {}
+
+    public function country(): ?Item
+    {
+        if (! $this->country) {
+            return null;
+        }
+
+        return Dictionary::find('countries')->get($this->country);
+    }
 }

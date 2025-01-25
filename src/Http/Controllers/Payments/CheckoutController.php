@@ -64,9 +64,12 @@ class CheckoutController
             ]);
         }
 
-        // TODO: Forget the customer's cart.
+        Cart::forgetCurrentCart($cart);
+
         // TODO: Redirect them to the configured "checkout complete" URL.
-        return redirect("/checkout/complete?order_id={$order->id()}");
+        return redirect()->signedRoute('checkout.confirmation', [
+            'order_id' => $order->id(),
+        ]);
     }
 
     private function ensureCouponIsValid($cart, Request $request): void
