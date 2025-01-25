@@ -45,6 +45,11 @@ return [
         'directory' => base_path('content/orders'),
     ],
 
+    'routes' => [
+        'checkout' => 'checkout',
+        'checkout_confirmation' => 'checkout.confirmation',
+    ],
+
     'coupons' => [
         'directory' => base_path('content/coupons'),
     ],

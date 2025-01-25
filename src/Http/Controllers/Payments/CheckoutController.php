@@ -57,16 +57,18 @@ class CheckoutController
                 $order->delete();
             }
 
-            // todo: url should be customizable
-            return redirect('/checkout')->withErrors($e->errors());
+            return redirect()
+                ->route(config('statamic.simple-commerce.routes.checkout'))
+                ->withErrors($e->errors());
         }
 
         Cart::forgetCurrentCart($cart);
 
-        // TODO: Redirect them to the configured "checkout complete" URL.
-        return redirect()->temporarySignedRoute('checkout.confirmation', now()->addHour(), [
-            'order_id' => $order->id(),
-        ]);
+        return redirect()->temporarySignedRoute(
+            route: config('statamic.simple-commerce.routes.checkout_confirmation'),
+            expiration: now()->addHour(),
+            parameters: ['order_id' => $order->id()]
+        );
     }
 
     private function ensureCouponIsValid($cart, Request $request): void
