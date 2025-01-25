@@ -40,6 +40,6 @@ class Dummy extends PaymentGateway
 
     public function refund(Order $order, int $amount): void
     {
-        //
+        $order->set('amount_refunded', $amount)->save();
     }
 }
