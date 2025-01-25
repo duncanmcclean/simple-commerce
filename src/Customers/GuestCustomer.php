@@ -3,13 +3,14 @@
 namespace DuncanMcClean\SimpleCommerce\Customers;
 
 use Statamic\Contracts\Data\Augmentable;
+use Statamic\Contracts\Data\Augmented;
 use Statamic\Data\ContainsData;
-use Statamic\Data\HasAugmentedData;
+use Statamic\Data\HasAugmentedInstance;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
 class GuestCustomer implements Augmentable
 {
-    use ContainsData, FluentlyGetsAndSets, HasAugmentedData;
+    use ContainsData, FluentlyGetsAndSets, HasAugmentedInstance;
 
     public function id(): ?string
     {
@@ -50,5 +51,10 @@ class GuestCustomer implements Augmentable
     public function toArray(): array
     {
         return $this->data()->filter()->all();
+    }
+
+    public function newAugmentedInstance(): Augmented
+    {
+        return new AugmentedGuestCustomer($this);
     }
 }

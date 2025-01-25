@@ -11,14 +11,13 @@ use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\ValidatesStock;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Statamic\Exceptions\NotFoundHttpException;
 
 class CheckoutController
 {
     use ValidatesStock;
-
-    // todo: write (fix) tests for this - both free and paid journeys
 
     public function __invoke(Request $request, ?string $paymentGateway = null)
     {
@@ -51,7 +50,7 @@ class CheckoutController
             $order->isFree()
                 ? $order->status(OrderStatus::PaymentReceived)->save()
                 : $paymentGateway->process($order, $request);
-        } catch (PreventCheckout $e) {
+        } catch (ValidationException|PreventCheckout $e) {
             $paymentGateway->cancel($cart);
 
             if ($order = Order::query()->where('cart', $cart->id())->first()) {
@@ -59,15 +58,13 @@ class CheckoutController
             }
 
             // todo: url should be customizable
-            return redirect('/checkout')->withErrors([
-                'checkout' => $e->getMessage(),
-            ]);
+            return redirect('/checkout')->withErrors($e->errors());
         }
 
         Cart::forgetCurrentCart($cart);
 
         // TODO: Redirect them to the configured "checkout complete" URL.
-        return redirect()->signedRoute('checkout.confirmation', [
+        return redirect()->temporarySignedRoute('checkout.confirmation', now()->addHour(), [
             'order_id' => $order->id(),
         ]);
     }
