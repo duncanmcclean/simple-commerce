@@ -18,9 +18,6 @@ class Orders extends Tags
     {
         $query = Order::query();
 
-        // todo: status filter (see search:results tag)
-        // todo: site filter (see search:results tag)
-
         $this->queryConditions($query);
         $this->queryOrderBys($query);
         $this->queryScopes($query);

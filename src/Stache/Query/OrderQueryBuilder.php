@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Stache\Query;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\QueryBuilder;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use Statamic\Data\DataCollection;
 use Statamic\Stache\Query\Builder;
 
 class OrderQueryBuilder extends Builder implements QueryBuilder
@@ -28,6 +29,11 @@ class OrderQueryBuilder extends Builder implements QueryBuilder
         $this->where('status', '!=', $status);
 
         return $this;
+    }
+
+    protected function collect($items = [])
+    {
+        return DataCollection::make($items);
     }
 
     protected function getFilteredKeys()
