@@ -60,7 +60,10 @@ class Stripe extends PaymentGateway
                 'customer' => $stripeCustomerId,
             ]);
 
-            return ['client_secret' => $paymentIntent->client_secret];
+            return [
+                'api_key' => $this->config()->get('key'),
+                'client_secret' => $paymentIntent->client_secret,
+            ];
         }
 
         $intentData = [
@@ -76,7 +79,10 @@ class Stripe extends PaymentGateway
 
         $cart->set('stripe_payment_intent', $paymentIntent->id)->save();
 
-        return ['client_secret' => $paymentIntent->client_secret];
+        return [
+            'api_key' => $this->config()->get('key'),
+            'client_secret' => $paymentIntent->client_secret,
+        ];
     }
 
     public function afterRecalculating(Cart $cart): void
@@ -88,8 +94,6 @@ class Stripe extends PaymentGateway
 
     public function process(Order $order): void
     {
-        $order->set('payment_gateway', static::handle())->save();
-
         PaymentIntent::update($order->get('stripe_payment_intent'), [
             'description' => __('Order #:orderNumber', ['orderNumber' => $order->orderNumber()]),
             'metadata' => [

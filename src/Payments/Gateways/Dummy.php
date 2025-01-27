@@ -17,10 +17,7 @@ class Dummy extends PaymentGateway
 
     public function process(Order $order): void
     {
-        $order
-            ->set('payment_gateway', static::handle())
-            ->status(OrderStatus::PaymentReceived)
-            ->save();
+        $order->status(OrderStatus::PaymentReceived)->save();
     }
 
     public function capture(Order $order): void

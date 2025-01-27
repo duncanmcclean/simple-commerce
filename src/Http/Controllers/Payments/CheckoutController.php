@@ -11,7 +11,6 @@ use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\ValidatesStock;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Statamic\Exceptions\NotFoundHttpException;
 
@@ -47,9 +46,12 @@ class CheckoutController
                 }
             }
 
-            $order->isFree()
-                ? $order->status(OrderStatus::PaymentReceived)->save()
-                : $paymentGateway->process($order, $request);
+            if ($order->isFree()) {
+                $order->status(OrderStatus::PaymentReceived)->save();
+            } else {
+                $paymentGateway->process($order, $request);
+                $order->set('payment_gateway', $paymentGateway::handle())->save();
+            }
         } catch (ValidationException|PreventCheckout $e) {
             $paymentGateway->cancel($cart);
 

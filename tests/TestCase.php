@@ -4,6 +4,7 @@ namespace Tests;
 
 use DuncanMcClean\SimpleCommerce\Payments\PaymentServiceProvider;
 use DuncanMcClean\SimpleCommerce\ServiceProvider;
+use Illuminate\Support\Facades\Route;
 use Statamic\Facades\File;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
@@ -41,6 +42,9 @@ abstract class TestCase extends AddonTestCase
             'class' => \Statamic\Stache\Stores\UsersStore::class,
             'directory' => __DIR__.'/__fixtures__/users',
         ]);
+
+        Route::get('checkout', fn () => 'Checkout')->name('checkout');
+        Route::get('checkout/confirmation', fn () => 'Confirmation')->name('checkout.confirmation');
     }
 
     protected function getPackageProviders($app)
