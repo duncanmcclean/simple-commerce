@@ -19,6 +19,13 @@ class StateFieldtype extends Fieldtype
         ];
     }
 
+    public function augment($value)
+    {
+        $country = $this->field->parent()?->get($this->config('from'));
+
+        return collect($this->getStates($country))->firstWhere('code', $value);
+    }
+
     public function getStates(string|array|null $country = null): array
     {
         if (! $country) {
