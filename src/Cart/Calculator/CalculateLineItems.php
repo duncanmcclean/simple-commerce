@@ -23,12 +23,11 @@ class CalculateLineItems
             };
 
             $lineItem->unitPrice($price);
-            $lineItem->total($price * $lineItem->quantity());
+            $lineItem->subTotal($price * $lineItem->quantity());
+            $lineItem->total($lineItem->subTotal());
 
             return $lineItem;
         });
-
-        $cart->subTotal($cart->lineItems()->map->total()->sum());
 
         return $next($cart);
     }

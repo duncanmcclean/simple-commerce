@@ -23,7 +23,7 @@ class GuestCustomerTest extends TestCase
 
         $this
             ->actingAs(User::make()->makeSuper()->save())
-            ->post(cp_route('simple-commerce.convert-guest-to-user'), [
+            ->post(cp_route('simple-commerce.fieldtypes.convert-guest-customer'), [
                 'email' => 'cj.cregg@example.com',
                 'order_id' => $orderA->id(),
             ])
@@ -45,7 +45,7 @@ class GuestCustomerTest extends TestCase
 
         $this
             ->actingAs(User::make()->makeSuper()->save())
-            ->post(cp_route('simple-commerce.convert-guest-to-user'), [
+            ->post(cp_route('simple-commerce.fieldtypes.convert-guest-customer'), [
                 'email' => 'cj.cregg@example.com',
                 'order_id' => $order->id(),
             ])

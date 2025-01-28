@@ -32,6 +32,7 @@ class AugmentedOrder extends AbstractAugmented
             'customer',
             'coupon',
             'shipping_method',
+            'shipping_option',
             'tax_breakdown',
         ];
 
@@ -66,6 +67,15 @@ class AugmentedOrder extends AbstractAugmented
             'name' => $this->data->shippingMethod()->name(),
             'handle' => $this->data->shippingMethod()->handle(),
         ];
+    }
+
+    public function shippingOption()
+    {
+        if (! $this->data->shippingOption()) {
+            return null;
+        }
+
+        return $this->data->shippingOption()->toAugmentedArray();
     }
 
     public function status()

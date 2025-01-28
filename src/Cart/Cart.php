@@ -265,7 +265,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             'taxable_state' => $this->taxableAddress()?->state,
             'taxable_country' => $this->taxableAddress()?->country,
             'taxable_post_code' => $this->taxableAddress()?->postcode,
-            'config' => config('statamic.simple-commerce.taxes'),
+            'tax_config' => config('statamic.simple-commerce.taxes'),
         ];
 
         return sha1(json_encode($payload));

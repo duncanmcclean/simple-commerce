@@ -20,9 +20,10 @@ class ResetTotals
         $cart->remove('shipping_tax_breakdown');
 
         $cart->lineItems()->transform(function (LineItem $lineItem) {
-            $lineItem->total(0);
             $lineItem->unitPrice(0);
             $lineItem->taxTotal(0);
+            $lineItem->subTotal(0);
+            $lineItem->total(0);
 
             $lineItem->remove('tax_breakdown');
 

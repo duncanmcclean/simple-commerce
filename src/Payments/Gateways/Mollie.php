@@ -5,6 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Payments\Gateways;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -38,25 +39,31 @@ class Mollie extends PaymentGateway
     public function setup(Cart $cart): array
     {
         // todo: ensure the existing payment has the correct totals, if not, they should be updated.
-        //        if ($cart->get('mollie_payment_id')) {
-        //            $payment = $this->mollie->payments->get($cart->get('mollie_payment_id'));
-        //
-        //            return ['checkout_url' => $payment->getCheckoutUrl()];
-        //        }
+//        if ($cart->get('mollie_payment_id')) {
+//            $payment = $this->mollie->payments->get($cart->get('mollie_payment_id'));
+//
+//            return ['checkout_url' => $payment->getCheckoutUrl()];
+//        }
+
+//        dd($cart);
+//
 
         $payment = $this->mollie->payments->create([
-            'description' => config('app.name').' '.$cart->id(), // todo: this is visible to the customer, but the order doesn't exist yet, so we have to use the cart ID
+            'description' => "Pending Order: {$cart->id()}",
             'amount' => $this->formatAmount(site: $cart->site(), amount: $cart->grandTotal()),
             'redirectUrl' => $this->checkoutUrl(),
             //            'webhookUrl' => $this->webhookUrl(),
             'lines' => $cart->lineItems()
                 ->map(function (LineItem $lineItem) use ($cart) {
+                    // Mollie expects the unit price to include taxes. However, we only apply taxes to the line item total.
+                    // So, we need to do some calculations to figure out what the unit price would be including tax.
+                    $unitPrice = ($lineItem->total() + $lineItem->get('discount_amount', 0)) / $lineItem->quantity();
+
                     return [
-                        'type' => 'physical', // todo: digital products
+                        'type' => 'physical',
                         'description' => $lineItem->product()->get('title'),
                         'quantity' => $lineItem->quantity(),
-                        // todo: make sure this amount is INCLUDING taxes
-                        'unitPrice' => $this->formatAmount(site: $cart->site(), amount: $lineItem->unitPrice()),
+                        'unitPrice' => $this->formatAmount(site: $cart->site(), amount: $unitPrice),
                         'discountAmount' => $lineItem->has('discount_amount')
                             ? $this->formatAmount(site: $cart->site(), amount: $lineItem->get('discount_amount'))
                             : null,
@@ -66,33 +73,32 @@ class Mollie extends PaymentGateway
                         'productUrl' => $lineItem->product()->absoluteUrl(),
                     ];
                 })
-                ->when($cart->shippingOption(), function ($lines, $shippingOption) use ($cart) {
-                    // todo: handle shipping taxes here
+                ->when($cart->shippingOption(), function ($lines, ShippingOption $shippingOption) use ($cart) {
                     return $lines->push([
                         'type' => 'shipping_fee',
                         'description' => $shippingOption->name(),
                         'quantity' => 1,
-                        'unitPrice' => $this->formatAmount(site: $cart->site(), amount: $shippingOption->price()),
-                        'totalAmount' => $this->formatAmount(site: $cart->site(), amount: $shippingOption->price()),
-                        //                        'vatRate' => 0,
-                        //                        'vatAmount' => $this->formatAmount(site: $cart->site(), amount: 0),
+                        'unitPrice' => $this->formatAmount(site: $cart->site(), amount: $cart->shippingTotal()),
+                        'totalAmount' => $this->formatAmount(site: $cart->site(), amount: $cart->shippingTotal()),
+                        'vatRate' => collect($cart->get('shipping_tax_breakdown'))->sum('rate'),
+                        'vatAmount' => $this->formatAmount(site: $cart->site(), amount: $cart->get('shipping_tax_total', 0)),
                     ]);
                 })
                 ->values()->all(),
-            'billingAddress' => array_filter([
+            'billingAddress' => $cart->hasBillingAddress() ? array_filter([
                 'streetAndNumber' => $cart->billingAddress()?->line1,
                 'streetAdditional' => $cart->billingAddress()?->line2,
                 'postalCode' => $cart->billingAddress()?->postcode,
                 'city' => $cart->billingAddress()?->city,
                 'country' => Arr::get($cart->billingAddress()?->country()?->data(), 'iso2'),
-            ]),
-            'shippingAddress' => array_filter([
+            ]) : null,
+            'shippingAddress' => $cart->hasShippingAddress() ? array_filter([
                 'streetAndNumber' => $cart->shippingAddress()?->line1,
                 'streetAdditional' => $cart->shippingAddress()?->line2,
                 'postalCode' => $cart->shippingAddress()?->postcode,
                 'city' => $cart->shippingAddress()?->city,
                 'country' => Arr::get($cart->shippingAddress()?->country()?->data(), 'iso2'),
-            ]),
+            ]) : null,
             'locale' => $cart->site()->locale(),
             'metadata' => [
                 'cart_id' => $cart->id(),
@@ -103,13 +109,6 @@ class Mollie extends PaymentGateway
         $cart->set('mollie_payment_id', $payment->id)->save();
 
         return ['checkout_url' => $payment->getCheckoutUrl()];
-    }
-
-    public function afterRecalculating(Cart $cart): void
-    {
-        if ($cart->get('mollie_payment_id')) {
-            $this->setup($cart);
-        }
     }
 
     public function process(Order $order): void
@@ -149,7 +148,7 @@ class Mollie extends PaymentGateway
     {
         return [
             'currency' => Str::upper($site->attribute('currency')),
-            'value' => (string) substr_replace($amount, '.', -2, 0),
+            'value' => (string) number_format($amount / 100, 2, '.', ''),
         ];
     }
 }

@@ -20,8 +20,9 @@ class LineItem
     public $variant;
     public $quantity;
     public $unitPrice;
-    public $total;
+    public $subTotal;
     public $taxTotal;
+    public $total;
 
     public function __construct()
     {
@@ -91,10 +92,10 @@ class LineItem
             ->args(func_get_args());
     }
 
-    public function total($total = null)
+    public function subTotal()
     {
         return $this
-            ->fluentlyGetOrSet('total')
+            ->fluentlyGetOrSet('subTotal')
             ->args(func_get_args());
     }
 
@@ -105,6 +106,13 @@ class LineItem
             ->args(func_get_args());
     }
 
+    public function total($total = null)
+    {
+        return $this
+            ->fluentlyGetOrSet('total')
+            ->args(func_get_args());
+    }
+
     public function defaultAugmentedArrayKeys()
     {
         return [];
@@ -112,7 +120,7 @@ class LineItem
 
     public function shallowAugmentedArrayKeys()
     {
-        return ['id', 'product', 'variant', 'quantity', 'unit_price', 'total', 'tax_total'];
+        return ['id', 'product', 'variant', 'quantity', 'unit_price', 'sub_total', 'tax_total', 'total'];
     }
 
     public function newAugmentedInstance(): Augmented
@@ -133,8 +141,9 @@ class LineItem
             'variant' => $this->variant,
             'quantity' => $this->quantity,
             'unit_price' => $this->unitPrice,
-            'total' => $this->total,
+            'sub_total' => $this->subTotal,
             'tax_total' => $this->taxTotal,
+            'total' => $this->total,
         ])->filter()->all();
     }
 }

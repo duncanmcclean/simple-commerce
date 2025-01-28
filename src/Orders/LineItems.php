@@ -16,8 +16,9 @@ class LineItems extends Collection
             ->variant(Arr::pull($data, 'variant'))
             ->quantity((int) Arr::pull($data, 'quantity'))
             ->unitPrice(Arr::pull($data, 'unit_price'))
-            ->total(Arr::pull($data, 'total', 0))
+            ->subTotal(Arr::pull($data, 'sub_total', 0))
             ->taxTotal(Arr::pull($data, 'tax_total', 0))
+            ->total(Arr::pull($data, 'total', 0))
             ->data(collect($data));
 
         $this->push($lineItem);

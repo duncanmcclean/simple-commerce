@@ -85,13 +85,6 @@ class Stripe extends PaymentGateway
         ];
     }
 
-    public function afterRecalculating(Cart $cart): void
-    {
-        if ($cart->get('stripe_payment_intent')) {
-            $this->setup($cart);
-        }
-    }
-
     public function process(Order $order): void
     {
         PaymentIntent::update($order->get('stripe_payment_intent'), [

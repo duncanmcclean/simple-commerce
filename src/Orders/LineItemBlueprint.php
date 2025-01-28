@@ -14,6 +14,8 @@ class LineItemBlueprint
             'variant' => ['type' => 'text'],
             'quantity' => ['type' => 'integer'],
             'unit_price' => ['type' => 'money', 'save_zero_value' => true],
+            'sub_total' => ['type' => 'money', 'save_zero_value' => true],
+            'tax_total' => ['type' => 'money', 'save_zero_value' => true],
             'total' => ['type' => 'money', 'save_zero_value' => true],
         ])->setHandle('line_item');
     }

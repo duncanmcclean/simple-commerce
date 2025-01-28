@@ -2,9 +2,9 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
+use DuncanMcClean\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use Statamic\Data\AbstractAugmented;
 use Statamic\Fields\Value;
-use Statamic\Support\Arr;
 use Statamic\Support\Str;
 
 class AugmentedLineItem extends AbstractAugmented
@@ -35,7 +35,7 @@ class AugmentedLineItem extends AbstractAugmented
     {
         // These fields have methods on the LineItem class. However, we don't want to call those methods,
         // we want to use the underlying properties.
-        if (in_array($handle, ['product', 'quantity', 'unit_price', 'total', 'tax_total'])) {
+        if (in_array($handle, ['product', 'quantity', 'unit_price', 'sub_total', 'tax_total', 'total'])) {
             $value = new Value(
                 fn () => $this->data->{Str::camel($handle)},
                 $handle,

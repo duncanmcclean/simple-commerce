@@ -35,6 +35,7 @@ class OrderReceiptFieldtype extends Fieldtype
                 ] : null,
                 'unit_price' => Money::format($lineItem->unitPrice(), Site::selected()),
                 'quantity' => $lineItem->quantity(),
+                'sub_total' => Money::format($lineItem->subTotal(), Site::selected()),
                 'total' => Money::format($lineItem->total(), Site::selected()),
             ])->all(),
             'coupon' => $order->coupon() ? [

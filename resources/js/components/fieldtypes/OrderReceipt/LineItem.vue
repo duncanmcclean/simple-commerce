@@ -10,7 +10,7 @@
         </div>
         <div>{{ lineItem.unit_price }}</div>
         <div>{{ lineItem.quantity }}</div>
-        <div>{{ lineItem.total }}</div>
+        <div>{{ lineItem.sub_total }}</div>
 
         <inline-edit-form
             v-if="isEditing"

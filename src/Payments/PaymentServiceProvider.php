@@ -2,9 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Payments;
 
-use DuncanMcClean\SimpleCommerce\Events\CartRecalculated;
-use DuncanMcClean\SimpleCommerce\Facades\PaymentGateway;
-use Illuminate\Support\Facades\Event;
 use Statamic\Providers\AddonServiceProvider;
 
 class PaymentServiceProvider extends AddonServiceProvider
@@ -20,13 +17,5 @@ class PaymentServiceProvider extends AddonServiceProvider
         foreach ($this->paymentGateways as $paymentGateway) {
             $paymentGateway::register();
         }
-
-        Event::listen(CartRecalculated::class, function ($event) {
-            if ($event->cart->isFree()) {
-                return;
-            }
-
-            PaymentGateway::all()->each(fn ($gateway) => $gateway->afterRecalculating($event->cart));
-        });
     }
 }

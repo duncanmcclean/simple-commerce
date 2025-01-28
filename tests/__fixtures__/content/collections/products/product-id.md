@@ -1,5 +1,5 @@
 ---
 id: product-id
 blueprint: product
-price: 1000
+price: 500
 ---

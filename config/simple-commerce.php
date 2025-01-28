@@ -26,7 +26,7 @@ return [
             Calculator\ApplyCouponDiscounts::class,
             Calculator\ApplyShipping::class,
             Calculator\CalculateTaxes::class,
-            Calculator\CalculateGrandTotal::class,
+            Calculator\CalculateTotals::class,
         ],
     ],
 
@@ -59,17 +59,17 @@ return [
             'dummy' => [
                 //
             ],
-
-            'stripe' => [
-                'key' => env('STRIPE_KEY'),
-                'secret' => env('STRIPE_SECRET'),
-                'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
-            ],
-
-//            'mollie' => [
-//                'api_key' => env('MOLLIE_KEY'),
-//                'profile_id' => env('MOLLIE_PROFILE_ID'),
+//
+//            'stripe' => [
+//                'key' => env('STRIPE_KEY'),
+//                'secret' => env('STRIPE_SECRET'),
+//                'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
 //            ],
+
+            'mollie' => [
+                'api_key' => env('MOLLIE_KEY'),
+                'profile_id' => env('MOLLIE_PROFILE_ID'),
+            ],
         ],
     ],
 

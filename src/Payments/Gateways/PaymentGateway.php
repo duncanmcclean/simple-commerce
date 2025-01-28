@@ -18,11 +18,6 @@ abstract class PaymentGateway
 
     abstract public function setup(Cart $cart): array;
 
-    public function afterRecalculating(Cart $cart): void
-    {
-        //
-    }
-
     abstract public function process(Order $order): void;
 
     abstract public function capture(Order $order): void;

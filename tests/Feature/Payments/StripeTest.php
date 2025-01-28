@@ -102,25 +102,6 @@ class StripeTest extends TestCase
     }
 
     #[Test]
-    public function payment_intent_amount_is_updated_after_totals_are_recalculated()
-    {
-        $stripePaymentIntent = PaymentIntent::create(['amount' => 1000, 'currency' => 'gbp']);
-
-        $cart = $this->makeCartWithGuestCustomer();
-        $cart->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
-
-        $cart->grandTotal(2000)->saveWithoutRecalculating();
-
-        (new Stripe)->afterRecalculating($cart);
-
-        $cart->fresh();
-        $this->assertEquals($stripePaymentIntent->id, $cart->get('stripe_payment_intent'));
-
-        $stripePaymentIntent = PaymentIntent::retrieve($cart->get('stripe_payment_intent'));
-        $this->assertEquals(2000, $stripePaymentIntent->amount);
-    }
-
-    #[Test]
     public function it_can_process_a_payment()
     {
         $stripePaymentIntent = PaymentIntent::create(['amount' => 1000, 'currency' => 'gbp']);
