@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce;
 
 use DuncanMcClean\SimpleCommerce\Events\CartRecalculated;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Jobs\PurgeAbandonedCarts;
 use DuncanMcClean\SimpleCommerce\Payments\Gateways\Stripe;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Query\CouponQueryBuilder;
@@ -11,6 +12,7 @@ use DuncanMcClean\SimpleCommerce\Stache\Query\OrderQueryBuilder;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CartsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\CouponsStore;
 use DuncanMcClean\SimpleCommerce\Stache\Stores\OrdersStore;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Event;
 use Statamic\Facades\Blueprint;
 use Statamic\Facades\CP\Nav;
@@ -88,6 +90,8 @@ class ServiceProvider extends AddonServiceProvider
         }
 
         $this->app->bind(Contracts\Taxes\Driver::class, Taxes\DefaultTaxDriver::class);
+
+        $this->app->make(Schedule::class)->job(PurgeAbandonedCarts::class)->daily();
 
         Nav::extend(function ($nav) {
             $nav->create(__('Orders'))
