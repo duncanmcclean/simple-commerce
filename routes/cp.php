@@ -1,8 +1,8 @@
 <?php
 
-use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\ConvertGuestToUserController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons\CouponActionController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons\CouponController;
+use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Fieldtypes\ConvertGuestCustomerController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Fieldtypes\StateFieldtypeController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\DownloadPackingSlipController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Orders\OrderActionController;
@@ -35,7 +35,6 @@ Route::name('simple-commerce.')->group(function () {
 
     Route::prefix('fieldtypes')->name('fieldtypes.')->group(function () {
         Route::get('states', StateFieldtypeController::class)->name('states');
+        Route::post('convert-guest-customer', ConvertGuestCustomerController::class)->name('convert-guest-customer');
     });
-
-    Route::post('convert-guest-to-user', ConvertGuestToUserController::class)->name('convert-guest-to-user');
 });

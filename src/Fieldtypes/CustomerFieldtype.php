@@ -20,7 +20,7 @@ class CustomerFieldtype extends Fieldtype
         return [
             'user' => $userField->meta(),
             'canCreateUsers' => Statamic::pro() && (User::current()->isSuper() || User::current()->hasPermission('create users')),
-            'convertGuestToUserUrl' => cp_route('simple-commerce.convert-guest-to-user'),
+            'convertGuestToUserUrl' => cp_route('simple-commerce.fieldtypes.convert-guest-customer'),
         ];
     }
 

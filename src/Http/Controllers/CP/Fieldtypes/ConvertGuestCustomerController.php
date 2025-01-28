@@ -1,6 +1,6 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
+namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Fieldtypes;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Fieldtypes\CustomerFieldtype;
@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
 use Statamic\Facades\User;
 use Statamic\Http\Controllers\CP\CpController;
 
-class ConvertGuestToUserController extends CpController
+class ConvertGuestCustomerController extends CpController
 {
     public function __invoke(Request $request)
     {
