@@ -35,7 +35,6 @@
         "mollie/mollie-api-php": "^2.73.0",
         "moneyphp/money": "^4.5",
         "pixelfear/composer-dist-plugin": "^0.1.0",
-        "spatie/ignition": "^1.13",
         "statamic/cms": "^5.41",
         "stillat/proteus": "^4.0",
         "stripe/stripe-php": "^16.4"
