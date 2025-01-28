@@ -28,6 +28,12 @@ class StripeTest extends TestCase
     {
         parent::setUp();
 
+        config()->set('statamic.simple-commerce.payments.gateways', ['stripe' => [
+            'key' => env('STRIPE_KEY'),
+            'secret' => env('STRIPE_SECRET'),
+            'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+        ]]);
+
         \Stripe\Stripe::setApiKey(config('statamic.simple-commerce.payments.gateways.stripe.secret'));
     }
 
