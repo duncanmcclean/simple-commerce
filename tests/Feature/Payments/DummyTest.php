@@ -20,7 +20,7 @@ class DummyTest extends TestCase
 
         (new Dummy)->process($order);
 
-        $this->assertEquals('dummy', $order->fresh()->get('payment_gateway'));
+        $this->assertEquals('payment_received', $order->fresh()->status()->value);
     }
 
     #[Test]

@@ -6,7 +6,7 @@ use DuncanMcClean\SimpleCommerce\Facades\PaymentGateway;
 use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use Statamic\Fieldtypes\Relationship;
 
-class ShippingMethodFieldtype extends Relationship
+class PaymentGatewayFieldtype extends Relationship
 {
     protected $selectable = false;
     protected $indexComponent = null;
@@ -23,31 +23,31 @@ class ShippingMethodFieldtype extends Relationship
 
     public function augment($values)
     {
-        if ($this->config('max_items') === 1) {
-            $shippingMethod = ShippingMethod::find($values);
-
-            return [
-                'name' => $shippingMethod->name(),
-                'handle' => $shippingMethod->handle(),
-            ];
-        }
-
-        return collect($values)->map(function (string $handle) {
-            $shippingMethod = ShippingMethod::find($handle);
-
-            return [
-                'name' => $shippingMethod->name(),
-                'handle' => $shippingMethod->handle(),
-            ];
-        })->filter()->all();
+//        if ($this->config('max_items') === 1) {
+//            $shippingMethod = ShippingMethod::find($values);
+//
+//            return [
+//                'name' => $shippingMethod->name(),
+//                'handle' => $shippingMethod->handle(),
+//            ];
+//        }
+//
+//        return collect($values)->map(function (string $handle) {
+//            $shippingMethod = ShippingMethod::find($handle);
+//
+//            return [
+//                'name' => $shippingMethod->name(),
+//                'handle' => $shippingMethod->handle(),
+//            ];
+//        })->filter()->all();
     }
 
     public function preProcessIndex($data)
     {
         return collect($data)->map(function ($item) {
-            $shippingMethod = ShippingMethod::find($item);
+            $paymentGateway = PaymentGateway::find($item);
 
-            return $shippingMethod->name();
+            return $paymentGateway->title();
         })->implode(', ');
     }
 

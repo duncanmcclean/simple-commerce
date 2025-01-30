@@ -4,14 +4,20 @@ namespace DuncanMcClean\SimpleCommerce\Payments\Gateways;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
+use DuncanMcClean\SimpleCommerce\Facades;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Mollie\Api\MollieApiClient;
+use Mollie\Api\Types\PaymentStatus;
+use Statamic\Contracts\Auth\User;
 use Statamic\Sites\Site;
 use Statamic\Statamic;
 use Statamic\Support\Arr;
@@ -38,21 +44,35 @@ class Mollie extends PaymentGateway
 
     public function setup(Cart $cart): array
     {
-        // todo: ensure the existing payment has the correct totals, if not, they should be updated.
-//        if ($cart->get('mollie_payment_id')) {
-//            $payment = $this->mollie->payments->get($cart->get('mollie_payment_id'));
-//
-//            return ['checkout_url' => $payment->getCheckoutUrl()];
-//        }
+        if ($cart->get('mollie_payment_id')) {
+            $payment = $this->mollie->payments->get($cart->get('mollie_payment_id'));
 
-//        dd($cart);
-//
+            if ($payment->metadata->cart_fingerprint === $cart->fingerprint()) {
+                return ['checkout_url' => $payment->getCheckoutUrl()];
+            }
+
+            $this->mollie->payments->update($payment->id, ['description' => __('Outdated payment')]);
+        }
+
+        $mollieCustomerId = $cart->customer()?->get('mollie_customer_id');
+
+        if (! $mollieCustomerId && $cart->customer() instanceof User) {
+            $customer = $this->mollie->customers->create([
+                'name' => $cart->customer()->name(),
+                'email' => $cart->customer()->email(),
+            ]);
+
+            $mollieCustomerId = $customer->id;
+
+            $cart->customer()->set('mollie_customer_id', $mollieCustomerId)->save();
+        }
 
         $payment = $this->mollie->payments->create([
-            'description' => "Pending Order: {$cart->id()}",
+            'description' => config('app.name'),
             'amount' => $this->formatAmount(site: $cart->site(), amount: $cart->grandTotal()),
             'redirectUrl' => $this->checkoutUrl(),
-            //            'webhookUrl' => $this->webhookUrl(),
+            'cancelUrl' => route(config('statamic.simple-commerce.routes.checkout')),
+            'webhookUrl' => $this->webhookUrl(),
             'lines' => $cart->lineItems()
                 ->map(function (LineItem $lineItem) use ($cart) {
                     // Mollie expects the unit price to include taxes. However, we only apply taxes to the line item total.
@@ -102,8 +122,9 @@ class Mollie extends PaymentGateway
             'locale' => $cart->site()->locale(),
             'metadata' => [
                 'cart_id' => $cart->id(),
+                'cart_fingerprint' => $cart->fingerprint(),
             ],
-            // todo: customer
+            'customerId' => $mollieCustomerId,
         ]);
 
         $cart->set('mollie_payment_id', $payment->id)->save();
@@ -113,10 +134,19 @@ class Mollie extends PaymentGateway
 
     public function process(Order $order): void
     {
-        $order->set('payment_gateway', static::handle())->save();
+        $payment = $this->mollie->payments->get($order->get('mollie_payment_id'));
 
-        // todo: update payment description to make it more useful
-        // todo: add order info to payment metadata
+        if ($payment->status === PaymentStatus::STATUS_CANCELED) {
+            throw new PreventCheckout(__('Payment was cancelled.'));
+        }
+
+        $this->mollie->payments->update($payment->id, [
+            'description' => __('Order #:orderNumber', ['orderNumber' => $order->orderNumber()]),
+            'metadata' => array_merge((array) $payment->metadata, [
+                'order_id' => $order->id(),
+                'order_number' => $order->orderNumber(),
+            ]),
+        ]);
     }
 
     public function capture(Order $order): void
@@ -126,23 +156,51 @@ class Mollie extends PaymentGateway
 
     public function cancel(Cart $cart): void
     {
-        // todo: check if the payment CAN be cancelled. if so, cancel it.
-        // todo: if it can't be cancelled, refund it.
+        $payment = $this->mollie->payments->get($cart->get('mollie_payment_id'));
+
+        $payment->isCancelable
+            ? $this->mollie->payments->cancel($payment->id)
+            : $this->refund($cart->order(), $cart->order()->grandTotal());
     }
 
     public function webhook(Request $request): Response
     {
-        // todo: verify webhook signature
-        // todo: handle webhook events (update statuses)
+        $payment = $this->mollie->payments->get($request->id);
+
+        if ($payment->status === PaymentStatus::STATUS_CANCELED) {
+            $order = Facades\Order::query()->where('mollie_payment_id', $payment->id)->first();
+            $order?->delete();
+        }
+
+        if ($payment->status === PaymentStatus::STATUS_PAID) {
+            $order = Facades\Order::query()->where('mollie_payment_id', $payment->id)->first();
+            $order?->status(OrderStatus::PaymentReceived)->save();
+        }
+
+        if ($payment->amountRefunded) {
+            $order = Facades\Order::query()->where('mollie_payment_id', $payment->id)->first();
+            $order?->set('amount_refunded', (int) str_replace('.', '', $payment->amountRefunded->value))->save();
+        }
+
+        return response('Webhook received', 200);
     }
 
     public function refund(Order $order, int $amount): void
     {
-        // todo: refund the payment
+        $payment = $this->mollie->payments->get($order->get('mollie_payment_id'));
+
+        $this->mollie->payments->refund($payment, [
+            'amount' => $this->formatAmount(site: $order->site(), amount: $amount),
+        ]);
     }
 
-    // todo: logo
-    // todo: fieldtype details
+    public function fieldtypeDetails(Order $order): array
+    {
+        return [
+            __('Payment ID') => $order->get('mollie_payment_id'),
+            __('Amount') => Money::format($order->grandTotal(), $order->site()),
+        ];
+    }
 
     private function formatAmount(Site $site, int $amount): array
     {

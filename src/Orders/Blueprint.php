@@ -164,6 +164,10 @@ class Blueprint
                                     'field' => ['type' => 'coupon', 'display' => __('Coupon'), 'visibility' => 'hidden', 'listable' => 'hidden', 'max_items' => 1],
                                 ],
                                 [
+                                    'handle' => 'payment_gateway',
+                                    'field' => ['type' => 'payment_gateway', 'display' => __('Payment Gateway'), 'visibility' => 'hidden', 'listable' => 'hidden', 'max_items' => 1],
+                                ],
+                                [
                                     'handle' => 'shipping_method',
                                     'field' => ['type' => 'shipping_method', 'display' => __('Shipping Method'), 'visibility' => 'hidden', 'listable' => 'hidden', 'max_items' => 1],
                                 ],

@@ -11,8 +11,8 @@
                         <div class="font-semibold text-md">{{ value.title }}</div>
                     </div>
 
-                    <div class="mt-5">
-                        <ul class="list-none text-xs space-y-3">
+                    <div v-if="value.details" :class="{ 'mt-3': !value.logo, 'mt-5': value.logo }">
+                        <ul class="list-none text-xs space-y-2">
                             <li v-for="(value, label) in value.details" :key="label">
                                 <span class="font-semibold mr-1">{{ label }}:</span>
                                 <span v-html="value"></span>
