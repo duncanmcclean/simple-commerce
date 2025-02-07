@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.7.0 (2025-02-07)
+
+### What's new
+* Updated stubs for Runway 8 #1199 by @duncanmcclean
+
+
+
 ## v7.6.3 (2025-01-14)
 
 ### What's fixed
