@@ -23,6 +23,7 @@ return [
             'handle' => 'orders',
             'hidden' => true,
             'read_only' => true,
+            'nested_field_prefixes' => ['data'],
         ],
     ],
 
