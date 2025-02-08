@@ -23,7 +23,7 @@ class MollieTest extends TestCase
 {
     use PreventsSavingStacheItemsToDisk;
 
-    private $mollie;
+    private MollieApiClient $mollie;
 
     protected function setUp(): void
     {
