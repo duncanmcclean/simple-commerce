@@ -52,6 +52,9 @@ class OrderReceiptFieldtype extends Fieldtype
                     'amount' => Money::format($tax['amount'], Site::selected()),
                 ])->all(),
             ] : null,
+            'refund' => [
+                'issued' => $order->get('amount_refunded', 0) > 0,
+            ],
             'totals' => [
                 'sub_total' => Money::format($order->subTotal(), Site::selected()),
                 'discount_total' => Money::format($order->discountTotal(), Site::selected()),

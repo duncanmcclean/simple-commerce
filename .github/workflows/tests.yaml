@@ -25,6 +25,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v1
 
+      - name: Get changed files (Payments)
+        id: changed-files-payments
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            src/Payments
+            src/Http/Controllers/Payments
+            tests/Feature/Payments
+            composer.json
+            .github/workflows/tests.yaml
+
+      - name: Determine whether payment tests should run
+        id: should-run-payment-tests
+        if: steps.changed-files-payments.outputs.any_modified == 'true' || github.event_name == 'schedule'
+        run: |
+          echo "result=true" >> $GITHUB_OUTPUT
+          echo "result=true" >> $env:GITHUB_OUTPUT
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -35,24 +53,6 @@ jobs:
         run: |
           composer require "illuminate/contracts:${{ matrix.laravel }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
-
-      - name: Get changed files (Payments)
-        id: changed-files-payments
-        uses: tj-actions/changed-files@v44
-        with:
-          files: |
-            src/Payments
-            src/Http/Controllers/Payments
-            tests/Feature/Payments
-            composer.json
-            .github/workflows/tests.yml
-
-      - name: Determine whether payment tests should run
-        id: should-run-payment-tests
-        if: steps.changed-files-payments.outputs.any_modified == 'true' || github.event_name == 'schedule'
-        run: |
-          echo "result=true" >> $GITHUB_OUTPUT
-          echo "result=true" >> $env:GITHUB_OUTPUT
 
       - name: Execute tests
         run: vendor/bin/phpunit --exclude-group=payments

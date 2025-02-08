@@ -44,7 +44,7 @@
                 <div>{{ __('Grand Total') }}</div>
                 <div>{{ receipt.totals.grand_total }}</div>
             </div>
-            <div class="receipt-total">
+            <div v-if="receipt.refund.issued" class="receipt-total">
                 <div>{{ __('Refund') }}</div>
                 <div>-{{ receipt.totals.amount_refunded }}</div>
             </div>
