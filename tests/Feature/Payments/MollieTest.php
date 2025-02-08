@@ -38,6 +38,14 @@ class MollieTest extends TestCase
         $this->mollie->setApiKey(env('MOLLIE_KEY'));
     }
 
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // Mollie enforces strict rate limits, so we need to sleep between tests to avoid hitting them.
+        sleep(1);
+    }
+
     #[Test]
     public function it_can_setup_a_payment()
     {
