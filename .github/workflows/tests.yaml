@@ -44,9 +44,9 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           files: |
-            src/Payments
-            src/Http/Controllers/Payments
-            tests/Feature/Payments
+            src/Payments/*
+            src/Http/Controllers/Payments/*
+            tests/Feature/Payments/*
             composer.json
             .github/workflows/tests.yml
 
