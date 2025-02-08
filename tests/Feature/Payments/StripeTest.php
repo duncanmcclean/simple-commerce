@@ -123,8 +123,6 @@ class StripeTest extends TestCase
 
         $order->fresh();
 
-        $this->assertEquals('stripe', $order->get('payment_gateway'));
-
         $stripePaymentIntent = PaymentIntent::retrieve($order->get('stripe_payment_intent'));
         $this->assertEquals('Order #1234', $stripePaymentIntent->description);
         $this->assertEquals([

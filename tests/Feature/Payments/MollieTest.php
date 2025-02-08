@@ -7,8 +7,8 @@ use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Payments\Gateways\Mollie;
-use DuncanMcClean\SimpleCommerce\Payments\Gateways\Stripe;
-use Illuminate\Support\Facades\Config;
+use Exception;
+use Mockery;
 use Mollie\Api\MollieApiClient;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,9 +16,6 @@ use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
-use Stripe\Charge;
-use Stripe\Customer;
-use Stripe\PaymentIntent;
 use Tests\TestCase;
 
 #[Group('payments')]
@@ -56,302 +53,358 @@ class MollieTest extends TestCase
 
         $payment = $this->mollie->payments->get($cart->get('mollie_payment_id'));
 
-        $this->assertEquals("Pending Order: {$cart->id()}", $payment->description);
+        $this->assertEquals(config('app.name'), $payment->description);
         $this->assertEquals('10.00', $payment->amount->value);
         $this->assertEquals($cart->id(), $payment->metadata->cart_id);
-
-        // todo: get the vatAmount validation passing
 
         $this->assertEquals([
             [
                 'description' => 'Foobar',
                 'type' => 'physical',
                 'quantity' => 1,
-                'unitPrice' => ['value' => '8.33', 'currency' => 'GBP'],
-                'vatRate' => 20,
+                'unitPrice' => ['value' => '10.00', 'currency' => 'GBP'],
+                'vatRate' => '20.00',
                 'vatAmount' => ['value' => '1.67', 'currency' => 'GBP'],
                 'totalAmount' => ['value' => '10.00', 'currency' => 'GBP'],
-                'productUrl' => null,
             ],
         ], json_decode(json_encode($payment->lines), true));
+    }
 
-        // todo: test that the address is included
-        // todo: test that taxes work
-        // todo: test that discounts work
-        // todo: ensure that shipping adds a new line item
+    #[Test]
+    public function it_can_setup_a_payment_when_prices_exclude_tax()
+    {
+        config()->set('statamic.simple-commerce.taxes.price_includes_tax', false);
+
+        $cart = $this->makeCartWithGuestCustomer()
+            ->grandTotal(1200)
+            ->lineItems([
+                [
+                    'product' => 'product-id',
+                    'quantity' => 1,
+                    'unit_price' => 1000,
+                    'sub_total' => 1000,
+                    'tax_total' => 200,
+                    'tax_breakdown' => [['rate' => 20, 'amount' => 200]],
+                    'total' => 1200,
+                ],
+            ]);
+
+        $cart->saveWithoutRecalculating();
+
+        (new Mollie)->setup($cart);
+
+        $payment = $this->mollie->payments->get($cart->fresh()->get('mollie_payment_id'));
+
+        $this->assertEquals([
+            [
+                'description' => 'Foobar',
+                'type' => 'physical',
+                'quantity' => 1,
+                'unitPrice' => ['value' => '12.00', 'currency' => 'GBP'],
+                'vatRate' => '20.00',
+                'vatAmount' => ['value' => '2.00', 'currency' => 'GBP'],
+                'totalAmount' => ['value' => '12.00', 'currency' => 'GBP'],
+            ],
+        ], json_decode(json_encode($payment->lines), true));
+    }
+
+    #[Test]
+    public function it_can_setup_a_payment_with_discounted_line()
+    {
+        $cart = $this->makeCartWithGuestCustomer()
+            ->grandTotal(900)
+            ->lineItems([
+                [
+                    'product' => 'product-id',
+                    'quantity' => 1,
+                    'discount_amount' => 100,
+                    'unit_price' => 1000,
+                    'sub_total' => 1000,
+                    'tax_total' => 150,
+                    'tax_breakdown' => [['rate' => 20, 'amount' => 150]],
+                    'total' => 900,
+                ],
+            ]);
+
+        $cart->saveWithoutRecalculating();
+
+        (new Mollie)->setup($cart);
+
+        $payment = $this->mollie->payments->get($cart->fresh()->get('mollie_payment_id'));
+
+        $this->assertEquals([
+            [
+                'description' => 'Foobar',
+                'type' => 'physical',
+                'quantity' => 1,
+                'unitPrice' => ['value' => '10.00', 'currency' => 'GBP'],
+                'vatRate' => '20.00',
+                'vatAmount' => ['value' => '1.50', 'currency' => 'GBP'],
+                'discountAmount' => ['value' => '1.00', 'currency' => 'GBP'],
+                'totalAmount' => ['value' => '9.00', 'currency' => 'GBP'],
+            ],
+        ], json_decode(json_encode($payment->lines), true));
+    }
+
+    #[Test]
+    public function selected_shipping_option_is_added_as_a_payment_line()
+    {
+        $cart = $this->makeCartWithGuestCustomer();
+        $cart->merge(['shipping_method' => 'free_shipping', 'shipping_option' => 'free_shipping'])->save();
+
+        (new Mollie)->setup($cart);
+
+        $payment = $this->mollie->payments->get($cart->fresh()->get('mollie_payment_id'));
+
+        $this->assertEquals([
+            'description' => 'Free Shipping',
+            'type' => 'shipping_fee',
+            'quantity' => 1,
+            'unitPrice' => ['value' => '0.00', 'currency' => 'GBP'],
+            'vatRate' => '0.00',
+            'vatAmount' => ['value' => '0.00', 'currency' => 'GBP'],
+            'totalAmount' => ['value' => '0.00', 'currency' => 'GBP'],
+        ], json_decode(json_encode($payment->lines), true)[1]);
+    }
+
+    #[Test]
+    public function addresses_are_added_to_payments()
+    {
+        $cart = $this->makeCartWithGuestCustomer();
+
+        $cart->data([
+            'shipping_line_1' => '123 Fake St',
+            'shipping_city' => 'Fakeville',
+            'shipping_postcode' => 'FA 1234',
+            'shipping_country' => 'USA',
+            'shipping_state' => 'CA',
+            'billing_line_1' => '123 Fake Road',
+            'billing_city' => 'Faketown',
+            'billing_postcode' => 'FA 5678',
+            'billing_country' => 'USA',
+            'billing_state' => 'CA',
+        ])->save();
+
+        (new Mollie)->setup($cart);
+
+        $payment = $this->mollie->payments->get($cart->fresh()->get('mollie_payment_id'));
+
+        $this->assertEquals([
+            'streetAndNumber' => '123 Fake Road',
+            'postalCode' => 'FA 5678',
+            'city' => 'Faketown',
+            'country' => 'US',
+        ], (array) $payment->billingAddress);
+
+        $this->assertEquals([
+            'streetAndNumber' => '123 Fake St',
+            'postalCode' => 'FA 1234',
+            'city' => 'Fakeville',
+            'country' => 'US',
+        ], (array) $payment->shippingAddress);
     }
 
     #[Test]
     public function it_can_setup_a_payment_for_a_new_customer()
     {
-        $this->markTestIncomplete();
-
         [$cart, $user] = $this->makeCartAndUser();
 
-        (new Stripe)->setup($cart);
+        (new Mollie)->setup($cart);
 
         $user = $user->fresh();
-        $this->assertNotNull($user->get('stripe_customer_id'));
+        $this->assertNotNull($user->get('mollie_customer_id'));
 
-        $stripeCustomer = Customer::retrieve($user->get('stripe_customer_id'));
+        $mollieCustomer = $this->mollie->customers->get($user->get('mollie_customer_id'));
 
-        $this->assertEquals('David Hasselhoff', $stripeCustomer->name);
-        $this->assertEquals('david@hasselhoff.com', $stripeCustomer->email);
+        $this->assertEquals('David Hasselhoff', $mollieCustomer->name);
+        $this->assertEquals('david@hasselhoff.com', $mollieCustomer->email);
     }
 
     #[Test]
     public function it_can_setup_a_payment_for_an_existing_customer()
     {
-        $this->markTestIncomplete();
-
-        $stripeCustomer = Customer::create([
+        $mollieCustomer = $this->mollie->customers->create([
             'name' => 'David Hasselhoff',
             'email' => 'david@hasselhoff.com',
         ]);
 
         [$cart, $user] = $this->makeCartAndUser();
-        $user->set('stripe_customer_id', $stripeCustomer->id)->save();
+        $user->set('mollie_customer_id', $mollieCustomer->id)->save();
 
-        (new Stripe)->setup($cart);
+        (new Mollie)->setup($cart);
 
         $user = $user->fresh();
-        $this->assertEquals($stripeCustomer->id, $user->get('stripe_customer_id'));
+        $this->assertEquals($mollieCustomer->id, $user->get('mollie_customer_id'));
     }
 
     #[Test]
-    public function setup_returns_existing_payment_intent_if_one_exists()
+    public function setup_returns_existing_payment_if_one_exists()
     {
-        $this->markTestIncomplete();
-
-        $stripePaymentIntent = PaymentIntent::create(['amount' => 1000, 'currency' => 'gbp']);
+        $molliePayment = $this->mollie->payments->create([
+            'description' => 'Test payment',
+            'amount' => ['currency' => 'GBP', 'value' => '10.00'],
+            'redirectUrl' => 'https://example.com/redirect',
+            'metadata' => ['cart_fingerprint' => 'original'],
+        ]);
 
         $cart = $this->makeCartWithGuestCustomer();
-        $cart->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
+        $cart->set('mollie_payment_id', $molliePayment->id)->save();
 
-        $setup = (new Stripe)->setup($cart);
+        $mock = Mockery::mock($cart);
+        $mock->shouldReceive('fingerprint')->andReturn('original');
 
-        $this->assertEquals($stripePaymentIntent->client_secret, $setup['client_secret']);
+        $setup = (new Mollie)->setup($mock);
 
-        $cart->fresh();
+        $this->assertEquals($molliePayment->getCheckoutUrl(), $setup['checkout_url']);
+        $this->assertEquals($molliePayment->id, $cart->fresh()->get('mollie_payment_id'));
+    }
 
-        $this->assertEquals($stripePaymentIntent->id, $cart->get('stripe_payment_intent'));
+    #[Test]
+    public function setup_returns_new_payment_when_cart_fingerprint_has_changed()
+    {
+        $originalPayment = $this->mollie->payments->create([
+            'description' => 'Test payment',
+            'amount' => ['currency' => 'GBP', 'value' => '10.00'],
+            'redirectUrl' => 'https://example.com/redirect',
+            'metadata' => ['cart_fingerprint' => 'original'],
+        ]);
+
+        $cart = $this->makeCartWithGuestCustomer();
+        $cart->set('mollie_payment_id', $originalPayment->id)->save();
+
+        $mock = Mockery::mock($cart);
+        $mock->shouldReceive('fingerprint')->andReturn('changed');
+
+        (new Mollie)->setup($mock);
+
+        $this->assertNotEquals($originalPayment->id, $cart->fresh()->get('mollie_payment_id'));
+
+        $originalPayment = $this->mollie->payments->get($originalPayment->id);
+        $this->assertEquals('Outdated payment', $originalPayment->description);
     }
 
     #[Test]
     public function it_can_process_a_payment()
     {
-        $this->markTestIncomplete();
-
-        $stripePaymentIntent = PaymentIntent::create(['amount' => 1000, 'currency' => 'gbp']);
+        $molliePayment = $this->mollie->payments->create([
+            'description' => 'Test payment',
+            'amount' => ['currency' => 'GBP', 'value' => '10.00'],
+            'redirectUrl' => 'https://example.com/redirect',
+            'metadata' => ['cart_id' => 'foo', 'cart_fingerprint' => 'original'],
+        ]);
 
         $order = $this->makeOrder();
 
         $order
             ->orderNumber(1234)
-            ->set('stripe_payment_intent', $stripePaymentIntent->id)
+            ->set('mollie_payment_id', $molliePayment->id)
             ->save();
 
-        (new Stripe)->process($order);
+        (new Mollie)->process($order);
 
         $order->fresh();
 
-        $this->assertEquals('stripe', $order->get('payment_gateway'));
-
-        $stripePaymentIntent = PaymentIntent::retrieve($order->get('stripe_payment_intent'));
-        $this->assertEquals('Order #1234', $stripePaymentIntent->description);
+        $molliePayment = $this->mollie->payments->get($order->get('mollie_payment_id'));
+        $this->assertEquals('Order #1234', $molliePayment->description);
         $this->assertEquals([
+            'cart_id' => 'foo',
+            'cart_fingerprint' => 'original',
             'order_id' => $order->id(),
             'order_number' => $order->orderNumber(),
-        ], $stripePaymentIntent->metadata->toArray());
+        ], (array) $molliePayment->metadata);
     }
 
     #[Test]
-    public function it_can_capture_a_payment()
+    public function it_cant_capture_a_payment()
     {
-        $this->markTestIncomplete();
-
-        $stripePaymentIntent = PaymentIntent::create([
-            'amount' => 1000,
-            'currency' => 'gbp',
-            'payment_method_types' => ['card'],
-            'capture_method' => 'manual',
-        ]);
-
-        $stripePaymentIntent->confirm(['payment_method' => 'pm_card_visa']);
-
         $order = $this->makeOrder();
-        $order->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
 
-        (new Stripe)->capture($order);
+        $this->expectException(Exception::class);
 
-        $stripePaymentIntent = PaymentIntent::retrieve($order->get('stripe_payment_intent'));
-        $this->assertEquals('succeeded', $stripePaymentIntent->status);
-
-        $order->fresh();
-        $this->assertEquals('payment_received', $order->status()->value);
+        (new Mollie)->capture($order);
     }
 
     #[Test]
     public function it_can_cancel_a_payment()
     {
+        // TODO: Figure out how to create a "paid" payment in Mollie in order to test this.
         $this->markTestIncomplete();
-
-        $stripePaymentIntent = PaymentIntent::create(['amount' => 1000, 'currency' => 'gbp']);
-
-        $cart = $this->makeCartWithGuestCustomer();
-        $cart->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
-
-        (new Stripe)->cancel($cart);
-
-        $cart->fresh();
-        $this->assertFalse($cart->has('stripe_payment_intent'));
-
-        $stripePaymentIntent = PaymentIntent::retrieve($stripePaymentIntent->id);
-        $this->assertEquals('canceled', $stripePaymentIntent->status);
     }
 
     #[Test]
-    public function it_verifies_the_webhook_signature()
+    public function it_receives_a_webhook_with_cancelled_payment()
     {
+        // TODO: Figure out how to create a "cancelled" payment in Mollie in order to test this.
         $this->markTestIncomplete();
 
-        Config::set('statamic.simple-commerce.payments.gateways.stripe.webhook_secret', 'whsec_test_secret');
-
-        $this
-            ->post(uri: '/!/simple-commerce/payments/stripe/webhook', headers: [
-                'Stripe-Signature' => 'invalid-signature',
-            ])
-            ->assertForbidden();
-    }
-
-    #[Test]
-    public function it_receives_a_payment_intent_amount_capturable_updated_webhook_event()
-    {
-        $this->markTestIncomplete();
-
-        $stripePaymentIntent = PaymentIntent::create([
-            'amount' => 1000,
-            'currency' => 'gbp',
-            'payment_method_types' => ['card'],
-            'capture_method' => 'manual',
+        $molliePayment = $this->mollie->payments->create([
+            'description' => 'Test payment',
+            'amount' => ['currency' => 'GBP', 'value' => '10.00'],
+            'redirectUrl' => 'https://example.com/redirect',
+            'metadata' => ['cart_fingerprint' => 'original'],
         ]);
 
-        $stripePaymentIntent->confirm(['payment_method' => 'pm_card_visa']);
-
         $order = $this->makeOrder();
-        $order->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
+        $order->set('mollie_payment_id', $molliePayment->id)->save();
 
         $this
-            ->post(
-                uri: '/!/simple-commerce/payments/stripe/webhook',
-                data: [
-                    'type' => 'payment_intent.amount_capturable_updated',
-                    'data' => [
-                        'object' => [
-                            'id' => $stripePaymentIntent->id,
-                        ],
-                    ],
-                ]
-            )
+            ->post('/!/simple-commerce/payments/mollie/webhook', ['id' => $molliePayment->id])
             ->assertOk();
 
-        $stripePaymentIntent = PaymentIntent::retrieve($order->get('stripe_payment_intent'));
-        $this->assertEquals('succeeded', $stripePaymentIntent->status);
-
-        $order->fresh();
-        $this->assertEquals('payment_received', $order->status()->value);
+        $this->assertNull(Order::find($order->id()));
     }
 
     #[Test]
-    public function it_receives_a_payment_intent_succeeded_webhook_event()
+    public function it_receives_a_webhook_with_paid_payment()
     {
+        // TODO: Figure out how to create a "paid" payment in Mollie in order to test this.
         $this->markTestIncomplete();
 
-        $stripePaymentIntent = PaymentIntent::create([
-            'amount' => 1000,
-            'currency' => 'gbp',
-            'payment_method_types' => ['card'],
+        $molliePayment = $this->mollie->payments->create([
+            'description' => 'Test payment',
+            'amount' => ['currency' => 'GBP', 'value' => '10.00'],
+            'redirectUrl' => 'https://example.com/redirect',
+            'metadata' => ['cart_fingerprint' => 'original'],
         ]);
 
-        $stripePaymentIntent->confirm(['payment_method' => 'pm_card_visa']);
-
         $order = $this->makeOrder();
-        $order->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
+        $order->set('mollie_payment_id', $molliePayment->id)->save();
 
         $this
-            ->post(
-                uri: '/!/simple-commerce/payments/stripe/webhook',
-                data: [
-                    'type' => 'payment_intent.succeeded',
-                    'data' => [
-                        'object' => [
-                            'id' => $stripePaymentIntent->id,
-                        ],
-                    ],
-                ],
-            )
+            ->post('/!/simple-commerce/payments/mollie/webhook', ['id' => $molliePayment->id])
             ->assertOk();
 
-        $order->fresh();
-        $this->assertEquals('payment_received', $order->status()->value);
+        $this->assertEquals(OrderStatus::PaymentReceived, $order->fresh()->status());
     }
 
     #[Test]
-    public function it_receives_a_charge_refunded_webhook_event()
+    public function it_receives_a_webhook_with_refunded_payment()
     {
+        // TODO: Figure out how to create a "refunded" payment in Mollie in order to test this.
         $this->markTestIncomplete();
 
-        $stripePaymentIntent = PaymentIntent::create([
-            'amount' => 1000,
-            'currency' => 'gbp',
-            'payment_method_types' => ['card'],
+        $molliePayment = $this->mollie->payments->create([
+            'description' => 'Test payment',
+            'amount' => ['currency' => 'GBP', 'value' => '10.00'],
+            'redirectUrl' => 'https://example.com/redirect',
+            'metadata' => ['cart_fingerprint' => 'original'],
         ]);
 
-        $stripePaymentIntent->confirm(['payment_method' => 'pm_card_visa']);
-
         $order = $this->makeOrder();
-        $order->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
+        $order->set('mollie_payment_id', $molliePayment->id)->save();
 
         $this
-            ->post(
-                uri: '/!/simple-commerce/payments/stripe/webhook',
-                data: [
-                    'type' => 'charge.refunded',
-                    'data' => [
-                        'object' => [
-                            'id' => $stripePaymentIntent->latest_charge,
-                            'payment_intent' => $stripePaymentIntent->id,
-                            'amount_refunded' => 750,
-                        ],
-                    ],
-                ],
-            )
+            ->post('/!/simple-commerce/payments/mollie/webhook', ['id' => $molliePayment->id])
             ->assertOk();
 
-        $order->fresh();
-        $this->assertEquals(750, $order->get('amount_refunded'));
+        $this->assertEquals(1000, $order->fresh()->get('amount_refunded'));
     }
 
     #[Test]
     public function it_refunds_a_payment()
     {
+        // TODO: Figure out how to create a "paid" payment in Mollie in order to test this.
         $this->markTestIncomplete();
-
-        $stripePaymentIntent = PaymentIntent::create([
-            'amount' => 1000,
-            'currency' => 'gbp',
-            'payment_method_types' => ['card'],
-        ]);
-
-        $stripePaymentIntent->confirm(['payment_method' => 'pm_card_visa']);
-
-        $order = $this->makeOrder();
-        $order->set('stripe_payment_intent', $stripePaymentIntent->id)->save();
-
-        (new Stripe)->refund($order, 750);
-
-        $charge = Charge::retrieve($stripePaymentIntent->latest_charge);
-        $this->assertEquals(750, $charge->amount_refunded);
     }
 
     private function makeCartWithGuestCustomer()
@@ -360,6 +413,7 @@ class MollieTest extends TestCase
         Entry::make()->id('product-id')->collection('products')->data(['title' => 'Foobar', 'price' => 1000])->save();
 
         $cart = Cart::make()
+            ->grandTotal(1000)
             ->lineItems([
                 [
                     'product' => 'product-id',
@@ -381,7 +435,7 @@ class MollieTest extends TestCase
     private function makeCartAndUser(): array
     {
         Collection::make('products')->save();
-        Entry::make()->id('product-id')->collection('products')->data(['price' => 1000])->save();
+        Entry::make()->id('product-id')->collection('products')->data(['title' => 'Foobar', 'price' => 1000])->save();
 
         $user = User::make()
             ->email('david@hasselhoff.com')
@@ -391,7 +445,15 @@ class MollieTest extends TestCase
 
         $cart = Cart::make()
             ->lineItems([
-                ['product' => 'product-id', 'quantity' => 1, 'total' => 1000],
+                [
+                    'product' => 'product-id',
+                    'quantity' => 1,
+                    'tax_total' => 167,
+                    'tax_breakdown' => [
+                        ['rate' => 20, 'total' => 167],
+                    ],
+                    'total' => 1000,
+                ],
             ])
             ->customer($user);
 

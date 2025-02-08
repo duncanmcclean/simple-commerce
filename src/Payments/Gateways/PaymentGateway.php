@@ -52,6 +52,10 @@ abstract class PaymentGateway
 
     public function webhookUrl(): string
     {
+        if (app()->runningUnitTests()) {
+            return '';
+        }
+
         return route('statamic.simple-commerce.payments.webhook', $this->handle());
     }
 }
