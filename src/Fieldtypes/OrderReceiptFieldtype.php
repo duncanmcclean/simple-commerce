@@ -44,6 +44,7 @@ class OrderReceiptFieldtype extends Fieldtype
             ] : null,
             'shipping' => $order->shippingOption() ? [
                 'name' => $order->shippingOption()->name(),
+                'price' => Money::format($order->shippingOption()->price(), Site::selected()),
             ] : null,
             'taxes' => ! config('statamic.simple-commerce.taxes.price_includes_tax') ? [
                 'breakdown' => collect($order->taxBreakdown())->map(fn ($tax) => [

@@ -31,7 +31,7 @@
                     <span>{{ __('Shipping') }}</span>
                     <span class="help-block mb-0">{{ receipt.shipping.name }}</span>
                 </div>
-                <div>{{ receipt.totals.shipping_total }}</div>
+                <div>{{ receipt.shipping.price }}</div>
             </div>
             <div v-if="receipt.taxes" class="receipt-total">
                 <div>
