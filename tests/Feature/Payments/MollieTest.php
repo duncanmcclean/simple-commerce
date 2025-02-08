@@ -43,7 +43,7 @@ class MollieTest extends TestCase
         parent::tearDown();
 
         // Mollie enforces strict rate limits, so we need to sleep between tests to avoid hitting them.
-        sleep(1);
+        sleep(2);
     }
 
     #[Test]

@@ -18,7 +18,8 @@ class Refund extends Action
 
     public function visibleTo($item)
     {
-        return $item instanceof Contracts\Orders\Order;
+        return $item instanceof Contracts\Orders\Order
+            && $item->get('amount_refunded') < $item->grandTotal();
     }
 
     public function visibleToBulk($items)
@@ -80,10 +81,6 @@ class Refund extends Action
 
         $paymentGateway->refund($items->first(), $values['amount']);
 
-        $order
-            ->set('amount_refunded', $order->get('amount_refunded', 0) + $values['amount'])
-            ->save();
-
-        event(new OrderRefunded($order, $values['amount']));
+        event(new OrderRefunded($order->fresh(), $values['amount']));
     }
 }
