@@ -39,20 +39,20 @@ jobs:
       - name: Run PHPUnit
         run: vendor/bin/phpunit --exclude-group=payments
 
-      - name: Get changed files (Payments)
-        id: changed-files-payments
-        uses: tj-actions/changed-files@v44
-        with:
-          files: |
-            src/Payments/*
-            src/Http/Controllers/Payments/*
-            tests/Feature/Payments/*
-            composer.json
-            .github/workflows/tests.yml
+#      - name: Get changed files (Payments)
+#        id: changed-files-payments
+#        uses: tj-actions/changed-files@v44
+#        with:
+#          files: |
+#            src/Payments/*
+#            src/Http/Controllers/Payments/*
+#            tests/Feature/Payments/*
+#            composer.json
+#            .github/workflows/tests.yml
 
       - name: Run PHPUnit (Payments)
         run: vendor/bin/phpunit --group=payments
-        if: steps.changed-files-payments.outputs.any_modified == 'true' || github.event_name == 'schedule'
+#        if: steps.changed-files-payments.outputs.any_modified == 'true' || github.event_name == 'schedule'
         env:
           STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
