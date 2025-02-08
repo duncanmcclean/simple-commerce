@@ -1,0 +1,56 @@
+{{#
+    @name Step
+    @desc A step in the Checkout process.
+    @param* key The step's key. Must be unique.
+    @param* title The step's title. Will be displayed to the customer.
+    @param formless Boolean. Determines whether the step should be wrapped in a cart:update form. Default: false.
+#}}
+
+<div id="step-{{ key }}">
+    <template x-if="currentStep !== '{{ key }}'">
+        <div class="border-b border-gray-200 pb-4 flex items-center justify-between">
+            <h3 class="w-full cursor-auto text-left text-lg font-semibold text-gray-500">{{ title | trans }}</h3>
+
+            <button
+                x-show="completedSteps.includes('{{ key }}')"
+                class="text-sm text-secondary font-semibold"
+                :disabled="busy"
+                @click="goToStep('{{ key }}')"
+            >
+                {{ 'Edit' | trans }}
+            </button>
+        </div>
+    </template>
+
+    <template x-if="currentStep === '{{ key }}'">
+        {{ if formless }}
+            <div x-data="{{ x-data }}" class="flex flex-col mb-4">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">{{ title | trans }}</h2>
+
+                <div class="mb-6">
+                    {{ slot }}
+                </div>
+
+                <footer>
+                    {{ slot:footer }}
+                </footer>
+            </div>
+        {{ else }}
+            {{ cart:update :x-data="x-data" class="flex flex-col mb-4" @submit.prevent="handleFormSubmitEvent" }}
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">{{ title | trans }}</h2>
+
+                <div class="mb-6">
+                    {{ slot }}
+                </div>
+
+                <footer>
+                    {{ slot:footer }}
+                </footer>
+            {{ /cart:update }}
+        {{ /if }}
+    </template>
+</div>
+
+{{ push:footer_scripts }}
+    <script>window.CheckoutSteps.push('{{ key }}');</script>
+{{ /push:footer_scripts }}

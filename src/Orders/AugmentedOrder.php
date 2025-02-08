@@ -33,6 +33,7 @@ class AugmentedOrder extends AbstractAugmented
             'coupon',
             'shipping_method',
             'shipping_option',
+            'payment_gateway',
             'tax_breakdown',
         ];
 
@@ -76,6 +77,18 @@ class AugmentedOrder extends AbstractAugmented
         }
 
         return $this->data->shippingOption()->toAugmentedArray();
+    }
+
+    public function paymentGateway()
+    {
+        if (! $this->data->paymentGateway()) {
+            return null;
+        }
+
+        return [
+            'title' => $this->data->paymentGateway()->title(),
+            'handle' => $this->data->paymentGateway()->handle(),
+        ];
     }
 
     public function status()

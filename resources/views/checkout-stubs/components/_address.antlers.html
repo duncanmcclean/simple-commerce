@@ -1,0 +1,85 @@
+{{#
+    @name Address
+    @desc Renders address form fields.
+    @param* type The type of address. Options: shipping, billing.
+#}}
+
+<div x-data="{{ type | ucfirst }}Address" class="flex flex-col space-y-6">
+    {{ partial:checkout/components/select name="{type}_country" label="Country" autocomplete="{type} country" required="true" x-model="country" }}
+        <option disabled value="">{{ 'Select a country' | trans }}</option>
+        {{ dictionary:countries emojis="false" }}
+            <option value="{{ value }}">{{ label }}</option>
+        {{ /dictionary:countries }}
+    {{ /partial:checkout/components/select }}
+
+    {{ partial:checkout/components/input
+        name="{type}_line_1"
+        label="{type | ucfirst} Line 1"
+        type="text"
+        xBindValue="cart.{type}_line_1"
+        autocomplete="{type} address-line1"
+        required="true"
+    }}
+
+    {{ partial:checkout/components/input
+        name="{type}_line_2"
+        label="{type | ucfirst} Line 2"
+        type="text"
+        xBindValue="cart.{type}_line_2"
+        autocomplete="{type} address-line2"
+    }}
+
+    {{ partial:checkout/components/input
+        name="{type}_city"
+        label="Town/City"
+        type="text"
+        xBindValue="cart.{type}_city"
+        autocomplete="{type} address-level1"
+        required="true"
+    }}
+
+    {{ partial:checkout/components/input
+        name="{type}_postcode"
+        label="Postcode"
+        type="text"
+        xBindValue="cart.{type}_postcode"
+        autocomplete="{type} postal-code"
+        required="true"
+    }}
+
+    <template x-if="states.length">
+        {{ partial:checkout/components/select name="{type}_state" label="State/County" autocomplete="{type} address-level1" required="true" }}
+            <option disabled value="">{{ 'Select a state' | trans }}</option>
+            <template x-for="state in states" :key="state.code">
+                <option :value="state.code" :selected="state.code === cart.{{ type }}_state" x-text="state.name"></option>
+            </template>
+        {{ /partial:checkout/components/select }}
+    </template>
+</div>
+
+{{ push:footer_scripts }}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('{{ type | ucfirst }}Address', () => ({
+                country: null,
+                states: [],
+
+                init() {
+                    this.country = this.cart.{{ type }}_country?.value;
+
+                    if (this.country) this.fetchStates();
+
+                    this.$watch('country', (value) => this.fetchStates());
+                },
+
+                fetchStates() {
+                    this.states = [];
+
+                    fetch(`{{ route:statamic.simple-commerce.states }}?country=${this.country}`)
+                        .then(response => response.json())
+                        .then(data => this.states = data);
+                },
+            }));
+        });
+    </script>
+{{ /push:footer_scripts }}

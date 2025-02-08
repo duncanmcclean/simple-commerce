@@ -243,6 +243,10 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
 
     public function paymentGateway(): ?PaymentGateway
     {
+        if (! $this->get('payment_gateway')) {
+            return null;
+        }
+
         return Facades\PaymentGateway::find($this->get('payment_gateway'));
     }
 

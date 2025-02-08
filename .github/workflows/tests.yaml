@@ -30,11 +30,11 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           files: |
+            .github/workflows/tests.yaml
             src/Payments
             src/Http/Controllers/Payments
             tests/Feature/Payments
             composer.json
-            .github/workflows/tests.yaml
 
       - name: Determine whether payment tests should run
         id: should-run-payment-tests

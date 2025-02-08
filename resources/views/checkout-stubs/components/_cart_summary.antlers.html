@@ -1,0 +1,153 @@
+{{#
+    @name Cart Summary
+    @desc Renders the cart summary on the Checkout page.
+#}}
+
+<template x-if="cart">
+    <div class="p-8 flex flex-col space-y-6 text-sm">
+        <ul class="flex flex-col space-y-6">
+            {{ cart:line_items }}
+                <li class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        {{ if product:image }}
+                            <a href="{{ product:url }}" target="_blank">
+                                <picture>
+                                    <source srcset="{{ glide :src="product:image" square="64" format="webp" }}" type="image/webp">
+                                    <img src="{{ glide :src="product:image" square="64" }}" alt="{{ product:title }}" class="w-16 h-16 rounded-md mr-2 hover:overflow-hidden hover:scale-[1.05] transition">
+                                </picture>
+                            </a>
+                        {{ /if }}
+                        <div class="flex flex-col space-y-0.5">
+                            <a href="{{ product:url }}" target="_blank" class="block font-semibold">{{ product:title }}</a>
+                            {{ if variant }}
+                                <span class="text-xs text-gray-500">{{ variant:name }}</span>
+                            {{ /if }}
+                            <span class="text-xs text-gray-500">{{ 'Quantity' | trans }}: {{ quantity }}</span>
+                        </div>
+                    </div>
+
+                    <span>{{ sub_total }}</span>
+                </li>
+            {{ /cart:line_items }}
+        </ul>
+
+        <template x-if="!cart.coupon && !cart.is_free">
+            {{ cart:update x-data="ApplyCouponForm" @submit.prevent="applyCoupon" }}
+                <div class="flex items-center">
+                    <input
+                        type="text"
+                        name="coupon"
+                        placeholder="Coupon code"
+                        x-model="coupon"
+                        class="block w-full rounded-md border-gray-300 shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm"
+                        autocomplete="off"
+                    >
+                    <button
+                        type="submit"
+                        class="ml-4 h-full rounded-md border border-transparent bg-secondary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
+                        :disabled="!coupon || busy"
+                    >
+                        {{ 'Apply' | trans }}
+                    </button>
+                </div>
+
+                <template x-if="error">
+                    <p class="text-red-600 text-sm mt-1" x-text="error"></p>
+                </template>
+            {{ /cart:update }}
+        </template>
+
+        <div class="flex items-center justify-between">
+            <span>{{ 'Subtotal' | trans }}</span>
+            <span x-text="cart.sub_total"></span>
+        </div>
+
+        <template x-if="cart.coupon">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-1">
+                    <span>{{ 'Coupon Discount' | trans }}</span>
+                    <span class="text-xs text-gray-500" x-text="`(${cart.coupon.code})`"></span>
+                    {{ cart:update class="flex items-center" x-data="RemoveCouponForm" @submit.prevent="removeCoupon" }}
+                        <input type="hidden" name="coupon" value="">
+
+                        <button class="text-xs text-gray-500 hover:text-black" title="Remove coupon">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    {{ /cart:update }}
+                </div>
+                <span x-text="`-${cart.discount_total}`"></span>
+            </div>
+        </template>
+
+        <div class="flex items-center justify-between">
+            <span>{{ 'Shipping' | trans }}</span>
+
+            <template x-if="cart.shipping_option">
+                <span x-text="cart.shipping_option.price"></span>
+            </template>
+
+            <template x-if="!cart.shipping_option">
+                <span class="text-gray-500">{{ 'Enter shipping address' | trans }}</span>
+            </template>
+        </div>
+
+        {{ if !config:statamic:simple-commerce:taxes:price_includes_tax }}
+            <div class="flex items-center justify-between">
+                <span>{{ 'Taxes' | trans }}</span>
+                <span x-text="cart.tax_total"></span>
+            </div>
+        {{ /if }}
+
+        <div class="flex items-center justify-between font-bold text-lg">
+            <span>{{ 'Total' | trans }}</span>
+            <span x-text="`{{ site:attributes:currency | upper }} ${cart.grand_total}`"></span>
+        </div>
+    </div>
+</template>
+
+{{ push:footer_scripts }}
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('ApplyCouponForm', () => ({
+            coupon: null,
+            busy: false,
+            error: null,
+
+            async applyCoupon(e) {
+                e.preventDefault();
+
+                this.busy = true;
+                this.error = null;
+
+                await this.submit(this.$root)
+                    .then(data => this.coupon = null)
+                    .catch(error => {
+                        if (error.status === 422) {
+                            error.json().then(data => {
+                                this.error = data.message;
+                            });
+
+                            return;
+                        }
+
+                        alert(`Something went wrong while redeeming the coupon. Please try again later.`);
+                    })
+                    .finally(() => this.busy = false);
+            },
+        }));
+
+        Alpine.data('RemoveCouponForm', () => ({
+            async removeCoupon(e) {
+                e.preventDefault();
+
+                await this.submit(this.$root)
+                    .catch(error => {
+                        alert(`Something went wrong while removing the coupon. Please try again later.`);
+                    });
+            },
+        }));
+    });
+</script>
+{{ /push:footer_scripts }}

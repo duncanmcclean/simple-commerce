@@ -1,0 +1,110 @@
+{{#
+    This partial includes the JavaScript used to render the Checkout page.
+    It does everything from submitting cart:update forms via AJAX to updating the cart summary when the customer selects a shipping method.
+#}}
+
+<script>
+    window.CheckoutSteps = [];
+
+    document.getElementById('Checkout')?.setAttribute('x-data', 'Checkout');
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('Checkout', () => ({
+            busy: false,
+            errors: [],
+            completedSteps: [],
+            steps: window.CheckoutSteps,
+            cart: null,
+
+            init() {
+                fetch('{{ route:statamic.simple-commerce.cart.index }}', {
+                    method: 'GET',
+                    headers: {'Accept': 'application/json'},
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.cart = data.data;
+                    })
+                    .catch(error => {
+                        alert(`{{ 'Something went wrong while getting your cart. Please try again later.' | trans }} ${error}`);
+                    });
+            },
+
+            get currentStep() {
+                return this.steps[this.completedSteps.length];
+            },
+
+            goToStep(step) {
+                if (! this.completedSteps.includes(step)) {
+                    return;
+                }
+
+                this.errors = [];
+
+                this.$nextTick(() => {
+                    this.completedSteps = this.steps.slice(0, this.steps.indexOf(step));
+
+                    document.getElementById(`step-${step}`)?.scrollIntoView({ behavior: 'smooth' });
+                });
+            },
+
+            nextStep() {
+                this.errors = [];
+
+                this.completedSteps.push(this.currentStep);
+
+                this.$nextTick(() => {
+                    document.getElementById(`step-${this.currentStep}`)?.scrollIntoView({ behavior: 'smooth' });
+                });
+            },
+
+            async handleFormSubmitEvent(e) {
+                e.preventDefault();
+
+                this.busy = true;
+                this.errors = [];
+
+                await this.submit(e.target)
+                    .then(data => this.nextStep())
+                    .catch(error => {
+                        if (error.status === 422) {
+                            error.json().then(data => {
+                                this.errors = data.errors;
+                                document.getElementById(`step-${this.currentStep}`)?.scrollIntoView({ behavior: 'smooth' });
+                            });
+
+                            return;
+                        }
+
+                        alert(`{{ 'Something went wrong while submitting the form. Please try again later.' | trans }}`);
+                    })
+                    .finally(() => this.busy = false);
+            },
+
+            async submit(form) {
+                try {
+                    const response = await fetch(form.action, {
+                        method: form.method,
+                        body: new FormData(form),
+                        headers: {'Accept': 'application/json'},
+                    });
+
+                    if (! response.ok) {
+                        throw response;
+                    }
+
+                    const data = await response.json();
+
+                    if (data.errors) {
+                        throw response;
+                    }
+
+                    this.cart = data.data;
+                    return data;
+                } catch (error) {
+                    throw error;
+                }
+            },
+        }));
+    });
+</script>

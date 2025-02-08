@@ -54,6 +54,10 @@ class ServiceProvider extends AddonServiceProvider
             __DIR__.'/../config/simple-commerce.php' => config_path('statamic/simple-commerce.php'),
         ], 'simple-commerce-config');
 
+        $this->publishes([
+            __DIR__.'/../resources/views/checkout-stubs' => resource_path('views/checkout'),
+        ], 'simple-commerce-checkout-stubs');
+
         $this->app['stache']->registerStores([
             (new CartsStore)->directory(config('statamic.simple-commerce.carts.directory')),
             (new CouponsStore)->directory(config('statamic.simple-commerce.coupons.directory')),

@@ -1,0 +1,88 @@
+<div x-data="StripePaymentForm">
+    <div class="mb-6">
+        <div id="payment-element">
+            <!--Stripe.js injects the Payment Element-->
+        </div>
+        <div x-show="error" class="text-red-600 text-sm" x-text="error"></div>
+    </div>
+
+    <div>
+        {{ partial:checkout/components/button label="Pay Now" type="button" disabled="loading || busy" xOnClick="confirmPayment" }}
+    </div>
+</div>
+
+{{ push:header_scripts }}
+    <script src="https://js.stripe.com/v3/"></script>
+{{ /push:header_scripts }}
+
+{{ push:footer_scripts }}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('StripePaymentForm', () => ({
+                stripeJs: null,
+                elements: null,
+                error: null,
+                loading: false,
+
+                init() {
+                    this.stripeJs = Stripe(this.stripe.api_key);
+
+                    this.initialize();
+                },
+
+                async initialize() {
+                    this.loading = true;
+
+                    this.elements = this.stripeJs.elements({ clientSecret: this.stripe.client_secret });
+
+                    const paymentElementOptions = {
+                        layout: "tabs",
+                        defaultValues: {
+                            billingDetails: {
+                                name: this.cart.customer.name,
+                                email: this.cart.customer.email,
+                                address: {
+                                    line1: this.cart.billing_line_1,
+                                    line2: this.cart.billing_line_2,
+                                    city: this.cart.billing_city,
+                                    postal_code: this.cart.billing_postcode,
+                                    state: this.cart.billing_state?.code,
+                                    country: this.cart.billing_country?.iso2,
+                                },
+                            },
+                        },
+                    };
+
+                    const paymentElement = this.elements.create("payment", paymentElementOptions);
+                    paymentElement.mount("#payment-element");
+
+                    this.loading = false;
+                },
+
+                async confirmPayment(e) {
+                    this.loading = true;
+
+                    const { error } = await this.stripeJs.confirmPayment({
+                        elements: this.elements,
+                        confirmParams: {
+                            return_url: "{{ checkout_url }}",
+                        },
+                    });
+
+                    // This point will only be reached if there is an immediate error when
+                    // confirming the payment. Otherwise, your customer will be redirected to
+                    // your `return_url`. For some payment methods like iDEAL, your customer will
+                    // be redirected to an intermediate site first to authorize the payment, then
+                    // redirected to the `return_url`.
+                    if (error.type === "card_error" || error.type === "validation_error") {
+                        this.error = error.message;
+                    } else {
+                        this.error = '{{ 'An unexpected error occurred.' | trans }}';
+                    }
+
+                    this.loading = false;
+                },
+            }));
+        });
+    </script>
+{{ /push:footer_scripts }}

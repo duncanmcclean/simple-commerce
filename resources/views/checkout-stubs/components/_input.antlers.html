@@ -1,0 +1,40 @@
+{{#
+    @name Input
+    @desc A styled <input> field.
+    @param* name The name of the input field.
+    @param* label The label for the input field.
+    @param type The type of input field. Default: text.
+    @param autocomplete The autocomplete attribute for the input field.
+    @param placeholder The placeholder for the input field.
+    @param value The value for the input field.
+    @param xBindValue The name of an Alpine.js property to bind the input field to.
+    @param required Boolean. Whether the input field is required.
+    @param disabled Boolean. Whether the input field is disabled.
+#}}
+
+<div>
+    <label for="{{ name }}" class="block text-sm font-medium text-gray-700">{{ label | trans }}</label>
+
+    <div class="mt-1">
+        <input
+            type="{{ type ?? 'text' }}"
+            id="{{ name }}"
+            name="{{ name }}"
+            {{ if autocomplete }}autocomplete="{{ autocomplete }}"{{ /if }}
+            {{ if placeholder }}placeholder="{{ placeholder | trans }}"{{ /if }}
+            {{ if value }}value="{{ value }}"{{ /if }}
+            {{ if xBindValue }}:value="{{ xBindValue }}"{{ /if }}
+            {{ if required }}required{{ /if }}
+            {{ if disabled }}disabled readonly{{ /if }}
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+        >
+    </div>
+
+    <template x-if="errors.hasOwnProperty('{{ name }}')">
+        <ul class="mt-1">
+            <template x-for="error in errors['{{ name }}']">
+                <li class="text-red-600 text-sm" x-text="error"></li>
+            </template>
+        </ul>
+    </template>
+</div>

@@ -1,0 +1,45 @@
+{{ orders :id:is="get:order_id" }}
+    <div>
+        <div class="mb-12">
+            <h1 class="text-2xl font-semibold text-gray-900 mb-4">{{ 'Thanks for your order!' | trans }}</h1>
+            <p class="mb-4">Your order number is <strong>#{{ order_number }}</strong>. We'll send you a confirmation email once we've finished processing your payment.</p>
+
+            <a class="text-secondary hover:text-secondary/90 font-medium" href="{{ link to="/" }}">→ {{ 'Go to the homepage' | trans }}</a>
+        </div>
+
+        <div class="bg-white p-6 border rounded-lg mb-6">
+            <span class="block text-sm mb-2 text-gray-600 uppercase font-medium">{{ 'Customer' | trans }}</span>
+            <p>
+                {{ customer:name }}<br>
+                {{ customer:email }}
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 bg-white p-6 rounded-lg border">
+            <div>
+                <span class="block text-sm mb-2 text-gray-600 uppercase font-medium">{{ 'Shipping address' | trans }}</span>
+                <address>
+                    {{ shipping_line_1 }}<br>
+                    {{ if shipping_line_2 }}{{ shipping_line_2 }}<br>{{ /if }}
+                    {{ shipping_city }}, {{ shipping_postcode }}<br>
+                    {{ if shipping_state }}{{ shipping_state:name }}<br>{{ /if }}
+                    {{ shipping_country }}
+                </address>
+            </div>
+            <div>
+                <span class="block text-sm mb-2 text-gray-600 uppercase font-medium">{{ 'Billing address' | trans }}</span>
+                <address>
+                    {{ billing_line_1 }}<br>
+                    {{ if billing_line_2 }}{{ billing_line_2 }}<br>{{ /if }}
+                    {{ billing_city }}, {{ shipping_postcode }}<br>
+                    {{ if billing_state }}{{ billing_state:name }}<br>{{ /if }}
+                    {{ billing_country }}
+                </address>
+            </div>
+        </div>
+    </div>
+
+    {{ section:sidebar }}
+        {{ partial:checkout/components/order_summary }}
+    {{ /section:sidebar }}
+{{ /orders }}

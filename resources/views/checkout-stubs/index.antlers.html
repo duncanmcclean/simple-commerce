@@ -1,0 +1,26 @@
+{{ if ! {cart:exists} || {cart:count} === 0 }}
+    {{ redirect to="/cart" }}
+{{ /if }}
+
+<template x-if="cart">
+    <div class="flex flex-col space-y-4">
+        {{#
+            Here's where you can define the steps shown to customers during the Checkout process.
+            You can add your own steps if you'd like, just make sure they're wrapped in the checkout/components/step partial.
+        #}}
+
+        {{ partial:checkout/steps/customer }}
+        {{ partial:checkout/steps/shipping_address }}
+        {{ partial:checkout/steps/shipping }}
+        {{ partial:checkout/steps/billing_address }}
+        {{ partial:checkout/steps/payment }}
+    </div>
+</template>
+
+{{ section:sidebar }}
+    {{ partial:checkout/components/cart_summary }}
+{{ /section:sidebar }}
+
+{{ prepend:footer_scripts }}
+    {{ partial:checkout/js/checkout }}
+{{ /prepend:footer_scripts }}

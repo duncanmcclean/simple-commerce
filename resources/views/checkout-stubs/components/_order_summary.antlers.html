@@ -1,0 +1,66 @@
+{{#
+    @name Order Summary
+    @desc Renders the order summary on the confirmation page.
+#}}
+
+<div class="p-8 flex flex-col space-y-6 text-sm">
+    <ul class="flex flex-col space-y-6">
+        {{ line_items }}
+            <li class="flex items-center justify-between">
+                <div class="flex items-center">
+                    {{ if product:image }}
+                        <a href="{{ product:url }}" target="_blank">
+                            <picture>
+                                <source srcset="{{ glide :src="product:image" square="64" format="webp" }}" type="image/webp">
+                                <img src="{{ glide :src="product:image" square="64" }}" alt="{{ product:title }}" class="w-16 h-16 rounded-md mr-2 hover:overflow-hidden hover:scale-[1.05] transition">
+                            </picture>
+                        </a>
+                    {{ /if }}
+                    <div class="flex flex-col space-y-0.5">
+                        <a href="{{ product:url }}" target="_blank" class="block font-semibold">{{ product:title }}</a>
+                        {{ if variant }}
+                            <span class="text-xs text-gray-500">{{ variant:name }}</span>
+                        {{ /if }}
+                        <span class="text-xs text-gray-500">{{ 'Quantity' | trans }}: {{ quantity }}</span>
+                    </div>
+                </div>
+
+                <span>{{ sub_total }}</span>
+            </li>
+        {{ /line_items }}
+    </ul>
+
+    <div class="flex items-center justify-between">
+        <span>{{ 'Subtotal' | trans }}</span>
+        <span>{{ sub_total }}</span>
+    </div>
+
+    {{ if coupon }}
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-1">
+                <span>{{ 'Coupon Discount' | trans }}</span>
+                <span class="text-xs text-gray-500">{{ coupon:code }}</span>
+            </div>
+            <span>-{{ discount_total }}</span>
+        </div>
+    {{ /if }}
+
+    {{ if shipping_option }}
+        <div class="flex items-center justify-between">
+            <span>{{ 'Shipping' | trans }}</span>
+            <span>{{ shipping_total }}</span>
+        </div>
+    {{ /if }}
+
+    {{ if !config:statamic:simple-commerce:taxes:price_includes_tax }}
+        <div class="flex items-center justify-between">
+            <span>{{ 'Taxes' | trans }}</span>
+            <span>{{ tax_total }}</span>
+        </div>
+    {{ /if }}
+
+    <div class="flex items-center justify-between font-bold text-lg">
+        <span>{{ 'Total' | trans }}</span>
+        <span>{{ site:attributes:currency | upper }} {{ grand_total }}</span>
+    </div>
+</div>

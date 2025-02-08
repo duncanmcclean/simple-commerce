@@ -8,6 +8,8 @@ use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Statamic\Contracts\Data\Augmentable;
+use Statamic\Data\HasAugmentedData;
 use Statamic\Extend\HasHandle;
 use Statamic\Extend\HasTitle;
 use Statamic\Extend\RegistersItself;

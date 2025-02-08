@@ -1,0 +1,86 @@
+{{#
+    Displays the "Payment" step in the Checkout process.
+
+    Payment Gateways are fetched via AJAX when the customer progresses to this step, ensuring that the payment amount
+    is up-to-date, taking into account any shipping costs or taxes that might have been applied since the Checkout page
+    was initially loaded.
+
+    You can find the payment forms for each gateway under `resources/views/checkout/payment-forms/`.
+#}}
+
+{{ partial:checkout/components/step title="Payment" key="payment" formless="true" x-data="Payment" }}
+    <template x-if="cart.is_free">
+        <form action="{{ route:statamic.simple-commerce.cart.checkout }}" method="get">
+            <p class="mb-6">{{ 'No payment required. Continue to checkout.' | trans }}</p>
+
+            {{ partial:checkout/components/button label="Complete Order" type="submit" }}
+        </form>
+    </template>
+
+    <p x-show="!cart.is_free && isFetchingPaymentGateways">{{ 'Loading...' | trans }}</p>
+    <p x-show="!cart.is_free && !isFetchingPaymentGateways && paymentGateways.length === 0">{{ 'Loading...' | trans }}</p>
+
+    <template x-if="!cart.is_free && !isFetchingPaymentGateways && paymentGateways.length > 0">
+        <div class="flex flex-col space-y-6">
+            <div x-show="paymentGateways.length > 1">
+                {{ partial:checkout/components/select name="payment_gateway" label="Payment Method" x-model="selectedPaymentGateway" required="true" }}
+                    <template x-for="paymentGateway in paymentGateways">
+                        <option :value="paymentGateway.handle" x-text="paymentGateway.name"></option>
+                    </template>
+                {{ /partial:checkout/components/select }}
+            </div>
+
+            {{ payment_gateways }}
+                <div
+                    x-show="selectedPaymentGateway === '{{ handle }}'"
+                    x-data="{ '{{ handle }}': paymentGateways.find((paymentGateway) => paymentGateway.handle === '{{ handle }}') }"
+                >
+                    {{ partial:if_exists src="checkout/payment-forms/{handle}" }}
+                </div>
+            {{ /payment_gateways }}
+        </div>
+    </template>
+{{ /partial:checkout/components/step }}
+
+{{ push:footer_scripts }}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('Payment', () => ({
+                paymentGateways: [],
+                selectedPaymentGateway: null,
+                isFetchingPaymentGateways: true,
+
+                init() {
+                    this.fetchPaymentGateways();
+
+                    this.selectedPaymentGateway = this.cart.payment_gateway;
+                },
+
+                fetchPaymentGateways() {
+                    if (this.cart.is_free) {
+                        this.isFetchingPaymentGateways = false;
+                        return;
+                    }
+
+                    fetch('{{ route:statamic.simple-commerce.cart.payment-gateways }}', {
+                        method: 'GET',
+                        headers: {'Accept': 'application/json'},
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            this.paymentGateways = data;
+
+                            if (! this.selectedPaymentGateway && this.paymentGateways.length > 0) {
+                                this.selectedPaymentGateway = this.paymentGateways[0].handle;
+                            }
+
+                            this.isFetchingPaymentGateways = false;
+                        })
+                        .catch(error => {
+                            alert(`{{ 'Something went wrong while fetching payment gateways. Please try again later.' | trans }}`);
+                        });
+                },
+            }));
+        });
+    </script>
+{{ /push:footer_scripts }}

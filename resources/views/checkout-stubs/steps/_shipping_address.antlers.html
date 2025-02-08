@@ -1,0 +1,11 @@
+{{#
+    Displays the "Shipping Address" step in the Checkout process.
+#}}
+
+{{ partial:checkout/components/step title="Shipping Address" key="shipping_address" }}
+    {{ partial:checkout/components/address type="shipping" }}
+
+    {{ slot:footer }}
+        {{ partial:checkout/components/button label="Continue →" type="submit" }}
+    {{ /slot:footer }}
+{{ /partial:checkout/components/step }}

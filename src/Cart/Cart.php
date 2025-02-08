@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Cart;
 
+use DuncanMcClean\SimpleCommerce\Facades;
 use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\Calculator;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
@@ -18,6 +19,7 @@ use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\HasTotals;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
+use DuncanMcClean\SimpleCommerce\Payments\Gateways\PaymentGateway;
 use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
@@ -137,6 +139,15 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
         }
 
         return $this->shippingMethod()->options($this)->firstWhere('handle', $this->get('shipping_option'));
+    }
+
+    public function paymentGateway(): ?PaymentGateway
+    {
+        if (! $this->get('payment_gateway')) {
+            return null;
+        }
+
+        return Facades\PaymentGateway::find($this->get('payment_gateway'));
     }
 
     public function lineItems($lineItems = null)

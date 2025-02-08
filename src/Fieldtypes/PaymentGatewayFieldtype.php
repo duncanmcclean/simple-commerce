@@ -21,27 +21,6 @@ class PaymentGatewayFieldtype extends Relationship
         // TODO: Implement getIndexItems() method.
     }
 
-    public function augment($values)
-    {
-//        if ($this->config('max_items') === 1) {
-//            $shippingMethod = ShippingMethod::find($values);
-//
-//            return [
-//                'name' => $shippingMethod->name(),
-//                'handle' => $shippingMethod->handle(),
-//            ];
-//        }
-//
-//        return collect($values)->map(function (string $handle) {
-//            $shippingMethod = ShippingMethod::find($handle);
-//
-//            return [
-//                'name' => $shippingMethod->name(),
-//                'handle' => $shippingMethod->handle(),
-//            ];
-//        })->filter()->all();
-    }
-
     public function preProcessIndex($data)
     {
         return collect($data)->map(function ($item) {

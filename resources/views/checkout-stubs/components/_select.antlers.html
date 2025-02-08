@@ -1,0 +1,34 @@
+{{#
+    @name Select
+    @desc A styled <select> field.
+    @param* name The name of the select field.
+    @param* label The label for the select field.
+    @param autocomplete The autocomplete attribute for the select field.
+    @param required Boolean. Whether the select field is required.
+    @param x-model The x-model attribute for the select field.
+#}}
+
+<div>
+    <label for="{{ name }}" class="block text-sm font-medium text-gray-700">{{ label | trans }}</label>
+
+    <div class="mt-1">
+        <select
+            id="{{ name }}"
+            name="{{ name }}"
+            {{ if autocomplete }}autocomplete="{{ autocomplete }}"{{ /if }}
+            {{ if required }}required{{ /if }}
+            {{ if x-model }}x-model="{{ x-model }}"{{ /if }}
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm"
+        >
+            {{ slot }}
+        </select>
+    </div>
+
+    <template x-if="errors.hasOwnProperty('{{ name }}')">
+        <ul class="mt-1">
+            <template x-for="error in errors['{{ name }}']">
+                <li class="text-red-600 text-sm" x-text="error"></li>
+            </template>
+        </ul>
+    </template>
+</div>

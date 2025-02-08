@@ -1,0 +1,70 @@
+{{#
+    Displays the "Billing Address" step in the Checkout process.
+#}}
+
+{{ partial:checkout/components/step title="Billing Address" key="billing_address" x-data="BillingAddressStep" }}
+    <label for="use_shipping_address_for_billing" class="flex items-center cursor-pointer">
+        <input type="checkbox" id="use_shipping_address_for_billing" name="use_shipping_address_for_billing" x-model="useShippingAddressForBilling" class="rounded text-secondary focus:ring-secondary h-4 w-4">
+        <span class="ml-2 font-medium text-gray-700 select-none">{{ 'Use shipping address for billing' | trans }}</span>
+    </label>
+
+    <!-- We'll use hidden inputs to fall back to the shipping address if the user chooses to use it for billing. -->
+    <template x-if="useShippingAddressForBilling">
+        <div>
+            <input type="hidden" name="billing_line_1" x-model="cart.shipping_line_1">
+            <input type="hidden" name="billing_line_2" x-model="cart.shipping_line_2">
+            <input type="hidden" name="billing_city" x-model="cart.shipping_city">
+            <input type="hidden" name="billing_postcode" x-model="cart.shipping_postcode">
+            <input type="hidden" name="billing_state" x-model="cart.shipping_state?.code">
+            <input type="hidden" name="billing_country" x-model="cart.shipping_country.value">
+        </div>
+    </template>
+
+    <!-- Otherwise, we'll show the billing address fields. -->
+    <template x-if="! useShippingAddressForBilling">
+        <div class="mt-6">
+            {{ partial:checkout/components/address type="billing" }}
+        </div>
+    </template>
+
+    {{ slot:footer }}
+        {{ partial:checkout/components/button label="Continue →" type="submit" }}
+    {{ /slot:footer }}
+{{ /partial:checkout/components/step }}
+
+{{ push:footer_scripts }}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('BillingAddressStep', () => ({
+                useShippingAddressForBilling: true,
+
+                init() {
+                    // When the cart has a shipping address AND billing address, check if they're different.
+                    // If they are, uncheck the "Use shipping address for billing" checkbox.
+                    // If they're not, keep it checked.
+                    if (this.cart.shipping_line_1 && this.cart.billing_line_1) {
+                        let shippingAddress = {
+                            line_1: this.cart.shipping_line_1,
+                            line_2: this.cart.shipping_line_2,
+                            city: this.cart.shipping_city,
+                            postcode: this.cart.shipping_postcode,
+                            state: this.cart.shipping_state?.code,
+                            country: this.cart.shipping_country?.value,
+                        };
+
+                        let billingAddress = {
+                            line_1: this.cart.billing_line_1,
+                            line_2: this.cart.billing_line_2,
+                            city: this.cart.billing_city,
+                            postcode: this.cart.billing_postcode,
+                            state: this.cart.billing_state?.code,
+                            country: this.cart.billing_country?.value,
+                        };
+
+                        this.useShippingAddressForBilling = JSON.stringify(shippingAddress) === JSON.stringify(billingAddress);
+                    }
+                },
+            }));
+        });
+    </script>
+{{ /push:footer_scripts }}

@@ -1,0 +1,45 @@
+{{#
+    Displays the "Customer" step in the Checkout process.
+#}}
+
+{{ if logged_out }}
+    {{ partial:checkout/components/step title="Customer" key="customer" }}
+        <div class="flex flex-col space-y-4">
+            <div class="grid sm:grid-cols-2 gap-6">
+                {{ partial:checkout/components/input
+                    name="first_name"
+                    label="First Name"
+                    type="text"
+                    placeholder="John"
+                    xBindValue="cart.customer?.first_name"
+                    autocomplete="given-name"
+                    required="true"
+                }}
+
+                {{ partial:checkout/components/input
+                    name="last_name"
+                    label="Last Name"
+                    type="text"
+                    placeholder="Doe"
+                    xBindValue="cart.customer?.last_name"
+                    autocomplete="family-name"
+                    required="true"
+                }}
+            </div>
+
+            {{ partial:checkout/components/input
+                name="email"
+                label="Email address"
+                type="email"
+                placeholder="john.doe@example.com"
+                xBindValue="cart.customer?.email"
+                autocomplete="email"
+                required="true"
+            }}
+        </div>
+
+        {{ slot:footer }}
+            {{ partial:checkout/components/button label="Continue →" type="submit" }}
+        {{ /slot:footer }}
+    {{ /partial:checkout/components/step }}
+{{ /if }}
