@@ -45,6 +45,7 @@ jobs:
         with:
           files: |
             src/Payments
+            src/Http/Controllers/Payments
             tests/Feature/Payments
             composer.json
             .github/workflows/tests.yml
