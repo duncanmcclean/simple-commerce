@@ -36,23 +36,30 @@ jobs:
           composer require "illuminate/contracts:${{ matrix.laravel }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
 
-      - name: Run PHPUnit
+      - name: Get changed files (Payments)
+        id: changed-files-payments
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            src/Payments
+            src/Http/Controllers/Payments
+            tests/Feature/Payments
+            composer.json
+            .github/workflows/tests.yml
+
+      - name: Determine whether payment tests should run
+        id: should-run-payment-tests
+        if: steps.changed-files-payments.outputs.any_modified == 'true' || github.event_name == 'schedule'
+        run: |
+          echo "result=true" >> $GITHUB_OUTPUT
+          echo "result=true" >> $env:GITHUB_OUTPUT
+
+      - name: Execute tests
         run: vendor/bin/phpunit --exclude-group=payments
 
-#      - name: Get changed files (Payments)
-#        id: changed-files-payments
-#        uses: tj-actions/changed-files@v44
-#        with:
-#          files: |
-#            src/Payments/*
-#            src/Http/Controllers/Payments/*
-#            tests/Feature/Payments/*
-#            composer.json
-#            .github/workflows/tests.yml
-
-      - name: Run PHPUnit (Payments)
+      - name: Execute tests (Payments)
         run: vendor/bin/phpunit --group=payments
-#        if: steps.changed-files-payments.outputs.any_modified == 'true' || github.event_name == 'schedule'
+        if: steps.should-run-payment-tests.outputs.result == 'true'
         env:
           STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
