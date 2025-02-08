@@ -84,18 +84,23 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
                 }
 
                 if ($date instanceof \Carbon\CarbonInterface) {
-                    return $date;
+                    return $date->setTimezone('UTC');
                 }
 
                 if (strlen($date) === 10) {
-                    return Carbon::createFromFormat('Y-m-d', $date)->startOfDay();
+                    return Carbon::createFromFormat('Y-m-d', $date)
+                        ->setTimezone('UTC')
+                        ->startOfDay();
                 }
 
                 if (strlen($date) === 15) {
-                    return Carbon::createFromFormat('Y-m-d-Hi', $date)->startOfMinute();
+                    return Carbon::createFromFormat('Y-m-d-Hi', $date)
+                        ->setTimezone('UTC')
+                        ->startOfMinute();
                 }
 
-                return Carbon::createFromFormat('Y-m-d-His', $date);
+                return Carbon::createFromFormat('Y-m-d-His', $date)
+                    ->setTimezone('UTC');
             })
             ->args(func_get_args());
     }

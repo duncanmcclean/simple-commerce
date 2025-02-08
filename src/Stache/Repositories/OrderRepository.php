@@ -76,7 +76,7 @@ class OrderRepository implements RepositoryContract
         }
 
         if (! $order->date()) {
-            $order->date(Carbon::now());
+            $order->date(Carbon::now('UTC'));
         }
 
         if (! $order->orderNumber()) {
