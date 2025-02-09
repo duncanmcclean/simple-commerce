@@ -10,16 +10,17 @@ use Statamic\Support\Traits\Hookable;
 
 class CalculateLineItems
 {
-    use Hookable;
+    protected static Closure $priceHook;
 
     public function handle(Cart $cart, Closure $next)
     {
-        $cart->lineItems()->map(function (LineItem $lineItem) {
+        $cart->lineItems()->map(function (LineItem $lineItem) use ($cart) {
             $product = $lineItem->product();
 
-            $price = match ($product->type()) {
-                ProductType::Product => $product->price(),
-                ProductType::Variant => $product->variant($lineItem->variant()->key())->price(),
+            $price = match (true) {
+                isset(static::$priceHook) => (static::$priceHook)($cart, $lineItem),
+                $product->type() === ProductType::Product => $product->price(),
+                $product->type() === ProductType::Variant => $product->variant($lineItem->variant()->key())->price(),
             };
 
             $lineItem->unitPrice($price);
@@ -30,5 +31,12 @@ class CalculateLineItems
         });
 
         return $next($cart);
+    }
+
+    public static function priceHook(Closure $closure)
+    {
+        static::$priceHook = $closure;
+
+        return new static;
     }
 }

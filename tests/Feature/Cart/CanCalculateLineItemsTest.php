@@ -85,4 +85,24 @@ class CanCalculateLineItemsTest extends TestCase
         $this->assertEquals(2550, $cart->lineItems()->find('a')->unitPrice());
         $this->assertEquals(5100, $cart->lineItems()->find('a')->total());
     }
+
+    #[Test]
+    public function total_can_be_calculated_correctly_using_price_hook()
+    {
+        Collection::make('products')->save();
+        $product = tap(Entry::make()->collection('products')->data(['price' => 2550]))->save();
+
+        $cart = Cart::make()->lineItems([
+            ['id' => 'a', 'product' => $product->id(), 'quantity' => 2],
+        ]);
+
+        CalculateLineItems::priceHook(function ($cart, $lineItem) {
+            return 1234;
+        });
+
+        (new CalculateLineItems)->handle($cart, fn ($cart) => $cart);
+
+        $this->assertEquals(1234, $cart->lineItems()->find('a')->unitPrice());
+        $this->assertEquals(2468, $cart->lineItems()->find('a')->total());
+    }
 }

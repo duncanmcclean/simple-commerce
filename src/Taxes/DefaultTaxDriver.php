@@ -50,7 +50,7 @@ class DefaultTaxDriver implements DriverContract
             $priceExcludingTax = round($total / (1 + $totalTaxPercentage));
 
             foreach ($taxRates as $taxZone => $taxRate) {
-                $taxAmount = round($priceExcludingTax * ($taxRate / 100));
+                $taxAmount = (int) round($priceExcludingTax * ($taxRate / 100));
 
                 $taxZone = TaxZoneFacade::find($taxZone);
 
@@ -66,7 +66,7 @@ class DefaultTaxDriver implements DriverContract
         }
 
         foreach ($taxRates as $taxZone => $taxRate) {
-            $taxAmount = round($total * ($taxRate / 100));
+            $taxAmount = (int) round($total * ($taxRate / 100));
 
             $taxZone = TaxZoneFacade::find($taxZone);
 
