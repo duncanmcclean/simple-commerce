@@ -7,7 +7,6 @@ use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\Calculator;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
-use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod as ShippingMethodContract;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Data\HasAddresses;
 use DuncanMcClean\SimpleCommerce\Events\CartRecalculated;
@@ -15,11 +14,11 @@ use DuncanMcClean\SimpleCommerce\Events\CartSaved;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
-use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Orders\AugmentedOrder;
 use DuncanMcClean\SimpleCommerce\Orders\HasTotals;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
 use DuncanMcClean\SimpleCommerce\Payments\Gateways\PaymentGateway;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
@@ -123,13 +122,13 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             ->args(func_get_args());
     }
 
-    public function shippingMethod(): ?ShippingMethodContract
+    public function shippingMethod(): ?ShippingMethod
     {
         if (! $this->get('shipping_method')) {
             return null;
         }
 
-        return ShippingMethod::find($this->get('shipping_method'));
+        return Facades\ShippingMethod::find($this->get('shipping_method'));
     }
 
     public function shippingOption(): ?ShippingOption

@@ -27,7 +27,7 @@ class ShippingMethodFieldtype extends Relationship
             $shippingMethod = ShippingMethod::find($values);
 
             return [
-                'name' => $shippingMethod->name(),
+                'name' => $shippingMethod->title(),
                 'handle' => $shippingMethod->handle(),
             ];
         }
@@ -36,7 +36,7 @@ class ShippingMethodFieldtype extends Relationship
             $shippingMethod = ShippingMethod::find($handle);
 
             return [
-                'name' => $shippingMethod->name(),
+                'name' => $shippingMethod->title(),
                 'handle' => $shippingMethod->handle(),
             ];
         })->filter()->all();
@@ -47,7 +47,7 @@ class ShippingMethodFieldtype extends Relationship
         return collect($data)->map(function ($item) {
             $shippingMethod = ShippingMethod::find($item);
 
-            return $shippingMethod->name();
+            return $shippingMethod->title();
         })->implode(', ');
     }
 

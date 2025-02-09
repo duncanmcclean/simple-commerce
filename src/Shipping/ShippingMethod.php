@@ -3,20 +3,14 @@
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
-use DuncanMcClean\SimpleCommerce\Contracts\Shipping\ShippingMethod as Contract;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Statamic\Extend\HasHandle;
+use Statamic\Extend\HasTitle;
 use Statamic\Extend\RegistersItself;
 
-abstract class ShippingMethod implements Contract
+abstract class ShippingMethod
 {
-    use HasHandle, RegistersItself;
-
-    public function name(): string
-    {
-        return Str::title(class_basename($this));
-    }
+    use HasHandle, HasTitle, RegistersItself;
 
     public function logo(): ?string
     {
