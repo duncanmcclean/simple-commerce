@@ -2,16 +2,16 @@
 
 namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethodRepository;
+use DuncanMcClean\SimpleCommerce\Shipping\Manager;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DuncanMcClean\SimpleCommerce\Shipping\ShippingMethodRepository
+ * @see \DuncanMcClean\SimpleCommerce\Shipping\Manager
  */
 class ShippingMethod extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return ShippingMethodRepository::class;
+        return Manager::class;
     }
 }

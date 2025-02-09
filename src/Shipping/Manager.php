@@ -2,10 +2,9 @@
 
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
-use DuncanMcClean\SimpleCommerce\Exceptions\ShippingMethodDoesNotExist;
 use Illuminate\Support\Collection;
 
-class ShippingMethodRepository
+class Manager
 {
     public function all()
     {
@@ -15,7 +14,7 @@ class ShippingMethodRepository
     public function find(string $handle)
     {
         if (! $this->classes()->has($handle)) {
-            throw new ShippingMethodDoesNotExist($handle);
+            return;
         }
 
         return app($this->classes()->get($handle));
