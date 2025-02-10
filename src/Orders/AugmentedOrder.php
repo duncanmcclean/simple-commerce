@@ -65,7 +65,7 @@ class AugmentedOrder extends AbstractAugmented
         }
 
         return [
-            'name' => $this->data->shippingMethod()::title(),
+            'name' => $this->data->shippingMethod()->title(),
             'handle' => $this->data->shippingMethod()->handle(),
         ];
     }
