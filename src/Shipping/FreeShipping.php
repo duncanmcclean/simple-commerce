@@ -7,10 +7,7 @@ use Illuminate\Support\Collection;
 
 class FreeShipping extends ShippingMethod
 {
-    public function name(): string
-    {
-        return __('Free Shipping');
-    }
+    protected static $title = 'Free Shipping';
 
     public function options(Cart $cart): Collection
     {
