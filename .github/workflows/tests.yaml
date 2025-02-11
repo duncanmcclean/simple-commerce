@@ -59,7 +59,7 @@ jobs:
 
       - name: Execute tests (Payments)
         run: vendor/bin/phpunit --group=payments
-        if: matrix.index == 0 && steps.should-run-payment-tests.outputs.result == 'true'
+        if: steps.should-run-payment-tests.outputs.result == 'true'
         env:
           STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
           STRIPE_SECRET: ${{ secrets.STRIPE_SECRET }}
