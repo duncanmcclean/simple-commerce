@@ -1,14 +1,13 @@
 <?php
 
-namespace Feature\Shipping;
+namespace Tests\Feature\Shipping;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Facades;
-use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use DuncanMcClean\SimpleCommerce\Taxes\TaxClass;
 use Illuminate\Support\Collection;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\Fixtures\ShippingMethods\FakeShippingMethod;
 use Tests\TestCase;
 
 class ShippingTest extends TestCase
@@ -67,25 +66,5 @@ class ShippingTest extends TestCase
     public function shipping_option_can_return_highest_tax_rate()
     {
         $this->markTestIncomplete();
-    }
-}
-
-class FakeShippingMethod extends ShippingMethod
-{
-    public function options(Cart $cart): Collection
-    {
-        return collect([
-            ShippingOption::make($this)
-                ->name('In-Store Pickup')
-                ->price(0),
-
-            ShippingOption::make($this)
-                ->name('Standard Shipping')
-                ->price(500),
-
-            ShippingOption::make($this)
-                ->name('Express Shipping')
-                ->price(1000),
-        ]);
     }
 }

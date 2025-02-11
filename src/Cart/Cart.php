@@ -138,11 +138,16 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             return null;
         }
 
-        $shippingOption = is_array($this->get('shipping_option'))
-            ? Arr::get($this->get('shipping_option'), 'handle')
-            : $this->get('shipping_option');
+        if (is_string($this->get('shipping_option'))) {
+            return $this->shippingMethod()
+                ->options($this)
+                ->firstWhere('handle', $this->get('shipping_option'));
+        }
 
-        return $this->shippingMethod()->options($this)->firstWhere('handle', $shippingOption);
+        return ShippingOption::make($this->shippingMethod())
+            ->name(Arr::get($this->get('shipping_option'), 'name'))
+            ->handle(Arr::get($this->get('shipping_option'), 'handle'))
+            ->price(Arr::get($this->get('shipping_option'), 'price'));
     }
 
     public function paymentGateway(): ?PaymentGateway

@@ -2,11 +2,9 @@
 
 namespace Tests\Data;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
-use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Test;
@@ -14,6 +12,7 @@ use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
+use Tests\Fixtures\ShippingMethods\FakeShippingMethod;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
@@ -168,48 +167,28 @@ class OrderTest extends TestCase
     #[Test]
     public function it_returns_the_shipping_method()
     {
-        AnotherFakeShippingMethod::register();
+        FakeShippingMethod::register();
 
-        $order = Order::make()->set('shipping_method', 'another_fake_shipping_method');
+        $order = Order::make()->set('shipping_method', 'fake_shipping_method');
 
-        $this->assertInstanceOf(AnotherFakeShippingMethod::class, $order->shippingMethod());
+        $this->assertInstanceOf(FakeShippingMethod::class, $order->shippingMethod());
     }
 
     #[Test]
     public function it_returns_the_shipping_option()
     {
-        AnotherFakeShippingMethod::register();
+        FakeShippingMethod::register();
 
         $order = Order::make()
-            ->set('shipping_method', 'another_fake_shipping_method')
+            ->set('shipping_method', 'fake_shipping_method')
             ->set('shipping_option', [
-                'name' => 'Local Shipping',
+                'name' => 'Standard Shipping',
                 'handle' => 'standard_shipping',
-                'price' => 250,
+                'price' => 500,
             ]);
 
         $this->assertInstanceOf(ShippingOption::class, $order->shippingOption());
-        $this->assertEquals('Local Shipping', $order->shippingOption()->name());
-        $this->assertEquals(250, $order->shippingOption()->price());
-    }
-}
-
-class AnotherFakeShippingMethod extends ShippingMethod
-{
-    public function options(Cart $cart): \Illuminate\Support\Collection
-    {
-        return collect([
-            ShippingOption::make($this)
-                ->name('In-Store Pickup')
-                ->price(0),
-
-            ShippingOption::make($this)
-                ->name('Standard Shipping')
-                ->price(500),
-
-            ShippingOption::make($this)
-                ->name('Express Shipping')
-                ->price(1000),
-        ]);
+        $this->assertEquals('Standard Shipping', $order->shippingOption()->name());
+        $this->assertEquals(500, $order->shippingOption()->price());
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Feature\Payments;
+namespace Tests\Feature\Payments;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;

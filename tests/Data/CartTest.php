@@ -5,12 +5,12 @@ namespace Tests\Data;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
-use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
+use Tests\Fixtures\ShippingMethods\FakeShippingMethod;
 use Tests\TestCase;
 
 class CartTest extends TestCase
@@ -192,22 +192,14 @@ class CartTest extends TestCase
 
         $cart = Cart::make()
             ->set('shipping_method', 'fake_shipping_method')
-            ->set('shipping_option', 'local_shipping');
+            ->set('shipping_option', [
+                'name' => 'Standard Shipping',
+                'handle' => 'standard_shipping',
+                'price' => 500,
+            ]);
 
         $this->assertInstanceOf(ShippingOption::class, $cart->shippingOption());
-        $this->assertEquals('Local Shipping', $cart->shippingOption()->name());
-        $this->assertEquals(250, $cart->shippingOption()->price());
-    }
-}
-
-class FakeShippingMethod extends ShippingMethod
-{
-    public function options(\DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart $cart): \Illuminate\Support\Collection
-    {
-        return collect([
-            ShippingOption::make($this)
-                ->name('Local Shipping')
-                ->price(250),
-        ]);
+        $this->assertEquals('Standard Shipping', $cart->shippingOption()->name());
+        $this->assertEquals(500, $cart->shippingOption()->price());
     }
 }
