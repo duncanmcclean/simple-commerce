@@ -3,8 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Products;
 
 use Statamic\Data\AbstractAugmented;
-use Statamic\Fields\Value;
-use Statamic\Support\Str;
 
 class AugmentedProductVariant extends AbstractAugmented
 {

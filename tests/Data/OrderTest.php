@@ -2,9 +2,12 @@
 
 namespace Tests\Data;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
@@ -160,5 +163,53 @@ class OrderTest extends TestCase
             'content/orders/2024-01-01-103510.1234.yaml',
             $order->buildPath()
         );
+    }
+
+    #[Test]
+    public function it_returns_the_shipping_method()
+    {
+        AnotherFakeShippingMethod::register();
+
+        $order = Order::make()->set('shipping_method', 'another_fake_shipping_method');
+
+        $this->assertInstanceOf(AnotherFakeShippingMethod::class, $order->shippingMethod());
+    }
+
+    #[Test]
+    public function it_returns_the_shipping_option()
+    {
+        AnotherFakeShippingMethod::register();
+
+        $order = Order::make()
+            ->set('shipping_method', 'another_fake_shipping_method')
+            ->set('shipping_option', [
+                'name' => 'Local Shipping',
+                'handle' => 'standard_shipping',
+                'price' => 250,
+            ]);
+
+        $this->assertInstanceOf(ShippingOption::class, $order->shippingOption());
+        $this->assertEquals('Local Shipping', $order->shippingOption()->name());
+        $this->assertEquals(250, $order->shippingOption()->price());
+    }
+}
+
+class AnotherFakeShippingMethod extends ShippingMethod
+{
+    public function options(Cart $cart): \Illuminate\Support\Collection
+    {
+        return collect([
+            ShippingOption::make($this)
+                ->name('In-Store Pickup')
+                ->price(0),
+
+            ShippingOption::make($this)
+                ->name('Standard Shipping')
+                ->price(500),
+
+            ShippingOption::make($this)
+                ->name('Express Shipping')
+                ->price(1000),
+        ]);
     }
 }

@@ -5,6 +5,8 @@ namespace Tests\Data;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethod;
+use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
@@ -171,5 +173,41 @@ class CartTest extends TestCase
             ['rate' => 5, 'description' => 'Reduced', 'zone' => 'UK VAT', 'amount' => 25],
             ['rate' => 4, 'description' => 'Reduced', 'zone' => 'Glasgow VAT', 'amount' => 20],
         ], $cart->taxBreakdown());
+    }
+
+    #[Test]
+    public function it_returns_the_shipping_method()
+    {
+        FakeShippingMethod::register();
+
+        $cart = Cart::make()->set('shipping_method', 'fake_shipping_method');
+
+        $this->assertInstanceOf(FakeShippingMethod::class, $cart->shippingMethod());
+    }
+
+    #[Test]
+    public function it_returns_the_shipping_option()
+    {
+        FakeShippingMethod::register();
+
+        $cart = Cart::make()
+            ->set('shipping_method', 'fake_shipping_method')
+            ->set('shipping_option', 'local_shipping');
+
+        $this->assertInstanceOf(ShippingOption::class, $cart->shippingOption());
+        $this->assertEquals('Local Shipping', $cart->shippingOption()->name());
+        $this->assertEquals(250, $cart->shippingOption()->price());
+    }
+}
+
+class FakeShippingMethod extends ShippingMethod
+{
+    public function options(\DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart $cart): \Illuminate\Support\Collection
+    {
+        return collect([
+            ShippingOption::make($this)
+                ->name('Local Shipping')
+                ->price(250),
+        ]);
     }
 }

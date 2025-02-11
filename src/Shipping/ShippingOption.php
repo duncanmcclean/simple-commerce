@@ -73,7 +73,7 @@ class ShippingOption implements Augmentable, Purchasable
     public function purchasableTaxClass(): TaxClass
     {
         // todo
-        if (config('simple-commerce.taxes.shipping_tax_behaviour') === 'highest_tax_rate') {
+        if (config('statamic.simple-commerce.taxes.shipping_tax_behaviour') === 'highest_tax_rate') {
             dd('todo');
         }
 
