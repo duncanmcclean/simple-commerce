@@ -10,7 +10,7 @@ use Tests\TestCase;
 class ViewCouponsTest extends TestCase
 {
     #[Test]
-    public function can_view_coupon()
+    public function can_view_coupons()
     {
         $this
             ->actingAs(User::make()->makeSuper()->save())
@@ -19,7 +19,7 @@ class ViewCouponsTest extends TestCase
     }
 
     #[Test]
-    public function cant_view_coupon_without_permissions()
+    public function cant_view_coupons_without_permissions()
     {
         Role::make('test')->addPermission('access cp')->save();
 

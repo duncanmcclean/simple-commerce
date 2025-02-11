@@ -58,6 +58,8 @@ class StoreCouponsTest extends TestCase
                 'customer_eligibility' => 'all',
             ])
             ->assertRedirect('/cp');
+
+        $this->assertNull(Coupon::findByCode('BAZQUX50'));
     }
 
     #[Test]
