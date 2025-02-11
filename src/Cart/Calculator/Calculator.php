@@ -10,7 +10,14 @@ class Calculator
     public static function calculate(Cart $cart): Cart
     {
         return Pipeline::send($cart)
-            ->through(config('statamic.simple-commerce.carts.calculator_pipeline'))
+            ->through([
+                ResetTotals::class,
+                CalculateLineItems::class,
+                ApplyCouponDiscounts::class,
+                ApplyShipping::class,
+                CalculateTaxes::class,
+                CalculateTotals::class,
+            ])
             ->thenReturn();
     }
 }

@@ -1,7 +1,5 @@
 <?php
 
-use DuncanMcClean\SimpleCommerce\Cart\Calculator;
-
 return [
 
     'products' => [
@@ -19,15 +17,6 @@ return [
 
         // When a user logs in, and they've already started a cart elsewhere, should the two carts be merged?
         'merge_on_login' => true,
-
-        'calculator_pipeline' => [
-            Calculator\ResetTotals::class,
-            Calculator\CalculateLineItems::class,
-            Calculator\ApplyCouponDiscounts::class,
-            Calculator\ApplyShipping::class,
-            Calculator\CalculateTaxes::class,
-            Calculator\CalculateTotals::class,
-        ],
     ],
 
     'taxes' => [
@@ -59,17 +48,17 @@ return [
             'dummy' => [
                 //
             ],
-//
+            //
             'stripe' => [
                 'key' => env('STRIPE_KEY'),
                 'secret' => env('STRIPE_SECRET'),
                 'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
             ],
 
-//            'mollie' => [
-//                'api_key' => env('MOLLIE_KEY'),
-//                'profile_id' => env('MOLLIE_PROFILE_ID'),
-//            ],
+            //            'mollie' => [
+            //                'api_key' => env('MOLLIE_KEY'),
+            //                'profile_id' => env('MOLLIE_PROFILE_ID'),
+            //            ],
         ],
     ],
 
