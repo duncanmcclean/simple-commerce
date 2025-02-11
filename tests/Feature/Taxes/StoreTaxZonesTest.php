@@ -33,7 +33,6 @@ class StoreTaxZonesTest extends TestCase
             ->actingAs(User::make()->makeSuper()->save())
             ->post(cp_route('simple-commerce.tax-zones.store'), [
                 'name' => 'United Kingdom',
-                'active' => true,
                 'type' => 'countries',
                 'countries' => ['GB'],
                 'rates' => [
@@ -47,7 +46,6 @@ class StoreTaxZonesTest extends TestCase
         $taxZone = TaxZone::find('united-kingdom');
 
         $this->assertEquals('United Kingdom', $taxZone->get('name'));
-        $this->assertTrue($taxZone->get('active'));
         $this->assertEquals('countries', $taxZone->get('type'));
         $this->assertEquals(['GB'], $taxZone->get('countries'));
         $this->assertEquals([
@@ -75,5 +73,79 @@ class StoreTaxZonesTest extends TestCase
             ->assertRedirect('/cp');
 
         $this->assertNull(TaxZone::find('united-kingdom'));
+    }
+
+    #[Test]
+    public function cant_store_tax_zone_with_the_same_country_as_another_tax_zone()
+    {
+        TaxClass::make()->handle('standard')->set('name', 'Standard')->save();
+        TaxClass::make()->handle('reduced')->set('name', 'Reduced')->save();
+
+        TaxZone::make()->handle('uk-original')->data(['type' => 'countries', 'countries' => ['GB']])->save();
+
+        $this
+            ->actingAs(User::make()->makeSuper()->save())
+            ->post(cp_route('simple-commerce.tax-zones.store'), [
+                'name' => 'United Kingdom',
+                'type' => 'countries',
+                'countries' => ['GB'],
+                'rates' => [
+                    'standard' => 20,
+                    'reduced' => 5,
+                ],
+            ])
+            ->assertSessionHasErrors('type');
+
+        $this->assertNull(TaxZone::find('united-kingdom'));
+    }
+
+    #[Test]
+    public function cant_store_tax_zone_with_the_same_state_as_another_tax_zone()
+    {
+        TaxClass::make()->handle('standard')->set('name', 'Standard')->save();
+        TaxClass::make()->handle('reduced')->set('name', 'Reduced')->save();
+
+        TaxZone::make()->handle('uk-original')->data(['type' => 'states', 'countries' => ['GB'], 'states' => ['GLG', 'SLK']])->save();
+
+        $this
+            ->actingAs(User::make()->makeSuper()->save())
+            ->post(cp_route('simple-commerce.tax-zones.store'), [
+                'name' => 'Glasgow(ish)',
+                'type' => 'states',
+                'countries' => ['GB'],
+                'states' => ['GLG', 'SLK'],
+                'rates' => [
+                    'standard' => 20,
+                    'reduced' => 5,
+                ],
+            ])
+            ->assertSessionHasErrors('type');
+
+        $this->assertNull(TaxZone::find('glasgowish'));
+    }
+
+    #[Test]
+    public function cant_store_tax_zone_with_the_same_postcodes_as_another_tax_zone()
+    {
+        TaxClass::make()->handle('standard')->set('name', 'Standard')->save();
+        TaxClass::make()->handle('reduced')->set('name', 'Reduced')->save();
+
+        TaxZone::make()->handle('uk-original')->data(['type' => 'postcodes', 'countries' => ['GB'], 'postcodes' => ['G*']])->save();
+
+        $this
+            ->actingAs(User::make()->makeSuper()->save())
+            ->post(cp_route('simple-commerce.tax-zones.store'), [
+                'name' => 'Glasgow(ish)',
+                'type' => 'postcodes',
+                'countries' => ['GB'],
+                'postcodes' => ['G*'],
+                'rates' => [
+                    'standard' => 20,
+                    'reduced' => 5,
+                ],
+            ])
+            ->assertSessionHasErrors('type');
+
+        $this->assertNull(TaxZone::find('glasgowish'));
     }
 }

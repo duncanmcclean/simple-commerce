@@ -5,6 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Taxes;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxZone;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxZoneRepository as Contract;
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
+use DuncanMcClean\SimpleCommerce\Rules\UniqueTaxZone;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Blueprint;
@@ -88,7 +89,7 @@ class TaxZoneRepository implements Contract
                                             'states' => __('Limit to states'),
                                             'postcodes' => __('Limit to postcodes'),
                                         ],
-                                        'validate' => 'required',
+                                        'validate' => ['required', new UniqueTaxZone],
                                     ],
                                 ],
                                 [
@@ -97,7 +98,7 @@ class TaxZoneRepository implements Contract
                                         'type' => 'dictionary',
                                         'display' => __('Countries'),
                                         'dictionary' => 'countries',
-                                        'validate' => 'required|min:1',
+                                        'validate' => ['required', 'min:1'],
                                     ],
                                 ],
                                 [
