@@ -39,7 +39,6 @@ class UpdateTaxZonesTest extends TestCase
             ->actingAs(User::make()->makeSuper()->save())
             ->patch(cp_route('simple-commerce.tax-zones.update', $taxZone->handle()), [
                 'name' => 'United Kingdom',
-                'active' => true,
                 'type' => 'countries',
                 'countries' => ['GB'],
                 'rates' => [
@@ -71,7 +70,6 @@ class UpdateTaxZonesTest extends TestCase
             ->actingAs(User::make()->assignRole('test')->save())
             ->patch(cp_route('simple-commerce.tax-zones.update', $taxZone->handle()), [
                 'name' => 'United Kingdom',
-                'active' => true,
                 'type' => 'countries',
                 'countries' => ['GB'],
                 'rates' => [

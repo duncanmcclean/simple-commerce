@@ -65,7 +65,6 @@ class StoreTaxZonesTest extends TestCase
             ->actingAs(User::make()->assignRole('test')->save())
             ->post(cp_route('simple-commerce.tax-zones.store'), [
                 'name' => 'United Kingdom',
-                'active' => true,
                 'type' => 'countries',
                 'countries' => ['GB'],
                 'rates' => [

@@ -75,16 +75,6 @@ class TaxZoneRepository implements Contract
                                         'type' => 'text',
                                         'display' => __('Name'),
                                         'validate' => 'required',
-                                        'width' => 75,
-                                    ],
-                                ],
-                                [
-                                    'handle' => 'active',
-                                    'field' => [
-                                        'type' => 'toggle',
-                                        'display' => __('Active?'),
-                                        'width' => 25,
-                                        'default' => true,
                                     ],
                                 ],
                                 [
