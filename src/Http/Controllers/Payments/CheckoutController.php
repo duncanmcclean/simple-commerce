@@ -2,15 +2,20 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Payments;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as CartContract;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
 use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\PaymentGateway;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\ValidatesStock;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 use Statamic\Exceptions\NotFoundHttpException;
 
@@ -39,11 +44,6 @@ class CheckoutController
 
             if (! $order) {
                 $order = tap(Order::makeFromCart($cart))->save();
-
-                // TODO: Consider whether this is the correct timing for this event to be fired.
-                if ($order->coupon()) {
-                    event(new CouponRedeemed($order->coupon(), $order));
-                }
             }
 
             if ($order->isFree()) {
@@ -51,6 +51,12 @@ class CheckoutController
             } else {
                 $paymentGateway->process($order, $request);
                 $order->set('payment_gateway', $paymentGateway::handle())->save();
+            }
+
+            $this->updateStock($order);
+
+            if ($order->coupon()) {
+                event(new CouponRedeemed($order->coupon(), $order));
             }
         } catch (ValidationException|PreventCheckout $e) {
             $paymentGateway->cancel($cart);
@@ -73,7 +79,7 @@ class CheckoutController
         );
     }
 
-    private function ensureCouponIsValid($cart, Request $request): void
+    private function ensureCouponIsValid(CartContract $cart, Request $request): void
     {
         if (! $cart->coupon()) {
             return;
@@ -86,13 +92,50 @@ class CheckoutController
         }
     }
 
-    public function ensureProductsAreAvailable($cart, Request $request): void
+    private function ensureProductsAreAvailable(CartContract $cart, Request $request): void
     {
         $cart->lineItems()->each(function (LineItem $lineItem) use ($request, $cart) {
             try {
                 $this->validateStock($request, $cart, $lineItem);
             } catch (ValidationException) {
                 throw new PreventCheckout(__('One or more items in your cart are no longer available.'));
+            }
+        });
+    }
+
+    private function updateStock(OrderContract $order): void
+    {
+        $order->lineItems()->each(function (LineItem $lineItem) {
+            if ($lineItem->product()->type() === ProductType::Product) {
+                $product = $lineItem->product();
+
+                // When the Price field isn't localized, we need to update the stock on the origin entry.
+                if ($product->hasOrigin() && ! $product->blueprint()->field('stock')?->isLocalizable()) {
+                    $product = Product::find($product->origin()->id());
+                }
+
+                $product->set('stock', $product->stock() - $lineItem->quantity())->save();
+            }
+
+            if ($lineItem->product()->type() === ProductType::Variant) {
+                $product = $lineItem->product();
+
+                // When the Product Variants field isn't localized, we need to update the stock on the origin entry.
+                if ($product->hasOrigin() && ! $product->blueprint()->field('product_variants')?->isLocalizable()) {
+                    $product = Product::find($product->origin()->id());
+                }
+
+                $productVariants = $product->productVariants();
+
+                $productVariants['options'] = collect(Arr::get($productVariants, 'options'))->map(function ($variant) use ($lineItem) {
+                    if ($variant['key'] === $lineItem->variant()->key()) {
+                        $variant['stock'] -= $lineItem->quantity();
+                    }
+
+                    return $variant;
+                })->all();
+
+                $product->set('product_variants', $productVariants)->save();
             }
         });
     }

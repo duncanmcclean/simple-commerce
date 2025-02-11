@@ -11,6 +11,7 @@ use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Payments\Gateways\PaymentGateway;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Collection;
@@ -115,6 +116,47 @@ class CheckoutTest extends TestCase
     }
 
     #[Test]
+    public function ensure_product_stock_field_is_updated()
+    {
+        $cart = $this->makeCart();
+        $cart->lineItems()->update(123, ['quantity' => 2]);
+        $cart->save();
+
+        $product = Entry::find('product-1');
+        $product->set('stock', 10);
+        $product->save();
+
+        $this
+            ->get('/!/simple-commerce/payments/fake/checkout')
+            ->assertRedirect();
+
+        $this->assertEquals(8, $product->fresh()->get('stock'));
+    }
+
+    #[Test]
+    public function ensure_product_variant_stock_field_is_updated()
+    {
+        $cart = $this->makeCart();
+        $cart->lineItems()->update(123, ['quantity' => 2, 'variant' => 'Red']);
+        $cart->save();
+
+        $product = Entry::find('product-1');
+        $product->set('product_variants', [
+            'variants' => [['name' => 'Colour', 'values' => ['Red']]],
+            'options' => [['key' => 'Red', 'variant' => 'Red', 'price' => 2550, 'stock' => 10]],
+        ]);
+        $product->save();
+
+        $this
+            ->get('/!/simple-commerce/payments/fake/checkout')
+            ->assertRedirect();
+
+        $productVariant = Arr::get($product->fresh()->get('product_variants'), 'options.0');
+
+        $this->assertEquals(8, $productVariant['stock']);
+    }
+
+    #[Test]
     public function cant_checkout_with_invalid_coupon()
     {
         $coupon = tap(Coupon::make()->code('foobar')->type(CouponType::Percentage)->amount(50)->set('expires_at', '2025-01-01'))->save();
@@ -157,7 +199,7 @@ class CheckoutTest extends TestCase
 
         $cart = Cart::make()
             ->customer(['name' => 'John Doe', 'email' => 'john.doe@example.com'])
-            ->lineItems([['product' => 'product-1', 'total' => 5000, 'quantity' => 1]])
+            ->lineItems([['id' => '123', 'product' => 'product-1', 'total' => 5000, 'quantity' => 1]])
             ->merge([
                 'shipping_line_1' => '123 Fake St',
                 'shipping_city' => 'Fakeville',
