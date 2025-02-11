@@ -232,12 +232,10 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
             return null;
         }
 
-        // TODO: Maybe we *should* keep this data around for historical
-        // purposes instead of needing to reconstruct it?
         return ShippingOption::make($this->shippingMethod())
-            ->name($this->get('shipping_option'))
-            ->handle($this->get('shipping_option'))
-            ->price($this->shippingTotal());
+            ->name(Arr::get($this->get('shipping_option'), 'name'))
+            ->handle(Arr::get($this->get('shipping_option'), 'handle'))
+            ->price(Arr::get($this->get('shipping_option'), 'price'));
     }
 
     public function paymentGateway(): ?PaymentGateway

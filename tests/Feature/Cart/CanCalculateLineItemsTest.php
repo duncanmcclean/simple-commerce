@@ -14,6 +14,13 @@ class CanCalculateLineItemsTest extends TestCase
 {
     use PreventsSavingStacheItemsToDisk;
 
+    protected function tearDown(): void
+    {
+        CalculateLineItems::priceHook(null);
+
+        parent::tearDown();
+    }
+
     #[Test]
     public function total_can_be_calculated_correctly()
     {

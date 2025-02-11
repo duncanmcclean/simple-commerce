@@ -22,6 +22,7 @@ use DuncanMcClean\SimpleCommerce\Shipping\ShippingMethod;
 use DuncanMcClean\SimpleCommerce\Shipping\ShippingOption;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Statamic\Contracts\Data\Augmentable;
 use Statamic\Contracts\Data\Augmented;
@@ -137,7 +138,11 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             return null;
         }
 
-        return $this->shippingMethod()->options($this)->firstWhere('handle', $this->get('shipping_option'));
+        $shippingOption = is_array($this->get('shipping_option'))
+            ? Arr::get($this->get('shipping_option'), 'handle')
+            : $this->get('shipping_option');
+
+        return $this->shippingMethod()->options($this)->firstWhere('handle', $shippingOption);
     }
 
     public function paymentGateway(): ?PaymentGateway

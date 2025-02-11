@@ -3,6 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Shipping;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart;
+use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
+use DuncanMcClean\SimpleCommerce\Support\Money;
 use Illuminate\Support\Collection;
 use Statamic\Extend\HasHandle;
 use Statamic\Extend\HasTitle;
@@ -18,4 +20,12 @@ abstract class ShippingMethod
     }
 
     abstract public function options(Cart $cart): Collection;
+
+    public function fieldtypeDetails(Order $order): array
+    {
+        return array_filter([
+            __('Amount') => Money::format($order->shippingTotal(), $order->site()),
+            __('Tracking Number') => $order->get('tracking_number'),
+        ]);
+    }
 }

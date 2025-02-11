@@ -10,7 +10,7 @@ use Statamic\Support\Traits\Hookable;
 
 class CalculateLineItems
 {
-    protected static Closure $priceHook;
+    protected static $priceHook;
 
     public function handle(Cart $cart, Closure $next)
     {
@@ -33,7 +33,7 @@ class CalculateLineItems
         return $next($cart);
     }
 
-    public static function priceHook(Closure $closure)
+    public static function priceHook(?Closure $closure)
     {
         static::$priceHook = $closure;
 

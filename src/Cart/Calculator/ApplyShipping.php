@@ -19,6 +19,7 @@ class ApplyShipping
         }
 
         $cart->shippingTotal($shippingOption->price());
+        $cart->set('shipping_option', $shippingOption->toArray());
 
         return $next($cart);
     }

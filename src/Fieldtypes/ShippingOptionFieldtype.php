@@ -7,16 +7,12 @@ use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use Statamic\Fields\Fieldtype;
 use Statamic\Fieldtypes\Relationship;
 
-class PaymentGatewayFieldtype extends Fieldtype
+class ShippingOptionFieldtype extends Fieldtype
 {
     protected $selectable = false;
 
     public function preProcessIndex($data)
     {
-        return collect($data)->map(function ($item) {
-            $paymentGateway = PaymentGateway::find($item);
-
-            return $paymentGateway->title();
-        })->implode(', ');
+        return $this->field->parent()->shippingOption()?->name();
     }
 }

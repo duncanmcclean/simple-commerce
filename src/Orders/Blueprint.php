@@ -173,7 +173,7 @@ class Blueprint
                                 ],
                                 [
                                     'handle' => 'shipping_option',
-                                    'field' => ['type' => 'text', 'display' => __('Shipping Option'), 'visibility' => 'hidden', 'listable' => 'hidden'],
+                                    'field' => ['type' => 'shipping_option', 'display' => __('Shipping Option'), 'visibility' => 'hidden', 'listable' => 'hidden', 'max_items' => 1],
                                 ],
                                 [
                                     'handle' => 'tracking_number',
