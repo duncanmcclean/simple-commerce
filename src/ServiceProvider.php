@@ -29,6 +29,7 @@ class ServiceProvider extends AddonServiceProvider
     // TODO: AddonServiceProvider::bootScopes() only autoloads from src/Scopes, not src/Scopes/Filters.
     protected $scopes = [
         Scopes\Filters\CouponType::class,
+        Scopes\Filters\OrderSite::class,
         Scopes\Filters\OrderStatus::class,
     ];
 

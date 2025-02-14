@@ -28,6 +28,25 @@ class OrdersTagTest extends TestCase
     }
 
     #[Test]
+    public function it_filters_orders_by_site()
+    {
+        $this->setSites([
+            'en' => ['name' => 'English', 'locale' => 'en_US', 'url' => 'http://test.com/'],
+            'de' => ['name' => 'German', 'locale' => 'de_DE', 'url' => 'http://test.com/de/'],
+        ]);
+
+        Order::make()->orderNumber(1000)->site('en')->save();
+        Order::make()->orderNumber(1001)->site('de')->save();
+        Order::make()->orderNumber(1002)->site('de')->save();
+
+        $output = $this->tag('{{ orders site="de" }}{{ order_number }}{{ /orders }}');
+
+        $this->assertStringNotContainsString('1000', $output);
+        $this->assertStringContainsString('1001', $output);
+        $this->assertStringContainsString('1002', $output);
+    }
+
+    #[Test]
     public function it_filters_orders_using_conditions()
     {
         Order::make()->orderNumber(1000)->grandTotal(1000)->save();

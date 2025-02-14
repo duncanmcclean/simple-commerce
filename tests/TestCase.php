@@ -5,6 +5,7 @@ namespace Tests;
 use DuncanMcClean\SimpleCommerce\Payments\PaymentServiceProvider;
 use DuncanMcClean\SimpleCommerce\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Statamic\Facades\Config;
 use Statamic\Facades\File;
 use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
@@ -52,5 +53,12 @@ abstract class TestCase extends AddonTestCase
         return array_merge(parent::getPackageProviders($app), [
             PaymentServiceProvider::class,
         ]);
+    }
+
+    protected function setSites($sites)
+    {
+        Site::setSites($sites);
+
+        Config::set('statamic.system.multisite', Site::hasMultiple());
     }
 }

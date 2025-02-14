@@ -4,8 +4,10 @@ namespace DuncanMcClean\SimpleCommerce\Stache\Stores;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use Illuminate\Support\Str;
 use Statamic\Entries\GetDateFromPath;
 use Statamic\Entries\GetSlugFromPath;
+use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stores\BasicStore;
 use Statamic\Support\Arr;
@@ -13,7 +15,7 @@ use Statamic\Support\Arr;
 class OrdersStore extends BasicStore
 {
     protected $storeIndexes = [
-        'order_number', 'date', 'cart', 'customer',
+        'site', 'order_number', 'date', 'cart', 'customer',
     ];
 
     public function key()
@@ -28,9 +30,11 @@ class OrdersStore extends BasicStore
 
     public function makeItemFromFile($path, $contents): OrderContract
     {
+        $site = $this->extractSiteFromPath($path);
         $data = YAML::file($path)->parse($contents);
 
         return Order::make()
+            ->site($site)
             ->id(Arr::pull($data, 'id'))
             ->orderNumber((new GetSlugFromPath)($path))
             ->date((new GetDateFromPath)($path))
@@ -45,5 +49,19 @@ class OrdersStore extends BasicStore
             ->taxTotal(Arr::pull($data, 'tax_total'))
             ->shippingTotal(Arr::pull($data, 'shipping_total'))
             ->data($data);
+    }
+
+    protected function extractSiteFromPath($path)
+    {
+        $site = Site::default()->handle();
+
+        if (Site::multiEnabled()) {
+            $site = pathinfo($path, PATHINFO_DIRNAME);
+            $site = Str::after($site, $this->directory());
+
+            return $site;
+        }
+
+        return $site;
     }
 }

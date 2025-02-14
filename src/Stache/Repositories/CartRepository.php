@@ -9,6 +9,7 @@ use DuncanMcClean\SimpleCommerce\Exceptions\CartNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use Illuminate\Support\Facades\Cookie;
 use Statamic\Facades\Blink;
+use Statamic\Facades\Site;
 use Statamic\Stache\Stache;
 
 class CartRepository implements RepositoryContract
@@ -52,7 +53,7 @@ class CartRepository implements RepositoryContract
     public function current(): ?Cart
     {
         if (! $this->hasCurrentCart()) {
-            return $this->make();
+            return $this->make()->site($this->determineSiteFromRequest());
         }
 
         if (self::$current) {
@@ -82,7 +83,10 @@ class CartRepository implements RepositoryContract
 
     private function getKey(): string
     {
-        return config('statamic.simple-commerce.carts.cookie_name');
+        return vsprintf('%s%s', [
+            config('statamic.simple-commerce.carts.cookie_name'),
+            Site::multiEnabled() ? '_'.$this->determineSiteFromRequest()->handle() : '',
+        ]);
     }
 
     public function make(): Cart
@@ -117,5 +121,14 @@ class CartRepository implements RepositoryContract
             Cart::class => \DuncanMcClean\SimpleCommerce\Cart\Cart::class,
             QueryBuilder::class => \DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder::class,
         ];
+    }
+
+    private function determineSiteFromRequest(): \Statamic\Sites\Site
+    {
+        Site::resolveCurrentUrlUsing(function () {
+            return request()->header('referer');
+        });
+
+        return Site::current();
     }
 }

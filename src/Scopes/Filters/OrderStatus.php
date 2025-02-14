@@ -38,6 +38,6 @@ class OrderStatus extends Filter
 
     public function visibleTo($key)
     {
-        return in_array($key, ['orders']);
+        return $key === 'orders';
     }
 }

@@ -4,6 +4,8 @@ namespace DuncanMcClean\SimpleCommerce\Stache\Stores;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as CartContract;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
+use Illuminate\Support\Str;
+use Statamic\Facades\Site;
 use Statamic\Facades\YAML;
 use Statamic\Stache\Stores\BasicStore;
 use Statamic\Support\Arr;
@@ -11,8 +13,7 @@ use Statamic\Support\Arr;
 class CartsStore extends BasicStore
 {
     protected $storeIndexes = [
-        'customer',
-        'updated_at',
+        'site', 'customer', 'updated_at',
     ];
 
     public function key()
@@ -27,9 +28,11 @@ class CartsStore extends BasicStore
 
     public function makeItemFromFile($path, $contents): CartContract
     {
+        $site = $this->extractSiteFromPath($path);
         $data = YAML::file($path)->parse($contents);
 
         return Cart::make()
+            ->site($site)
             ->id(Arr::pull($data, 'id'))
             ->customer(Arr::pull($data, 'customer'))
             ->coupon(Arr::pull($data, 'coupon'))
@@ -40,5 +43,19 @@ class CartsStore extends BasicStore
             ->taxTotal(Arr::pull($data, 'tax_total'))
             ->shippingTotal(Arr::pull($data, 'shipping_total'))
             ->data($data);
+    }
+
+    protected function extractSiteFromPath($path)
+    {
+        $site = Site::default()->handle();
+
+        if (Site::multiEnabled()) {
+            $site = pathinfo($path, PATHINFO_DIRNAME);
+            $site = Str::after($site, $this->directory());
+
+            return $site;
+        }
+
+        return $site;
     }
 }

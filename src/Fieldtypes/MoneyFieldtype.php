@@ -75,6 +75,7 @@ class MoneyFieldtype extends Fieldtype
 
     public function augment($value)
     {
+        // todo: make this the right currency
         if (is_null($value)) {
             return $this->config('save_zero_value', false)
                 ? Money::format(0, Site::current())

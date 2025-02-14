@@ -33,10 +33,10 @@ use Statamic\Data\HasAugmentedInstance;
 use Statamic\Data\HasDirtyState;
 use Statamic\Data\TracksQueriedColumns;
 use Statamic\Data\TracksQueriedRelations;
+use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use Statamic\Fields\Blueprint as StatamicBlueprint;
-use Statamic\Sites\Site;
 use Statamic\Support\Str;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 
@@ -48,6 +48,7 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
     protected $customer;
     protected $coupon;
     protected $lineItems;
+    protected $site;
     protected $initialPath;
     private bool $withoutRecalculating = false;
 
@@ -173,10 +174,25 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
             ->args(func_get_args());
     }
 
-    // TODO: Change this when we add support for multi-site.
-    public function site(): Site
+    public function site($site = null)
     {
-        return \Statamic\Facades\Site::default();
+        return $this
+            ->fluentlyGetOrSet('site')
+            ->setter(function ($site) {
+                return $site instanceof \Statamic\Sites\Site ? $site->handle() : $site;
+            })
+            ->getter(function ($site) {
+                if (! $site) {
+                    return Site::default();
+                }
+
+                if ($site instanceof \Statamic\Sites\Site) {
+                    return $site;
+                }
+
+                return Site::get($site);
+            })
+            ->args(func_get_args());
     }
 
     public function saveWithoutRecalculating(): bool
@@ -226,8 +242,9 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
 
     public function buildPath(): string
     {
-        return vsprintf('%s/%s.yaml', [
+        return vsprintf('%s/%s%s.yaml', [
             rtrim(Stache::store('carts')->directory(), '/'),
+            Site::multiEnabled() ? $this->site()->handle().'/' : '',
             $this->id(),
         ]);
     }

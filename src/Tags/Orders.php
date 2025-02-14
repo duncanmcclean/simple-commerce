@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use Statamic\Facades\Site;
 use Statamic\Tags\Concerns\GetsQueryResults;
 use Statamic\Tags\Concerns\OutputsItems;
 use Statamic\Tags\Concerns\QueriesConditions;
@@ -18,6 +19,7 @@ class Orders extends Tags
     {
         $query = Order::query();
 
+        $this->querySite($query);
         $this->queryConditions($query);
         $this->queryOrderBys($query);
         $this->queryScopes($query);
@@ -25,5 +27,16 @@ class Orders extends Tags
         $results = $this->results($query);
 
         return $this->output($results);
+    }
+
+    protected function querySite($query)
+    {
+        $site = $this->params->get(['site', 'locale'], Site::current()->handle());
+
+        if ($site === '*' || ! Site::hasMultiple()) {
+            return;
+        }
+
+        return $query->where('site', $site);
     }
 }

@@ -32,7 +32,7 @@ use Statamic\Data\TracksQueriedRelations;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use Statamic\Fields\Blueprint as StatamicBlueprint;
-use Statamic\Sites\Site;
+use Statamic\Facades\Site;
 use Statamic\Support\Str;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
 use DuncanMcClean\SimpleCommerce\Facades;
@@ -49,6 +49,7 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
     protected $customer;
     protected $coupon;
     protected $lineItems;
+    protected $site;
     protected $initialPath;
 
     public function __construct()
@@ -247,10 +248,25 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
         return Facades\PaymentGateway::find($this->get('payment_gateway'));
     }
 
-    // TODO: Change this when we add support for multi-site.
-    public function site(): Site
+    public function site($site = null)
     {
-        return \Statamic\Facades\Site::default();
+        return $this
+            ->fluentlyGetOrSet('site')
+            ->setter(function ($site) {
+                return $site instanceof \Statamic\Sites\Site ? $site->handle() : $site;
+            })
+            ->getter(function ($site) {
+                if (! $site) {
+                    return Site::default();
+                }
+
+                if ($site instanceof \Statamic\Sites\Site) {
+                    return $site;
+                }
+
+                return Site::get($site);
+            })
+            ->args(func_get_args());
     }
 
     public function save(): bool
@@ -290,8 +306,9 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
 
     public function buildPath(): string
     {
-        return vsprintf('%s/%s.%s.yaml', [
+        return vsprintf('%s/%s%s.%s.yaml', [
             rtrim(Stache::store('orders')->directory(), '/'),
+            Site::multiEnabled() ? $this->site()->handle().'/' : '',
             $this->date()->format('Y-m-d-His'),
             $this->orderNumber(),
         ]);
