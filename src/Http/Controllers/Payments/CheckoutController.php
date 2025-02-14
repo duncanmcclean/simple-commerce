@@ -5,6 +5,8 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Payments;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as CartContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
+use DuncanMcClean\SimpleCommerce\Events\ProductNoStockRemaining;
+use DuncanMcClean\SimpleCommerce\Events\ProductStockLow;
 use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
@@ -115,6 +117,14 @@ class CheckoutController
                 }
 
                 $product->set('stock', $product->stock() - $lineItem->quantity())->save();
+
+                if ($product->stock() < config('statamic.simple-commerce.products.low_stock_threshold')) {
+                    event(new ProductStockLow($product));
+                }
+
+                if ($product->stock() === 0) {
+                    event(new ProductNoStockRemaining($product));
+                }
             }
 
             if ($lineItem->product()->type() === ProductType::Variant) {
@@ -136,6 +146,14 @@ class CheckoutController
                 })->all();
 
                 $product->set('product_variants', $productVariants)->save();
+
+                if ($product->stock() < config('statamic.simple-commerce.products.low_stock_threshold')) {
+                    event(new ProductStockLow($product->variant($lineItem->variant()->key())));
+                }
+
+                if ($product->stock() === 0) {
+                    event(new ProductNoStockRemaining($product->variant($lineItem->variant()->key())));
+                }
             }
         });
     }

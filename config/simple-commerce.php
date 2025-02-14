@@ -4,6 +4,8 @@ return [
 
     'products' => [
         'collections' => ['products'],
+
+        'low_stock_threshold' => 5,
     ],
 
     'carts' => [

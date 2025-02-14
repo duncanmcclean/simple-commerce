@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
 use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
+use DuncanMcClean\SimpleCommerce\Events\ProductNoStockRemaining;
+use DuncanMcClean\SimpleCommerce\Events\ProductStockLow;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
@@ -118,6 +120,10 @@ class CheckoutTest extends TestCase
     #[Test]
     public function ensure_product_stock_field_is_updated()
     {
+        Event::fake();
+
+        config()->set('statamic.simple-commerce.products.low_stock_threshold', 10);
+
         $cart = $this->makeCart();
         $cart->lineItems()->update(123, ['quantity' => 2]);
         $cart->save();
@@ -131,11 +137,17 @@ class CheckoutTest extends TestCase
             ->assertRedirect();
 
         $this->assertEquals(8, $product->fresh()->get('stock'));
+
+        Event::assertDispatched(ProductStockLow::class);
     }
 
     #[Test]
     public function ensure_product_variant_stock_field_is_updated()
     {
+        Event::fake();
+
+        config()->set('statamic.simple-commerce.products.low_stock_threshold', 10);
+
         $cart = $this->makeCart();
         $cart->lineItems()->update(123, ['quantity' => 2, 'variant' => 'Red']);
         $cart->save();
@@ -154,6 +166,31 @@ class CheckoutTest extends TestCase
         $productVariant = Arr::get($product->fresh()->get('product_variants'), 'options.0');
 
         $this->assertEquals(8, $productVariant['stock']);
+
+        Event::assertDispatched(ProductStockLow::class);
+    }
+
+    #[Test]
+    public function it_dispatches_no_stock_remaining_event_when_stock_is_zero()
+    {
+        Event::fake();
+
+        $cart = $this->makeCart();
+        $cart->lineItems()->update(123, ['quantity' => 2]);
+        $cart->save();
+
+        $product = Entry::find('product-1');
+        $product->set('stock', 2);
+        $product->save();
+
+        $this
+            ->get('/!/simple-commerce/payments/fake/checkout')
+            ->assertRedirect();
+
+        $this->assertEquals(0, $product->fresh()->get('stock'));
+
+        Event::assertDispatched(ProductStockLow::class);
+        Event::assertDispatched(ProductNoStockRemaining::class);
     }
 
     #[Test]
