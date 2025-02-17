@@ -47,6 +47,23 @@ class Refund extends Action
         ];
     }
 
+    /**
+     * We're overriding this method in order to set the "parent" of the fields,
+     * which is used to determine the currency of the Amount field.
+     *
+     * @return \Statamic\Fields\Fields
+     */
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        if ($order = $this->items->first()) {
+            $fields->setParent($order);
+        }
+
+        return $fields;
+    }
+
     public function buttonText()
     {
         /** @translation */

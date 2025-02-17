@@ -5,39 +5,30 @@ namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 use DuncanMcClean\SimpleCommerce\Support\Money;
 use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
+use Statamic\Statamic;
 
 class MoneyFieldtype extends Fieldtype
 {
-    protected $icon = 'generic';
-
     public function configFieldItems(): array
     {
         return [
-            'read_only' => [
-                'type' => 'toggle',
-                'instructions' => __('Should this field be read only?'),
-                'width' => 50,
-            ],
             'save_zero_value' => [
                 'type' => 'toggle',
                 'display' => __('Save Zero Value?'),
                 'instructions' => __('When the value is zero, should it be saved as zero or be left empty?'),
-                'width' => 50,
             ],
         ];
     }
 
     public function preload()
     {
-        return Money::get(Site::selected());
+        return Money::get($this->determineSite());
     }
 
     public function preProcess($data)
     {
-        if (! $data) {
-            return $this->config('save_zero_value', false)
-                ? 0
-                : null;
+        if (! $data && ! $this->config('save_zero_value', false)) {
+            return null;
         }
 
         // Replaces the second-last character with a decimal point
@@ -45,54 +36,48 @@ class MoneyFieldtype extends Fieldtype
             $data = substr_replace($data, '.', -2, 0);
         }
 
-        return $data;
+        return $data ?? 0;
     }
 
     public function process($data)
     {
-        if ($data === '' || $data === null) {
-            return $this->config('save_zero_value', false)
-                ? 0
-                : null;
+        if (! $data && ! $this->config('save_zero_value', false)) {
+            return null;
         }
 
         if (! str_contains($data, '.')) {
             $data = $data * 100;
         }
 
-        return (int) str_replace('.', '', $data);
-    }
-
-    public static function title()
-    {
-        return __('Money');
-    }
-
-    public function component(): string
-    {
-        return 'money';
+        return (int) str_replace('.', '', $data ?? 0);
     }
 
     public function augment($value)
     {
-        // todo: make this the right currency
-        if (is_null($value)) {
-            return $this->config('save_zero_value', false)
-                ? Money::format(0, Site::current())
-                : null;
+        if (! $value && ! $this->config('save_zero_value', false)) {
+            return null;
         }
 
-        return Money::format($value, Site::current());
+        return Money::format($value ?? 0, $this->determineSite());
     }
 
     public function preProcessIndex($data)
     {
-        if (! $data) {
-            return $this->config('save_zero_value', false)
-                ? Money::format(0, Site::selected())
-                : null;
+        if (! $data && ! $this->config('save_zero_value', false)) {
+            return null;
         }
 
-        return Money::format($data, Site::selected());
+        return Money::format($data ?? 0, $this->determineSite());
+    }
+
+    private function determineSite(): \Statamic\Sites\Site
+    {
+        $site = Statamic::isCpRoute() ? Site::selected() : Site::current();
+
+        if ($this->field?->parent() && method_exists($this->field->parent(), 'site')) {
+            $site = $this->field->parent()->site();
+        }
+
+        return $site;
     }
 }

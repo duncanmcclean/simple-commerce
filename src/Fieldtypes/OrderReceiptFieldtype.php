@@ -33,10 +33,10 @@ class OrderReceiptFieldtype extends Fieldtype
                     'key' => $lineItem->variant()->key(),
                     'name' => $lineItem->variant()->name(),
                 ] : null,
-                'unit_price' => Money::format($lineItem->unitPrice(), Site::selected()),
+                'unit_price' => Money::format($lineItem->unitPrice(), $order->site()),
                 'quantity' => $lineItem->quantity(),
-                'sub_total' => Money::format($lineItem->subTotal(), Site::selected()),
-                'total' => Money::format($lineItem->total(), Site::selected()),
+                'sub_total' => Money::format($lineItem->subTotal(), $order->site()),
+                'total' => Money::format($lineItem->total(), $order->site()),
             ])->all(),
             'coupon' => $order->coupon() ? [
                 'code' => $order->coupon()->code(),
@@ -44,25 +44,25 @@ class OrderReceiptFieldtype extends Fieldtype
             ] : null,
             'shipping' => $order->shippingOption() ? [
                 'name' => $order->shippingOption()->name(),
-                'price' => Money::format($order->shippingOption()->price(), Site::selected()),
+                'price' => Money::format($order->shippingOption()->price(), $order->site()),
             ] : null,
             'taxes' => ! config('statamic.simple-commerce.taxes.price_includes_tax') ? [
                 'breakdown' => collect($order->taxBreakdown())->map(fn ($tax) => [
                     'rate' => $tax['rate'],
                     'description' => $tax['description'],
-                    'amount' => Money::format($tax['amount'], Site::selected()),
+                    'amount' => Money::format($tax['amount'], $order->site()),
                 ])->all(),
             ] : null,
             'refund' => [
                 'issued' => $order->get('amount_refunded', 0) > 0,
             ],
             'totals' => [
-                'sub_total' => Money::format($order->subTotal(), Site::selected()),
-                'discount_total' => Money::format($order->discountTotal(), Site::selected()),
-                'shipping_total' => Money::format($order->shippingTotal(), Site::selected()),
-                'tax_total' => Money::format($order->taxTotal(), Site::selected()),
-                'grand_total' => Money::format($order->grandTotal(), Site::selected()),
-                'amount_refunded' => Money::format($order->get('amount_refunded'), Site::selected()),
+                'sub_total' => Money::format($order->subTotal(), $order->site()),
+                'discount_total' => Money::format($order->discountTotal(), $order->site()),
+                'shipping_total' => Money::format($order->shippingTotal(), $order->site()),
+                'tax_total' => Money::format($order->taxTotal(), $order->site()),
+                'grand_total' => Money::format($order->grandTotal(), $order->site()),
+                'amount_refunded' => Money::format($order->get('amount_refunded'), $order->site()),
             ],
         ];
     }

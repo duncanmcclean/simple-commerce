@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Support;
 
 use DuncanMcClean\SimpleCommerce\Data\Currencies;
 use DuncanMcClean\SimpleCommerce\Exceptions\CurrencyFormatterNotWorking;
+use DuncanMcClean\SimpleCommerce\Exceptions\SiteWithoutCurrencyException;
 use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
 use Money\Formatter\IntlMoneyFormatter;
@@ -15,6 +16,10 @@ class Money
 {
     public static function get(Site $site): array
     {
+        if (! $site->attribute('currency')) {
+            throw new SiteWithoutCurrencyException($site);
+        }
+
         return Currencies::firstWhere('code', strtoupper($site->attribute('currency')));
     }
 
