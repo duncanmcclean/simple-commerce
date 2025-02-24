@@ -61,5 +61,5 @@
             "pestphp/pest-plugin": true
         }
     },
-    "minimum-stability": "alpha"
+    "minimum-stability": "dev"
 }
