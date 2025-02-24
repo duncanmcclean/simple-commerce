@@ -45,8 +45,8 @@
         "statamic-rad-pack/runway": "^7.13 || ^8.0",
         "orchestra/testbench": "^8.28 || ^9.6.1 || ^10.0",
         "phpunit/phpunit": "^10.5.35 || ^11.0",
-        "pestphp/pest": "^3.0",
-        "pestphp/pest-plugin-laravel": "^3.0",
+        "pestphp/pest": "^2.2 || ^3.0",
+        "pestphp/pest-plugin-laravel": "^2.0 || ^3.0",
         "spatie/ray": "^1.17",
         "spatie/test-time": "^1.3"
     },
