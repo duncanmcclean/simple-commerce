@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.8.0 (2025-02-14)
+
+### What's new
+* Laravel 12 support #1202 by @duncanmcclean
+
+
+
 ## v7.7.0 (2025-02-07)
 
 ### What's new
