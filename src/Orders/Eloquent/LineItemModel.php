@@ -34,6 +34,6 @@ class LineItemModel extends Model
 
     public function order(): BelongsTo
     {
-        return $this->belongsTo(app('simple-commerce.orders.eloquent.model'), 'order_id', 'uuid');
+        return $this->belongsTo(app('simple-commerce.orders.eloquent.model'), ownerKey: 'order_id');
     }
 }

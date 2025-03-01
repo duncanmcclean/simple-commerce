@@ -15,7 +15,7 @@ class Order extends StacheOrder
     {
         return (new static)
             ->model($model)
-            ->id($model->uuid)
+            ->id($model->id)
             ->site($model->site)
             ->orderNumber($model->order_number)
             ->date($model->date)
@@ -63,8 +63,8 @@ class Order extends StacheOrder
             'data' => $source->data()->all(),
         ];
 
-        if ($uuid = $source->id()) {
-            $attributes['uuid'] = $uuid;
+        if ($id = $source->id()) {
+            $attributes['id'] = $id;
         }
 
         if ($orderNumber = $source->orderNumber()) {
@@ -88,7 +88,7 @@ class Order extends StacheOrder
         $this->model = $model;
 
         if (! is_null($model)) {
-            $this->id($model->uuid);
+            $this->id($model->id);
         }
 
         return $this;

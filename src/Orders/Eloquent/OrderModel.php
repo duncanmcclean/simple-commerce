@@ -13,8 +13,6 @@ class OrderModel extends Model
 
     protected $guarded = [];
 
-    protected $primaryKey = 'uuid';
-
     public function casts(): array
     {
         return [
@@ -39,6 +37,6 @@ class OrderModel extends Model
 
     public function lineItems(): HasMany
     {
-        return $this->hasMany(app('simple-commerce.orders.eloquent.line_items_model'), 'order_id', 'uuid');
+        return $this->hasMany(app('simple-commerce.orders.eloquent.line_items_model'), 'order_id');
     }
 }

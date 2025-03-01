@@ -10,7 +10,7 @@ use Statamic\Query\EloquentQueryBuilder;
 class OrderQueryBuilder extends EloquentQueryBuilder
 {
     protected $columns = [
-        'uuid', 'order_number', 'date', 'site', 'cart', 'status', 'customer', 'coupon', 'grand_total',
+        'id', 'order_number', 'date', 'site', 'cart', 'status', 'customer', 'coupon', 'grand_total',
         'sub_total', 'discount_total', 'tax_total', 'shipping_total', 'line_items', 'data',
     ];
 
@@ -76,10 +76,6 @@ class OrderQueryBuilder extends EloquentQueryBuilder
     {
         if (! is_string($column)) {
             return $column;
-        }
-
-        if ($column === 'id') {
-            return 'uuid';
         }
 
         if (! in_array($column, $this->columns)) {

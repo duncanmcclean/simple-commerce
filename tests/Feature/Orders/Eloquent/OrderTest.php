@@ -70,9 +70,9 @@ class OrderTest extends TestCase
             'total' => 2500,
         ]);
 
-        $order = Order::find($model->uuid);
+        $order = Order::find($model->id);
 
-        $this->assertEquals($model->uuid, $order->id());
+        $this->assertEquals($model->id, $order->id());
         $this->assertEquals($model->order_number, $order->orderNumber());
         $this->assertEquals($model->date, $order->date());
         $this->assertEquals($model->site, $order->site()->handle());

@@ -115,7 +115,7 @@ class Database extends Command
         $query->chunk(50, function (Collection $orders) use ($progress) {
             $orders->each(function (OrderContract $order) use ($progress) {
                 $model = app('simple-commerce.orders.eloquent.model')::updateOrCreate(
-                    ['uuid' => $order->id()],
+                    ['id' => $order->id()],
                     [
                         'order_number' => $order->orderNumber(),
                         'date' => $order->date(),

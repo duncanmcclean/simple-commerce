@@ -14,7 +14,7 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->uuid();
+            $table->uuid('id');
             $table->integer('order_number')->autoIncrement();
             $table->timestamp('date');
             $table->string('site');
