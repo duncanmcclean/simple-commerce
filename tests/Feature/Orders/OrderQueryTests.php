@@ -6,57 +6,12 @@ use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use PHPUnit\Framework\Attributes\Test;
+use Statamic\Facades\Collection;
+use Statamic\Facades\Entry;
 use Statamic\Facades\User;
-use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
-use Tests\TestCase;
 
-class OrderTest extends TestCase
+trait OrderQueryTests
 {
-    use OrderQueryTests, PreventsSavingStacheItemsToDisk;
-
-    #[Test]
-    public function can_make_order_from_cart()
-    {
-        $cart = Cart::make()
-            ->id('abc')
-            ->lineItems([
-                [
-                    'product' => '123',
-                    'quantity' => 1,
-                    'total' => 2500,
-                ],
-            ])
-            ->grandTotal(2500)
-            ->subTotal(2500)
-            ->set('foo', 'bar')
-            ->set('baz', 'foobar');
-
-        $order = Order::makeFromCart($cart);
-
-        $this->assertInstanceOf(\DuncanMcClean\SimpleCommerce\Contracts\Orders\Order::class, $order);
-
-        $this->assertEquals($cart->lineItems(), $order->lineItems());
-        $this->assertEquals(2500, $order->grandTotal());
-        $this->assertEquals(2500, $order->subTotal());
-        $this->assertEquals(0, $order->discountTotal());
-        $this->assertEquals(0, $order->taxTotal());
-        $this->assertEquals(0, $order->shippingTotal());
-        $this->assertEquals('bar', $order->get('foo'));
-        $this->assertEquals('foobar', $order->get('baz'));
-    }
-
-    #[Test]
-    public function can_generate_order_number()
-    {
-        Order::make()->orderNumber(1000)->save();
-        Order::make()->orderNumber(1001)->save();
-        Order::make()->orderNumber(1002)->save();
-
-        $order = tap(Order::make())->save();
-
-        $this->assertEquals(1003, $order->orderNumber());
-    }
-
     #[Test]
     public function can_query_columns()
     {
@@ -132,5 +87,38 @@ class OrderTest extends TestCase
 
         $this->assertCount(2, $query);
         $this->assertEquals([123, 789], $query->map->id()->all());
+    }
+
+    #[Test]
+    public function can_query_line_items()
+    {
+        Cart::make()->id('abc')->save();
+        Cart::make()->id('def')->save();
+        Cart::make()->id('ghi')->save();
+
+        User::make()->id('foo')->email('foo@example.com')->save();
+
+        Collection::make('products')->save();
+
+        Entry::make()->id('one')->collection('products')->save();
+        Entry::make()->id('two')->collection('products')->save();
+
+        Order::make()->id('123')->cart('abc')->lineItems([['product' => 'one', 'total' => 1234, 'foo' => 'bar']])->customer('foo')->save();
+        Order::make()->id('456')->cart('def')->lineItems([['product' => 'two', 'total' => 1234, 'bar' => 'foo']])->customer('foo')->save();
+        Order::make()->id('789')->cart('ghi')->lineItems([['product' => 'one', 'total' => 1234, 'foo' => 'bar']])->customer('foo')->save();
+
+        $query = Order::query()->whereHasLineItem('product', 'one')->get();
+
+        $this->assertCount(2, $query);
+        $this->assertEquals([123, 789], $query->map->id()->all());
+
+        $query = Order::query()->whereHasLineItem(function ($query) {
+            $query
+                ->where('bar', 'foo')
+                ->where('total', 1234);
+        })->get();
+
+        $this->assertCount(1, $query);
+        $this->assertEquals([456], $query->map->id()->all());
     }
 }

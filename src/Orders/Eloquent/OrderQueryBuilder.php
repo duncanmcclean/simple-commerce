@@ -2,9 +2,11 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders\Eloquent;
 
+use DuncanMcClean\SimpleCommerce\Query\LineItemQueryBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Query\EloquentQueryBuilder;
+use Statamic\Query\ItemQueryBuilder;
 
 class OrderQueryBuilder extends EloquentQueryBuilder
 {
@@ -29,6 +31,33 @@ class OrderQueryBuilder extends EloquentQueryBuilder
         }
 
         return parent::where($column, $operator, $value, $boolean);
+    }
+
+    public function whereHasLineItem($column, $operator = null, $value = null, $boolean = 'and'): self
+    {
+        if (! $value) {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        if ($column instanceof \Closure) {
+            $query = app(LineItemQueryBuilder::class);
+            $column($query);
+
+            foreach ($query->getWheres() as $where) {
+                $this->whereHasLineItem($where['column'], $where['operator'], $where['value'], $where['boolean']);
+            }
+
+            return $this;
+        }
+
+        if ($this->builder->getConnection()->getDriverName() === 'sqlite') {
+            $this->builder->whereRaw("EXISTS (SELECT 1 FROM json_each(orders.line_items) WHERE json_each.value ->> '{$column}' {$operator} ?)", [$value]);
+        } else {
+            $this->builder->whereJsonContains("line_items->{$column}", $value, $boolean);
+        }
+
+        return $this;
     }
 
     /**

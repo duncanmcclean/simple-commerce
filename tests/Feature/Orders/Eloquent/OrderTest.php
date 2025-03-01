@@ -5,17 +5,19 @@ namespace Tests\Feature\Orders\Eloquent;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel;
-use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
+use Statamic\Facades\Collection;
+use Statamic\Facades\Entry;
 use Statamic\Facades\User;
 use Statamic\Statamic;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
+use Tests\Feature\Orders\OrderQueryTests;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
 {
-    use PreventsSavingStacheItemsToDisk, RefreshDatabase;
+    use OrderQueryTests, PreventsSavingStacheItemsToDisk, RefreshDatabase;
 
     protected function setUp(): void
     {
@@ -77,83 +79,6 @@ class OrderTest extends TestCase
 
         $this->assertEquals('123', $order->lineItems()->first()->id());
         $this->assertEquals(2500, $order->lineItems()->first()->total());
-    }
-
-    #[Test]
-    public function can_query_columns()
-    {
-        Cart::make()->id('abc')->save();
-        Cart::make()->id('def')->save();
-        Cart::make()->id('ghi')->save();
-
-        Order::make()->id('123')->cart('abc')->grandTotal(1150)->customer(['name' => 'Foo', 'email' => 'foo@example.com'])->save();
-        Order::make()->id('456')->cart('def')->grandTotal(3470)->customer(['name' => 'Bar', 'email' => 'bar@example.com'])->save();
-        Order::make()->id('789')->cart('ghi')->grandTotal(9500)->customer(['name' => 'Baz', 'email' => 'baz@example.com'])->save();
-
-        $query = Order::query()->where('grand_total', '<', 5000)->get();
-
-        $this->assertCount(2, $query);
-        $this->assertEquals([123, 456], $query->map->id()->all());
-    }
-
-    #[Test]
-    public function can_query_status()
-    {
-        Cart::make()->id('abc')->save();
-        Cart::make()->id('def')->save();
-        Cart::make()->id('ghi')->save();
-
-        Order::make()->id('123')->cart('abc')->status(OrderStatus::PaymentPending)->customer(['name' => 'Foo', 'email' => 'foo@example.com'])->save();
-        Order::make()->id('456')->cart('def')->status(OrderStatus::PaymentPending)->customer(['name' => 'Bar', 'email' => 'bar@example.com'])->save();
-        Order::make()->id('789')->cart('ghi')->status(OrderStatus::Shipped)->customer(['name' => 'Baz', 'email' => 'baz@example.com'])->save();
-
-        $query = Order::query()->whereStatus(OrderStatus::PaymentPending)->get();
-
-        $this->assertCount(2, $query);
-        $this->assertEquals([123, 456], $query->map->id()->all());
-    }
-
-    #[Test]
-    public function can_query_customers()
-    {
-        Cart::make()->id('abc')->save();
-        Cart::make()->id('def')->save();
-        Cart::make()->id('ghi')->save();
-
-        User::make()->id('foo')->email('foo@example.com')->save();
-
-        Order::make()->id('123')->cart('abc')->grandTotal(1150)->customer('foo')->save();
-        Order::make()->id('456')->cart('def')->grandTotal(3470)->customer(['name' => 'Bar', 'email' => 'bar@example.com'])->save();
-        Order::make()->id('789')->cart('ghi')->grandTotal(9500)->customer('foo')->save();
-
-        // Query users
-        $query = Order::query()->where('customer', 'foo')->get();
-
-        $this->assertCount(2, $query);
-        $this->assertEquals([123, 789], $query->map->id()->all());
-
-        // Query guest customers
-        $query = Order::query()->where('customer', 'guest::bar@example.com')->get();
-
-        $this->assertCount(1, $query);
-        $this->assertEquals([456], $query->map->id()->all());
-    }
-
-    #[Test]
-    public function can_query_data()
-    {
-        Cart::make()->id('abc')->save();
-        Cart::make()->id('def')->save();
-        Cart::make()->id('ghi')->save();
-
-        Order::make()->id('123')->cart('abc')->customer(['name' => 'Foo', 'email' => 'foo@example.com'])->data(['foo' => true])->save();
-        Order::make()->id('456')->cart('def')->customer(['name' => 'Bar', 'email' => 'bar@example.com'])->data(['foo' => false])->save();
-        Order::make()->id('789')->cart('ghi')->customer(['name' => 'Baz', 'email' => 'baz@example.com'])->data(['foo' => true])->save();
-
-        $query = Order::query()->where('foo', true)->get();
-
-        $this->assertCount(2, $query);
-        $this->assertEquals([123, 789], $query->map->id()->all());
     }
 
     #[Test]
