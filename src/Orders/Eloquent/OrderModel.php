@@ -5,6 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders\Eloquent;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderModel extends Model
 {
@@ -25,7 +26,6 @@ class OrderModel extends Model
             'discount_total' => 'integer',
             'tax_total' => 'integer',
             'shipping_total' => 'integer',
-            'line_items' => 'json',
             'data' => 'json',
         ];
     }
@@ -35,5 +35,10 @@ class OrderModel extends Model
         parent::__construct($attributes);
 
         $this->setTable(config('statamic.simple-commerce.orders.table', 'orders'));
+    }
+
+    public function lineItems(): HasMany
+    {
+        return $this->hasMany(app('simple-commerce.orders.eloquent.line_items_model'), 'order_id', 'uuid');
     }
 }

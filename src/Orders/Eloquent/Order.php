@@ -28,7 +28,12 @@ class Order extends StacheOrder
                     : $model->customer
             )
             ->coupon($model->coupon)
-            ->lineItems($model->line_items)
+            ->lineItems($model->lineItems->map(function (LineItemModel $model) {
+                return collect($model->getAttributes())
+                    ->except(['order_id', 'data'])
+                    ->merge($model->data)
+                    ->all();
+            }))
             ->grandTotal($model->grand_total)
             ->subTotal($model->sub_total)
             ->discountTotal($model->discount_total)
@@ -50,7 +55,6 @@ class Order extends StacheOrder
                 ? json_encode($source->customer)
                 : $source->customer()?->getKey(),
             'coupon' => $source->coupon,
-            'line_items' => $source->lineItems()->map->fileData()->all(),
             'grand_total' => $source->grandTotal(),
             'sub_total' => $source->subTotal(),
             'discount_total' => $source->discountTotal(),

@@ -31,6 +31,10 @@ class MoneyFieldtype extends Fieldtype
             return null;
         }
 
+        if (! $data) {
+            $data = 0;
+        }
+
         // Replaces the second-last character with a decimal point
         if (! str_contains($data, '.')) {
             $data = substr_replace($data, '.', -2, 0);

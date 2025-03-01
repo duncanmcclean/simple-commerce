@@ -28,6 +28,10 @@ class StripeTest extends TestCase
     {
         parent::setUp();
 
+        if (! env('STRIPE_KEY')) {
+            $this->markTestSkipped('Skipping without STRIPE_KEY.');
+        }
+
         config()->set('statamic.simple-commerce.payments.gateways', ['stripe' => [
             'key' => env('STRIPE_KEY'),
             'secret' => env('STRIPE_SECRET'),

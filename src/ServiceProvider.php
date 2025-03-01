@@ -95,6 +95,10 @@ class ServiceProvider extends AddonServiceProvider
                 return config('statamic.simple-commerce.orders.model', \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel::class);
             });
 
+            $this->app->bind('simple-commerce.orders.eloquent.line_items_model', function () {
+                return config('statamic.simple-commerce.orders.line_items_model', \DuncanMcClean\SimpleCommerce\Orders\Eloquent\LineItemModel::class);
+            });
+
             Statamic::repository(\DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository::class, \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderRepository::class);
         }
 

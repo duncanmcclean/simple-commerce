@@ -41,6 +41,9 @@ return [
         // Database repository
         'model' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel::class,
         'table' => 'orders',
+
+        'line_items_model' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\LineItemModel::class,
+        'line_items_table' => 'line_items',
     ],
 
     'routes' => [

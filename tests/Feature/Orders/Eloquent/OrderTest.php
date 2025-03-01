@@ -7,9 +7,6 @@ use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Statamic\Facades\Collection;
-use Statamic\Facades\Entry;
-use Statamic\Facades\User;
 use Statamic\Statamic;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 use Tests\Feature\Orders\OrderQueryTests;
@@ -31,6 +28,10 @@ class OrderTest extends TestCase
 
         $this->app->bind('simple-commerce.orders.eloquent.model', function () {
             return config('statamic.simple-commerce.orders.model', \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel::class);
+        });
+
+        $this->app->bind('simple-commerce.orders.eloquent.line_items_model', function () {
+            return config('statamic.simple-commerce.orders.line_items_model', \DuncanMcClean\SimpleCommerce\Orders\Eloquent\LineItemModel::class);
         });
 
         Statamic::repository(
@@ -56,8 +57,17 @@ class OrderTest extends TestCase
             'discount_total' => 0,
             'tax_total' => 0,
             'shipping_total' => 0,
-            'line_items' => [['id' => '123', 'product' => 'abc', 'quantity' => 1, 'total' => 2500]],
             'data' => ['foo' => 'bar'],
+        ]);
+
+        $model->lineItems()->create([
+            'id' => '123',
+            'product' => 'abc',
+            'quantity' => 1,
+            'unit_price' => 2500,
+            'sub_total' => 2500,
+            'tax_total' => 0,
+            'total' => 2500,
         ]);
 
         $order = Order::find($model->uuid);
@@ -94,7 +104,7 @@ class OrderTest extends TestCase
             ->discountTotal(0)
             ->taxTotal(0)
             ->shippingTotal(0)
-            ->lineItems($lineItems = [['id' => '123', 'product' => 'abc', 'quantity' => 1, 'total' => 2500]])
+            ->lineItems([['id' => '123', 'product' => 'abc', 'quantity' => 1, 'total' => 2500]])
             ->data($data = ['foo' => 'bar']);
 
         $save = $order->save();
@@ -104,8 +114,14 @@ class OrderTest extends TestCase
         $this->assertDatabaseHas('orders', [
             'site' => 'default',
             'grand_total' => 2500,
-            'line_items' => json_encode($lineItems),
             'data' => json_encode($data),
+        ]);
+
+        $this->assertDatabaseHas('line_items', [
+            'order_id' => $order->id(),
+            'product' => 'abc',
+            'quantity' => 1,
+            'total' => 2500,
         ]);
 
         $this->assertNotNull($order->id());

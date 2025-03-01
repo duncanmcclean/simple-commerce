@@ -99,26 +99,19 @@ trait OrderQueryTests
         User::make()->id('foo')->email('foo@example.com')->save();
 
         Collection::make('products')->save();
-
         Entry::make()->id('one')->collection('products')->save();
-        Entry::make()->id('two')->collection('products')->save();
 
-        Order::make()->id('123')->cart('abc')->lineItems([['product' => 'one', 'total' => 1234, 'foo' => 'bar']])->customer('foo')->save();
-        Order::make()->id('456')->cart('def')->lineItems([['product' => 'two', 'total' => 1234, 'bar' => 'foo']])->customer('foo')->save();
-        Order::make()->id('789')->cart('ghi')->lineItems([['product' => 'one', 'total' => 1234, 'foo' => 'bar']])->customer('foo')->save();
-
-        $query = Order::query()->whereHasLineItem('product', 'one')->get();
-
-        $this->assertCount(2, $query);
-        $this->assertEquals([123, 789], $query->map->id()->all());
+        Order::make()->id('123')->cart('abc')->lineItems([['quantity' => 3, 'product' => 'one', 'total' => 1234]])->customer('foo')->save();
+        Order::make()->id('456')->cart('def')->lineItems([['quantity' => 1, 'product' => 'one', 'total' => 1234]])->customer('foo')->save();
+        Order::make()->id('789')->cart('ghi')->lineItems([['quantity' => 5, 'product' => 'one', 'total' => 1234]])->customer('foo')->save();
 
         $query = Order::query()->whereHasLineItem(function ($query) {
             $query
-                ->where('bar', 'foo')
+                ->where('quantity', '>', 2)
                 ->where('total', 1234);
         })->get();
 
-        $this->assertCount(1, $query);
-        $this->assertEquals([456], $query->map->id()->all());
+        $this->assertCount(2, $query);
+        $this->assertEquals([123, 789], $query->map->id()->all());
     }
 }

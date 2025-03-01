@@ -29,6 +29,10 @@ class MollieTest extends TestCase
     {
         parent::setUp();
 
+        if (! env('MOLLIE_KEY')) {
+            $this->markTestSkipped('Skipping without MOLLIE_KEY.');
+        }
+
         config()->set('statamic.simple-commerce.payments.gateways', ['mollie' => [
             'api_key' => env('MOLLIE_KEY'),
             'profile_id' => env('MOLLIE_PROFILE_ID'),

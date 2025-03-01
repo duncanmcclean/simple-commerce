@@ -27,7 +27,6 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('discount_total');
             $table->bigInteger('tax_total');
             $table->bigInteger('shipping_total');
-            $table->json('line_items');
             $table->json('data')->nullable();
             $table->timestamps();
         });
