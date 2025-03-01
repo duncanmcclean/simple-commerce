@@ -78,7 +78,7 @@ class MoneyFieldtype extends Fieldtype
     {
         $site = Statamic::isCpRoute() ? Site::selected() : Site::current();
 
-        if ($this->field?->parent() && method_exists($this->field->parent(), 'site')) {
+        if ($this->field?->parent() && method_exists($this->field->parent(), 'site') && $this->field->parent()->site()) {
             $site = $this->field->parent()->site();
         }
 

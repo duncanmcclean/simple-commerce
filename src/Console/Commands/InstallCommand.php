@@ -25,8 +25,6 @@ class InstallCommand extends Command
 
     public function handle(): void
     {
-        // todo: configure database orders
-
         $this
             ->publishConfig()
             ->promptForSiteCurrencies()
