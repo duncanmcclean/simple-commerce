@@ -104,8 +104,8 @@ class Database extends Command
                         'tax_total' => $order->taxTotal(),
                         'shipping_total' => $order->shippingTotal(),
                         'line_items' => $order->lineItems()->map->fileData()->all(),
-                        'data' => $order->data(),
-                        'updated_at' => $order->updated_at,
+                        'data' => $order->data()->except('updated_at')->all(),
+                        'updated_at' => $order->get('updated_at'),
                     ]
                 );
 
