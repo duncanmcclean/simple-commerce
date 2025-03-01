@@ -90,6 +90,14 @@ class ServiceProvider extends AddonServiceProvider
             }
         });
 
+        if (config('statamic.simple-commerce.orders.repository') === 'eloquent') {
+            $this->app->bind('simple-commerce.orders.eloquent.model', function () {
+                return config('statamic.simple-commerce.orders.model', \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel::class);
+            });
+
+            Statamic::repository(\DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository::class, \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderRepository::class);
+        }
+
         foreach ($this->shippingMethods as $shippingMethod) {
             $shippingMethod::register();
         }

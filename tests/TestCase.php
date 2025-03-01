@@ -55,6 +55,11 @@ abstract class TestCase extends AddonTestCase
         ]);
     }
 
+    protected function defineDatabaseMigrations()
+    {
+        $this->loadMigrationsFrom(__DIR__.'/__fixtures__/migrations');
+    }
+
     protected function setSites($sites)
     {
         Site::setSites($sites);

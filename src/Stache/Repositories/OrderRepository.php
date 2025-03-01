@@ -92,7 +92,7 @@ class OrderRepository implements RepositoryContract
         $this->store->delete($order);
     }
 
-    public function generateOrderNumber(): int
+    private function generateOrderNumber(): int
     {
         $lastOrder = $this->query()->orderByDesc('order_number')->first();
 

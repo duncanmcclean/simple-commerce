@@ -33,7 +33,14 @@ return [
     ],
 
     'orders' => [
+        'repository' => 'file',
+
+        // Flat file repository
         'directory' => base_path('content/orders'),
+
+        // Database repository
+        'model' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel::class,
+        'table' => 'orders',
     ],
 
     'routes' => [
