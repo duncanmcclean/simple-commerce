@@ -6,7 +6,6 @@ use DuncanMcClean\SimpleCommerce\Query\LineItemQueryBuilder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Query\EloquentQueryBuilder;
-use Statamic\Query\ItemQueryBuilder;
 
 class OrderQueryBuilder extends EloquentQueryBuilder
 {
@@ -71,11 +70,7 @@ class OrderQueryBuilder extends EloquentQueryBuilder
         if (Str::startsWith($value ?? $operator, 'guest::')) {
             $email = Str::after($value ?? $operator, 'guest::');
 
-            if ($this->builder->getConnection()->getDriverName() === 'sqlite') {
-                $this->builder->whereRaw("customer LIKE '{%' AND json_extract(customer, '$.email') = ?", [$email]);
-            } else {
-                $this->builder->whereRaw("IS_JSON(customer) AND JSON_UNQUOTE(JSON_EXTRACT(customer, '$.email')) = ?", [$email]);
-            }
+            $this->builder->whereRaw("customer LIKE '{%' AND json_extract(customer, '$.email') = ?", [$email]);
 
             return $this;
         }
