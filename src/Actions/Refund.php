@@ -19,6 +19,7 @@ class Refund extends Action
     public function visibleTo($item)
     {
         return $item instanceof Contracts\Orders\Order
+            && $item->paymentGateway()
             && $item->get('amount_refunded') < $item->grandTotal();
     }
 
@@ -29,7 +30,7 @@ class Refund extends Action
 
     public function authorize($user, $item)
     {
-        return $user->can('refund', $item) && $item->has('payment_gateway');
+        return $user->can('refund', $item) && $item->paymentGateway();
     }
 
     protected function fieldItems()
@@ -83,7 +84,7 @@ class Refund extends Action
 
     public function run($items, $values)
     {
-        $order = $this->items->first();
+        $order = collect($items)->first();
         $amountRemaining = $order->grandTotal() - $order->get('amount_refunded');
 
         if ($values['amount'] <= 0) {
@@ -94,9 +95,7 @@ class Refund extends Action
             throw new \Exception('You cannot refund more than the remaining amount.');
         }
 
-        $paymentGateway = PaymentGateway::find($items->first()->get('payment_gateway'));
-
-        $paymentGateway->refund($items->first(), $values['amount']);
+        $order->paymentGateway()->refund($order, $values['amount']);
 
         event(new OrderRefunded($order->fresh(), $values['amount']));
     }

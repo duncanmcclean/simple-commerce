@@ -60,7 +60,11 @@ class CartRepository implements RepositoryContract
             return self::$current;
         }
 
-        return CartFacade::find(Cookie::get($this->getKey()));
+        try {
+            return $this->findOrFail(Cookie::get($this->getKey()));
+        } catch (CartNotFound $e) {
+            return $this->make()->site($this->determineSiteFromRequest());
+        }
     }
 
     public function setCurrent(Cart $cart): void
