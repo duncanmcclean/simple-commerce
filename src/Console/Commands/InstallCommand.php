@@ -11,6 +11,7 @@ use Statamic\Facades\Site;
 use Statamic\Support\Str;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
 
+use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
@@ -29,7 +30,10 @@ class InstallCommand extends Command
             ->publishConfig()
             ->promptForSiteCurrencies()
             ->promptForProductsCollection()
-            ->promptToPublishCheckoutStubs();
+            ->promptToPublishCheckoutStubs()
+            ->promptToGitignoreCartsDirectory()
+            ->promptToGitignoreOrdersDirectory()
+            ->schedulePurgeAbandonedCartsCommand();
 
         $this->line('  <fg=green;options=bold>Simple Commerce has been installed!</> 🎉');
         $this->newLine();
@@ -43,6 +47,8 @@ class InstallCommand extends Command
             '--force' => true,
         ]);
 
+        $this->components->info('Published [config/statamic/simple-commerce.php] config file.');
+
         return $this;
     }
 
@@ -52,9 +58,10 @@ class InstallCommand extends Command
             $currency = search(
                 label: "Which currency should the {$site->name()} site use?",
                 options: fn (string $value) => Currencies::mapWithKeys(fn ($currency) => [$currency['code'] => "{$currency['name']} ({$currency['code']})"])
-                    ->when($site->attribute('currency'), fn ($currencies) => $currencies->filter(fn ($name, $code) => $code === $site->attribute('currency')))
                     ->when(strlen($value) > 0, fn ($currencies) => $currencies->filter(fn ($name) => Str::contains($name, $value, ignoreCase: true)))
+                    ->when(strlen($value) === 0 && $site->attribute('currency'), fn ($currencies) => $currencies->sortBy(fn ($name, $code) => $code === $site->attribute('currency') ? 0 : 1))
                     ->all(),
+
             );
 
             return array_merge($site->rawConfig(), [
@@ -85,6 +92,8 @@ class InstallCommand extends Command
                 ->title($name)
                 ->routes([Site::default()->handle() => Str::plural(Str::kebab($name)).'/{slug}'])
                 ->save();
+
+            $this->components->info("Collection [{$name}] created.");
         }
 
         ConfigWriter::write('statamic.simple-commerce.products.collections', [$collection]);
@@ -129,7 +138,47 @@ PHP;
 
         File::put(base_path('routes/web.php'), $routes);
 
-        $this->components->info("Published. You'll find the Checkout views in <comment>resources/views/checkout</comment>. Feel free to customize them as necessary.");
+        $this->components->info("Checkout stubs published. You'll find them in <comment>resources/views/checkout</comment>. You can customize these views to suit your needs.");
+
+        return $this;
+    }
+
+    private function promptToGitignoreCartsDirectory(): self
+    {
+        if (confirm('Would you like to ignore the carts directory from Git?')) {
+            File::ensureDirectoryExists(config('statamic.simple-commerce.carts.directory'));
+            File::put(config('statamic.simple-commerce.carts.directory').'/.gitignore', "*\n!.gitignore");
+        }
+
+        return $this;
+    }
+
+    private function promptToGitignoreOrdersDirectory(): self
+    {
+        if (confirm('Would you like to ignore the orders directory from Git?', default: false)) {
+            File::ensureDirectoryExists(config('statamic.simple-commerce.orders.directory'));
+            File::put(config('statamic.simple-commerce.orders.directory').'/.gitignore', "*\n!.gitignore");
+        }
+
+        return $this;
+    }
+
+    private function schedulePurgeAbandonedCartsCommand(): self
+    {
+        $consoleRoutes = File::get(base_path('routes/console.php'));
+
+        if (Str::contains($consoleRoutes, 'statamic:simple-commerce:purge-abandoned-carts')) {
+            return $this;
+        }
+
+        $consoleRoutes .= <<<'PHP'
+
+Schedule::command('statamic:simple-commerce:purge-abandoned-carts')->daily();
+PHP;
+
+        File::put(base_path('routes/console.php'), $consoleRoutes);
+
+        $this->components->info('Command [simple-commerce:purge-abandoned-carts] has been scheduled to run daily.');
 
         return $this;
     }

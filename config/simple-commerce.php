@@ -8,10 +8,20 @@ return [
         'low_stock_threshold' => 5,
     ],
 
-    'carts' => [
-        'cookie_name' => 'simple-commerce-cart',
+    'coupons' => [
+        'directory' => base_path('content/coupons'),
+    ],
 
-        'directory' => storage_path('statamic/simple-commerce/carts'),
+    'routes' => [
+        'checkout' => 'checkout',
+        'checkout_confirmation' => 'checkout.confirmation',
+    ],
+
+    'carts' => [
+        // Flat file repository
+        'directory' => base_path('content/simple-commerce/carts'),
+
+        'cookie_name' => 'simple-commerce-cart',
 
         'unique_metadata' => false,
 
@@ -19,6 +29,20 @@ return [
 
         // When a user logs in, and they've already started a cart elsewhere, should the two carts be merged?
         'merge_on_login' => true,
+    ],
+
+    'orders' => [
+        'repository' => 'file',
+
+        // Flat file repository
+        'directory' => base_path('content/simple-commerce/orders'),
+
+        // Database repository
+        'model' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel::class,
+        'table' => 'orders',
+
+        'line_items_model' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\LineItemModel::class,
+        'line_items_table' => 'line_items',
     ],
 
     'taxes' => [
@@ -32,35 +56,12 @@ return [
         'shipping_tax_behaviour' => 'tax_class',
     ],
 
-    'orders' => [
-        'repository' => 'file',
-
-        // Flat file repository
-        'directory' => base_path('content/orders'),
-
-        // Database repository
-        'model' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel::class,
-        'table' => 'orders',
-
-        'line_items_model' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\LineItemModel::class,
-        'line_items_table' => 'line_items',
-    ],
-
-    'routes' => [
-        'checkout' => 'checkout',
-        'checkout_confirmation' => 'checkout.confirmation',
-    ],
-
-    'coupons' => [
-        'directory' => base_path('content/coupons'),
-    ],
-
     'payments' => [
         'gateways' => [
             'dummy' => [
                 //
             ],
-            //
+
             'stripe' => [
                 'key' => env('STRIPE_KEY'),
                 'secret' => env('STRIPE_SECRET'),

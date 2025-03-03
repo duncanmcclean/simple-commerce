@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Cart;
 
+use DuncanMcClean\SimpleCommerce\Events\CartDeleted;
 use DuncanMcClean\SimpleCommerce\Facades;
 use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\Calculator;
@@ -231,6 +232,8 @@ class Cart implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValu
     public function delete(): bool
     {
         CartFacade::delete($this);
+
+        event(CartDeleted::class);
 
         return true;
     }

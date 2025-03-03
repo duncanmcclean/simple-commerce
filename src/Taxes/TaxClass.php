@@ -3,6 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Taxes;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass as Contract;
+use DuncanMcClean\SimpleCommerce\Events\TaxClassDeleted;
+use DuncanMcClean\SimpleCommerce\Events\TaxClassSaved;
 use DuncanMcClean\SimpleCommerce\Facades;
 use Statamic\Contracts\Data\Augmentable;
 use Statamic\Data\ContainsData;
@@ -27,12 +29,20 @@ class TaxClass implements Augmentable, Contract
 
     public function save(): bool
     {
-        return Facades\TaxClass::save($this);
+        Facades\TaxClass::save($this);
+
+        event(new TaxClassSaved($this));
+
+        return true;
     }
 
     public function delete(): bool
     {
-        return Facades\TaxClass::delete($this->handle());
+        Facades\TaxClass::delete($this->handle());
+
+        event(new TaxClassDeleted($this));
+
+        return true;
     }
 
     public function editUrl()

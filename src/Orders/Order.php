@@ -9,6 +9,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as Contract;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Data\HasAddresses;
 use DuncanMcClean\SimpleCommerce\Events\OrderCreated;
+use DuncanMcClean\SimpleCommerce\Events\OrderDeleted;
 use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
 use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
@@ -295,6 +296,8 @@ class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableVal
     public function delete(): bool
     {
         OrderFacade::delete($this);
+
+        event(new OrderDeleted($this));
 
         return true;
     }

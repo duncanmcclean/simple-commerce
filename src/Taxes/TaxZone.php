@@ -3,6 +3,8 @@
 namespace DuncanMcClean\SimpleCommerce\Taxes;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxZone as Contract;
+use DuncanMcClean\SimpleCommerce\Events\TaxZoneDeleted;
+use DuncanMcClean\SimpleCommerce\Events\TaxZoneSaved;
 use DuncanMcClean\SimpleCommerce\Facades;
 use Illuminate\Support\Collection;
 use Statamic\Contracts\Data\Augmentable;
@@ -33,12 +35,20 @@ class TaxZone implements Augmentable, Contract
 
     public function save(): bool
     {
-        return Facades\TaxZone::save($this);
+        Facades\TaxZone::save($this);
+
+        event(new TaxZoneSaved($this));
+
+        return true;
     }
 
     public function delete(): bool
     {
-        return Facades\TaxZone::delete($this->handle());
+        Facades\TaxZone::delete($this->handle());
+
+        event(new TaxZoneDeleted($this));
+
+        return true;
     }
 
     public function editUrl()
