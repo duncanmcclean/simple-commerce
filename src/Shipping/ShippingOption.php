@@ -6,7 +6,6 @@ use DuncanMcClean\SimpleCommerce\Contracts\Purchasable;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
 use DuncanMcClean\SimpleCommerce\Facades;
 use DuncanMcClean\SimpleCommerce\Support\Money;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Contracts\Data\Augmentable;
 use Statamic\Contracts\Data\Augmented;

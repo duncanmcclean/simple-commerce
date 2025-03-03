@@ -7,6 +7,7 @@ use DuncanMcClean\SimpleCommerce\Coupons\CouponType;
 use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
 use DuncanMcClean\SimpleCommerce\Events\ProductNoStockRemaining;
 use DuncanMcClean\SimpleCommerce\Events\ProductStockLow;
+use DuncanMcClean\SimpleCommerce\Facades;
 use DuncanMcClean\SimpleCommerce\Facades\Cart;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
@@ -20,7 +21,6 @@ use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 use Tests\TestCase;
-use DuncanMcClean\SimpleCommerce\Facades;
 
 class CheckoutTest extends TestCase
 {

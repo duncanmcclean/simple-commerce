@@ -143,6 +143,7 @@ class Stripe extends PaymentGateway
 
                 if (! $order) {
                     $job->release(10);
+
                     return;
                 }
 
@@ -161,6 +162,7 @@ class Stripe extends PaymentGateway
 
                 if (! $order) {
                     $job->release(10);
+
                     return;
                 }
 

@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Orders\Eloquent;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
-use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Orders\Order as StacheOrder;
 use Illuminate\Support\Str;
 

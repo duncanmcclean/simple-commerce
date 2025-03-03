@@ -2,10 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DuncanMcClean\SimpleCommerce\Support\Money;
-use Illuminate\Support\Collection;
 use Statamic\Data\AbstractAugmented;
-use Statamic\Facades\Site;
 
 class AugmentedOrder extends AbstractAugmented
 {

@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DuncanMcClean\SimpleCommerce\Support\Money;
 use Statamic\Fields\Fieldtype;
 
 class ShippingDetailsFieldtype extends Fieldtype

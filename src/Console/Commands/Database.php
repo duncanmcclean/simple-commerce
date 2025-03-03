@@ -13,6 +13,7 @@ use Statamic\Console\RunsInPlease;
 use Statamic\Statamic;
 use Statamic\Support\Str;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
+
 use function Laravel\Prompts\progress;
 
 class Database extends Command

@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Events;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
 use Statamic\Contracts\Git\ProvidesCommitMessage;
 

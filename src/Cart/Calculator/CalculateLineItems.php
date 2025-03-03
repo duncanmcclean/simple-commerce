@@ -6,7 +6,6 @@ use Closure;
 use DuncanMcClean\SimpleCommerce\Cart\Cart;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
-use Statamic\Support\Traits\Hookable;
 
 class CalculateLineItems
 {

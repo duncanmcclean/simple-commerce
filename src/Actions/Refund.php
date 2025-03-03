@@ -4,7 +4,6 @@ namespace DuncanMcClean\SimpleCommerce\Actions;
 
 use DuncanMcClean\SimpleCommerce\Contracts;
 use DuncanMcClean\SimpleCommerce\Events\OrderRefunded;
-use DuncanMcClean\SimpleCommerce\Facades\PaymentGateway;
 use Statamic\Actions\Action;
 
 class Refund extends Action

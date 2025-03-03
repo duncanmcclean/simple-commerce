@@ -6,9 +6,7 @@ use DuncanMcClean\SimpleCommerce\Payments\PaymentServiceProvider;
 use DuncanMcClean\SimpleCommerce\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Statamic\Facades\Config;
-use Statamic\Facades\File;
 use Statamic\Facades\Site;
-use Statamic\Facades\YAML;
 use Statamic\Testing\AddonTestCase;
 
 abstract class TestCase extends AddonTestCase

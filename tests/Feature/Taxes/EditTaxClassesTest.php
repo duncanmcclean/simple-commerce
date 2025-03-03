@@ -3,7 +3,6 @@
 namespace Tests\Feature\Taxes;
 
 use DuncanMcClean\SimpleCommerce\Facades\TaxClass;
-use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
 use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\Attributes\Test;
 use Statamic\Facades\Role;

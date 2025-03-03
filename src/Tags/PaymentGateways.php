@@ -2,8 +2,8 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
-use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Facades;
+use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Payments\Gateways\PaymentGateway;
 use Statamic\Facades\Blink;
 use Statamic\Tags\Tags;

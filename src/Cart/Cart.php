@@ -2,16 +2,16 @@
 
 namespace DuncanMcClean\SimpleCommerce\Cart;
 
-use DuncanMcClean\SimpleCommerce\Events\CartDeleted;
-use DuncanMcClean\SimpleCommerce\Facades;
 use ArrayAccess;
 use DuncanMcClean\SimpleCommerce\Cart\Calculator\Calculator;
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as Contract;
 use DuncanMcClean\SimpleCommerce\Contracts\Coupons\Coupon;
 use DuncanMcClean\SimpleCommerce\Customers\GuestCustomer;
 use DuncanMcClean\SimpleCommerce\Data\HasAddresses;
+use DuncanMcClean\SimpleCommerce\Events\CartDeleted;
 use DuncanMcClean\SimpleCommerce\Events\CartRecalculated;
 use DuncanMcClean\SimpleCommerce\Events\CartSaved;
+use DuncanMcClean\SimpleCommerce\Facades;
 use DuncanMcClean\SimpleCommerce\Facades\Cart as CartFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order;

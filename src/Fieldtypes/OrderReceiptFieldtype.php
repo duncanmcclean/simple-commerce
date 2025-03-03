@@ -5,7 +5,6 @@ namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\LineItems;
 use DuncanMcClean\SimpleCommerce\Support\Money;
-use Statamic\Facades\Site;
 use Statamic\Fields\Fieldtype;
 
 class OrderReceiptFieldtype extends Fieldtype

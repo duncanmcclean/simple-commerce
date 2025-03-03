@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
-use DuncanMcClean\SimpleCommerce\Facades\PaymentGateway;
 use DuncanMcClean\SimpleCommerce\Facades\ShippingMethod;
 use Statamic\Fieldtypes\Relationship;
 

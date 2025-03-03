@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
-use DuncanMcClean\SimpleCommerce\Fieldtypes\MoneyFieldtype;
 use Statamic\Data\AbstractAugmented;
 use Statamic\Fields\Value;
 use Statamic\Support\Str;

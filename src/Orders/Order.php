@@ -12,6 +12,7 @@ use DuncanMcClean\SimpleCommerce\Events\OrderCreated;
 use DuncanMcClean\SimpleCommerce\Events\OrderDeleted;
 use DuncanMcClean\SimpleCommerce\Events\OrderSaved;
 use DuncanMcClean\SimpleCommerce\Events\OrderStatusUpdated;
+use DuncanMcClean\SimpleCommerce\Facades;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderFacade;
 use DuncanMcClean\SimpleCommerce\Payments\Gateways\PaymentGateway;
@@ -30,13 +31,12 @@ use Statamic\Data\HasAugmentedInstance;
 use Statamic\Data\HasDirtyState;
 use Statamic\Data\TracksQueriedColumns;
 use Statamic\Data\TracksQueriedRelations;
+use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
 use Statamic\Fields\Blueprint as StatamicBlueprint;
-use Statamic\Facades\Site;
 use Statamic\Support\Str;
 use Statamic\Support\Traits\FluentlyGetsAndSets;
-use DuncanMcClean\SimpleCommerce\Facades;
 
 class Order implements Arrayable, ArrayAccess, Augmentable, ContainsQueryableValues, Contract
 {

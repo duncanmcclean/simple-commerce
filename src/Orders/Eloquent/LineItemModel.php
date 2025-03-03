@@ -2,7 +2,6 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders\Eloquent;
 
-use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

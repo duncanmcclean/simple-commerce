@@ -4,7 +4,6 @@ namespace DuncanMcClean\SimpleCommerce\Taxes;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClass;
 use DuncanMcClean\SimpleCommerce\Contracts\Taxes\TaxClassRepository as Contract;
-use DuncanMcClean\SimpleCommerce\Events\TaxClassSaved;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Statamic\Facades\Blueprint;
