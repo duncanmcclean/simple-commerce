@@ -159,7 +159,7 @@ class OrderTest extends TestCase
             ->date(Carbon::parse('2024-01-01 10:35:10'));
 
         $this->assertStringContainsString(
-            'content/orders/2024-01-01-103510.1234.yaml',
+            'content/simple-commerce/orders/2024-01-01-103510.1234.yaml',
             $order->buildPath()
         );
     }

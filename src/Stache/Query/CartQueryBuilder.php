@@ -3,10 +3,14 @@
 namespace DuncanMcClean\SimpleCommerce\Stache\Query;
 
 use DuncanMcClean\SimpleCommerce\Contracts\Cart\QueryBuilder;
+use DuncanMcClean\SimpleCommerce\Query\LineItemQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Query\QueriesLineItems;
 use Statamic\Stache\Query\Builder;
 
 class CartQueryBuilder extends Builder implements QueryBuilder
 {
+    use QueriesLineItems;
+
     protected function getFilteredKeys()
     {
         if (! empty($this->wheres)) {

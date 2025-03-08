@@ -1,25 +1,25 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Orders\Eloquent;
+namespace DuncanMcClean\SimpleCommerce\Cart\Eloquent;
 
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\Order as OrderContract;
-use DuncanMcClean\SimpleCommerce\Orders\Order as StacheOrder;
+use DuncanMcClean\SimpleCommerce\Cart\Cart as StacheCart;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\Cart as CartContract;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
 use Illuminate\Support\Str;
+use Statamic\Contracts\Data\Augmentable;
+use Statamic\Data\HasAugmentedInstance;
+use Statamic\Fields\Blueprint as StatamicBlueprint;
 
-class Order extends StacheOrder
+class Cart extends StacheCart
 {
     protected $model;
 
-    public static function fromModel(OrderModel $model): self
+    public static function fromModel(CartModel $model): self
     {
         return (new static)
             ->model($model)
             ->id($model->id)
             ->site($model->site)
-            ->orderNumber($model->order_number)
-            ->date($model->date)
-            ->cart($model->cart)
-            ->status($model->status)
             ->customer(
                 // Guest customers are stored as JSON strings, so we need to decode them.
                 Str::contains($model->customer, '{"')
@@ -44,15 +44,12 @@ class Order extends StacheOrder
             ]);
     }
 
-    public static function makeModelFromContract(OrderContract $source): OrderModel
+    public static function makeModelFromContract(CartContract $source): CartModel
     {
-        $class = app('simple-commerce.orders.eloquent.model');
+        $class = app('simple-commerce.carts.eloquent.model');
 
         $attributes = [
             'site' => $source->site()->handle(),
-            'date' => $source->date(),
-            'cart' => $source->cart(),
-            'status' => $source->status()->value,
             'customer' => is_array($source->customer)
                 ? json_encode($source->customer)
                 : $source->customer()?->getKey(),
@@ -68,10 +65,6 @@ class Order extends StacheOrder
 
         if ($id = $source->id()) {
             $attributes['id'] = $id;
-        }
-
-        if ($orderNumber = $source->orderNumber()) {
-            $attributes['order_number'] = $orderNumber;
         }
 
         return $class::findOrNew($source->id())->fill($attributes);

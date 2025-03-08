@@ -1,6 +1,6 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Orders\Eloquent;
+namespace DuncanMcClean\SimpleCommerce\Cart\Eloquent;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -28,11 +28,11 @@ class LineItemModel extends Model
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('statamic.simple-commerce.orders.line_items_table', 'order_line_items'));
+        $this->setTable(config('statamic.simple-commerce.carts.line_items_table', 'cart_line_items'));
     }
 
-    public function order(): BelongsTo
+    public function cart(): BelongsTo
     {
-        return $this->belongsTo(app('simple-commerce.orders.eloquent.model'), ownerKey: 'order_id');
+        return $this->belongsTo(app('simple-commerce.carts.eloquent.model'), ownerKey: 'cart_id');
     }
 }

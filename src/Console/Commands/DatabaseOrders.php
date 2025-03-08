@@ -16,17 +16,25 @@ use Stillat\Proteus\Support\Facades\ConfigWriter;
 
 use function Laravel\Prompts\progress;
 
-class Database extends Command
+class DatabaseOrders extends Command
 {
-    use RunsInPlease;
+    use Concerns\PublishesMigrations, RunsInPlease;
 
-    protected $signature = 'statamic:simple-commerce:database';
+    protected $signature = 'statamic:simple-commerce:database-orders';
 
-    protected $description = 'Migrates carts and orders to the database.';
+    protected $description = 'Migrates orders to the database.';
 
     public function __construct()
     {
         parent::__construct();
+
+        app()->bind('simple-commerce.orders.eloquent.model', function () {
+            return \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel::class;
+        });
+
+        app()->bind('simple-commerce.orders.eloquent.line_items_model', function () {
+            return \DuncanMcClean\SimpleCommerce\Orders\Eloquent\LineItemModel::class;
+        });
 
         Statamic::repository(
             \DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository::class,
@@ -37,61 +45,29 @@ class Database extends Command
     public function handle(): void
     {
         $this
-            ->publishOrdersMigration()
-            ->publishLineItemsMigration()
+            ->publishMigrations()
             ->runMigrations()
             ->importOrders()
             ->updateConfig();
     }
 
-    private function publishOrdersMigration(): self
+    private function publishMigrations(): self
     {
-        $existingMigration = collect(File::allFiles(database_path('migrations')))
-            ->map->getFilename()
-            ->filter(fn (string $filename) => Str::contains($filename, '_create_orders_table.php'))
-            ->first();
+        $this->publishMigration(
+            stubPath: __DIR__.'/stubs/create_orders_table.php.stub',
+            name: 'create_orders_table.php',
+            replacements: [
+                'ORDERS_TABLE' => config('statamic.simple-commerce.orders.table', 'orders'),
+            ]
+        );
 
-        if ($existingMigration) {
-            $this->components->info("Migration [database/migrations/{$existingMigration}] already exists.");
-
-            return $this;
-        }
-
-        $filename = date('Y_m_d_His').'_create_orders_table.php';
-
-        $orderMigration = Str::of(File::get(__DIR__.'/stubs/create_orders_table.php.stub'))
-            ->replace('ORDERS_TABLE', config('statamic.simple-commerce.orders.table', 'orders'))
-            ->__toString();
-
-        File::put(database_path('migrations/'.$filename), $orderMigration);
-
-        $this->components->info("Migration [database/migrations/{$filename}] published successfully.");
-
-        return $this;
-    }
-
-    private function publishLineItemsMigration(): self
-    {
-        $existingMigration = collect(File::allFiles(database_path('migrations')))
-            ->map->getFilename()
-            ->filter(fn (string $filename) => Str::contains($filename, '_create_line_items_table.php'))
-            ->first();
-
-        if ($existingMigration) {
-            $this->components->info("Migration [database/migrations/{$existingMigration}] already exists.");
-
-            return $this;
-        }
-
-        $filename = date('Y_m_d_His').'_create_line_items_table.php';
-
-        $orderMigration = Str::of(File::get(__DIR__.'/stubs/create_line_items_table.php.stub'))
-            ->replace('LINE_ITEMS_TABLE', config('statamic.simple-commerce.orders.line_items_table', 'line_items'))
-            ->__toString();
-
-        File::put(database_path('migrations/'.$filename), $orderMigration);
-
-        $this->components->info("Migration [database/migrations/{$filename}] published successfully.");
+        $this->publishMigration(
+            stubPath: __DIR__.'/stubs/create_order_line_items_table.php.stub',
+            name: 'create_order_line_items_table.php',
+            replacements: [
+                'ORDER_LINE_ITEMS_TABLE' => config('statamic.simple-commerce.orders.line_items_table', 'order_line_items'),
+            ]
+        );
 
         return $this;
     }

@@ -34,7 +34,7 @@ class CartLineItemsController
             ->when($request->get('variant'), function ($collection) use ($request) {
                 return $collection->where('variant', $request->get('variant'));
             })
-            ->when(config('statamic.simple-commerce.cart.unique_metadata', false), function ($collection) use ($data) {
+            ->when(config('statamic.simple-commerce.carts.unique_metadata', false), function ($collection) use ($data) {
                 return $collection->filter(function (LineItem $lineItem) use ($data) {
                     foreach ($data as $key => $value) {
                         if ($lineItem->get($key) !== $value) {

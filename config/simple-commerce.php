@@ -18,8 +18,17 @@ return [
     ],
 
     'carts' => [
+        'repository' => 'file',
+
         // Flat file repository
         'directory' => base_path('content/simple-commerce/carts'),
+
+        // Database repository
+        'model' => \DuncanMcClean\SimpleCommerce\Cart\Eloquent\CartModel::class,
+        'table' => 'carts',
+
+        'line_items_model' => \DuncanMcClean\SimpleCommerce\Cart\Eloquent\LineItemModel::class,
+        'line_items_table' => 'cart_line_items',
 
         'cookie_name' => 'simple-commerce-cart',
 
@@ -42,7 +51,7 @@ return [
         'table' => 'orders',
 
         'line_items_model' => \DuncanMcClean\SimpleCommerce\Orders\Eloquent\LineItemModel::class,
-        'line_items_table' => 'line_items',
+        'line_items_table' => 'order_line_items',
     ],
 
     'taxes' => [

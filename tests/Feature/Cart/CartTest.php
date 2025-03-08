@@ -14,7 +14,7 @@ use Tests\TestCase;
 
 class CartTest extends TestCase
 {
-    use PreventsSavingStacheItemsToDisk;
+    use CartQueryTests, PreventsSavingStacheItemsToDisk;
 
     protected function setUp(): void
     {

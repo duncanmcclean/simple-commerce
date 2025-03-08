@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 
 class OrderRepository extends Stache\Repositories\OrderRepository implements RepositoryContract
 {
-    public function query()
+    public function query(): QueryBuilder
     {
         return app(QueryBuilder::class, ['builder' => app('simple-commerce.orders.eloquent.model')::query()]);
     }
@@ -41,6 +41,8 @@ class OrderRepository extends Stache\Repositories\OrderRepository implements Rep
                 ]
             );
         });
+
+        $model->lineItems()->whereNotIn('id', $order->lineItems()->map->id)->delete();
 
         $model = $model->fresh();
 

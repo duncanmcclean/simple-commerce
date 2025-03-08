@@ -90,6 +90,21 @@ class ServiceProvider extends AddonServiceProvider
             }
         });
 
+        if (config('statamic.simple-commerce.carts.repository') === 'eloquent') {
+            $this->app->bind('simple-commerce.carts.eloquent.model', function () {
+                return config('statamic.simple-commerce.carts.model', \DuncanMcClean\SimpleCommerce\Cart\Eloquent\CartModel::class);
+            });
+
+            $this->app->bind('simple-commerce.carts.eloquent.line_items_model', function () {
+                return config('statamic.simple-commerce.carts.line_items_model', \DuncanMcClean\SimpleCommerce\Cart\Eloquent\LineItemModel::class);
+            });
+
+            Statamic::repository(
+                \DuncanMcClean\SimpleCommerce\Contracts\Cart\CartRepository::class,
+                \DuncanMcClean\SimpleCommerce\Cart\Eloquent\CartRepository::class
+            );
+        }
+
         if (config('statamic.simple-commerce.orders.repository') === 'eloquent') {
             $this->app->bind('simple-commerce.orders.eloquent.model', function () {
                 return config('statamic.simple-commerce.orders.model', \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderModel::class);
@@ -99,7 +114,10 @@ class ServiceProvider extends AddonServiceProvider
                 return config('statamic.simple-commerce.orders.line_items_model', \DuncanMcClean\SimpleCommerce\Orders\Eloquent\LineItemModel::class);
             });
 
-            Statamic::repository(\DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository::class, \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderRepository::class);
+            Statamic::repository(
+                \DuncanMcClean\SimpleCommerce\Contracts\Orders\OrderRepository::class,
+                \DuncanMcClean\SimpleCommerce\Orders\Eloquent\OrderRepository::class
+            );
         }
 
         foreach ($this->shippingMethods as $shippingMethod) {

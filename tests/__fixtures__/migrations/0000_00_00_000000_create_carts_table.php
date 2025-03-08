@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('ORDERS_TABLE', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->uuid('id');
-            $table->integer('order_number')->autoIncrement();
-            $table->timestamp('date');
             $table->string('site');
-            $table->string('cart');
-            $table->string('status');
-            $table->string('customer');
+            $table->string('customer')->nullable();
             $table->string('coupon')->nullable();
             $table->bigInteger('grand_total');
             $table->bigInteger('sub_total');
@@ -37,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ORDERS_TABLE');
+        Schema::dropIfExists('carts');
     }
 };

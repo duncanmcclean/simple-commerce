@@ -1,21 +1,21 @@
 <?php
 
-namespace DuncanMcClean\SimpleCommerce\Orders\Eloquent;
+namespace DuncanMcClean\SimpleCommerce\Cart\Eloquent;
 
 use Closure;
-use DuncanMcClean\SimpleCommerce\Contracts\Orders\QueryBuilder;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\QueryBuilder;
 use DuncanMcClean\SimpleCommerce\Query\Eloquent\QueriesCustomers;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Statamic\Query\EloquentQueryBuilder;
 
-class OrderQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
+class CartQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
 {
     use QueriesCustomers;
 
     protected $columns = [
-        'id', 'order_number', 'date', 'site', 'cart', 'status', 'customer', 'coupon', 'grand_total',
-        'sub_total', 'discount_total', 'tax_total', 'shipping_total', 'line_items', 'data',
+        'id', 'site', 'status', 'customer', 'coupon', 'grand_total', 'sub_total',
+        'discount_total', 'tax_total', 'shipping_total', 'line_items', 'data',
     ];
 
     public function orderBy($column, $direction = 'asc')
@@ -53,7 +53,7 @@ class OrderQueryBuilder extends EloquentQueryBuilder implements QueryBuilder
     protected function transform($items, $columns = ['*'])
     {
         return Collection::make($items)->map(function ($model) {
-            return Order::fromModel($model);
+            return Cart::fromModel($model);
         });
     }
 

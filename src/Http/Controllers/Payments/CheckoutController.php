@@ -138,7 +138,7 @@ class CheckoutController
                 $productVariants = $product->productVariants();
 
                 $productVariants['options'] = collect(Arr::get($productVariants, 'options'))->map(function ($variant) use ($lineItem) {
-                    if ($variant['key'] === $lineItem->variant()->key()) {
+                    if (isset($variant['stock']) && $variant['key'] === $lineItem->variant()->key()) {
                         $variant['stock'] -= $lineItem->quantity();
                     }
 

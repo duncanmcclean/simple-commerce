@@ -2,7 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Facades;
 
-use DuncanMcClean\SimpleCommerce\Stache\Repositories\CartRepository;
+use DuncanMcClean\SimpleCommerce\Contracts\Cart\CartRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**

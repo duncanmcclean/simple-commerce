@@ -28,7 +28,7 @@ class OrderRepository implements RepositoryContract
         return $this->query()->get();
     }
 
-    public function query()
+    public function query(): QueryBuilder
     {
         return app(QueryBuilder::class);
     }

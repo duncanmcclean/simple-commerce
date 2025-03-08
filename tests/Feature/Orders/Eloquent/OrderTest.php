@@ -85,7 +85,7 @@ class OrderTest extends TestCase
         $this->assertEquals($model->discount_total, $order->discountTotal());
         $this->assertEquals($model->tax_total, $order->taxTotal());
         $this->assertEquals($model->shipping_total, $order->shippingTotal());
-        $this->assertEquals($model->data, $order->data()->all());
+        $this->assertEquals($model->data, $order->data()->except('updated_at')->all());
 
         $this->assertEquals('123', $order->lineItems()->first()->id());
         $this->assertEquals(2500, $order->lineItems()->first()->total());
@@ -114,10 +114,10 @@ class OrderTest extends TestCase
         $this->assertDatabaseHas('orders', [
             'site' => 'default',
             'grand_total' => 2500,
-            'data' => json_encode($data),
+            'data->foo' => 'bar',
         ]);
 
-        $this->assertDatabaseHas('line_items', [
+        $this->assertDatabaseHas('order_line_items', [
             'order_id' => $order->id(),
             'product' => 'abc',
             'quantity' => 1,

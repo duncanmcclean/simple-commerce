@@ -28,7 +28,7 @@ class CartRepository implements RepositoryContract
         return $this->query()->get();
     }
 
-    public function query()
+    public function query(): QueryBuilder
     {
         return app(QueryBuilder::class);
     }
@@ -105,12 +105,7 @@ class CartRepository implements RepositoryContract
 
         $this->store->save($cart);
 
-        Cookie::queue($this->getKey(), $cart->id());
-
-        // Because the cookie won't be set until the end of the request,
-        // we need to set it somewhere for the remainder of the request.
-        // And that somewhere is Blink.
-        Blink::put($this->getKey(), $cart->id());
+        $this->persistCart($cart);
     }
 
     public function delete(Cart $cart): void
@@ -124,6 +119,16 @@ class CartRepository implements RepositoryContract
             Cart::class => \DuncanMcClean\SimpleCommerce\Cart\Cart::class,
             QueryBuilder::class => \DuncanMcClean\SimpleCommerce\Stache\Query\CartQueryBuilder::class,
         ];
+    }
+
+    protected function persistCart(Cart $cart): void
+    {
+        Cookie::queue($this->getKey(), $cart->id());
+
+        // Because the cookie won't be set until the end of the request,
+        // we need to set it somewhere for the remainder of the request.
+        // And that somewhere is Blink.
+        Blink::put($this->getKey(), $cart->id());
     }
 
     private function determineSiteFromRequest(): \Statamic\Sites\Site
