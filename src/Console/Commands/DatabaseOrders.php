@@ -14,13 +14,15 @@ use Statamic\Statamic;
 use Statamic\Support\Str;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
 
+use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\progress;
 
 class DatabaseOrders extends Command
 {
     use Concerns\PublishesMigrations, RunsInPlease;
 
-    protected $signature = 'statamic:simple-commerce:database-orders';
+    protected $signature = 'statamic:simple-commerce:database-orders
+        { --import : Whether existing data should be imported }';
 
     protected $description = 'Migrates orders to the database.';
 
@@ -83,6 +85,10 @@ class DatabaseOrders extends Command
 
     private function importOrders(): self
     {
+        if (! $this->option('import') && ! confirm('Would you like to import existing orders?')) {
+            return $this;
+        }
+
         $query = Order::query();
 
         $progress = progress(label: 'Importing orders', steps: $query->count());

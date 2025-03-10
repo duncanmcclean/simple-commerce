@@ -12,13 +12,15 @@ use Statamic\Console\RunsInPlease;
 use Statamic\Statamic;
 use Stillat\Proteus\Support\Facades\ConfigWriter;
 
+use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\progress;
 
 class DatabaseCarts extends Command
 {
     use Concerns\PublishesMigrations, RunsInPlease;
 
-    protected $signature = 'statamic:simple-commerce:database-carts';
+    protected $signature = 'statamic:simple-commerce:database-carts
+        { --import : Whether existing data should be imported }';
 
     protected $description = 'Migrates carts to the database.';
 
@@ -81,6 +83,10 @@ class DatabaseCarts extends Command
 
     private function importCarts(): self
     {
+        if (! $this->option('import') && ! confirm('Would you like to import existing carts?')) {
+            return $this;
+        }
+
         $query = Cart::query();
 
         $progress = progress(label: 'Importing carts', steps: $query->count());
