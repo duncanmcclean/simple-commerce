@@ -64,14 +64,18 @@ class AssignUserToCartTest extends TestCase
         $productTwo = $this->makeProduct();
 
         $recentCart = tap(Cart::make()->customer($user))->save();
+        $recentCart->set('foo', 'bar');
         $recentCart->lineItems()->create(['product' => $productOne->id(), 'quantity' => 1]);
 
         $currentCart = $this->makeCart();
+        $currentCart->set('bar', 'baz');
         $currentCart->lineItems()->create(['product' => $productTwo->id(), 'quantity' => 2]);
 
         Auth::login($user);
 
         $this->assertEquals($recentCart->id(), Cart::current()->id());
+        $this->assertEquals('bar', Cart::current()->get('foo'));
+        $this->assertEquals('baz', Cart::current()->get('bar'));
 
         $this->assertCount(2, $recentCart->lineItems());
 
