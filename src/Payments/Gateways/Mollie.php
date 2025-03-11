@@ -80,7 +80,7 @@ class Mollie extends PaymentGateway
                     $unitPrice = ($lineItem->total() + $lineItem->get('discount_amount', 0)) / $lineItem->quantity();
 
                     return [
-                        'type' => 'physical',
+                        'type' => $lineItem->product()->get('type', 'physical'),
                         'description' => $lineItem->product()->get('title'),
                         'quantity' => $lineItem->quantity(),
                         'unitPrice' => $this->formatAmount(site: $cart->site(), amount: $unitPrice),
