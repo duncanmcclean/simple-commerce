@@ -18,8 +18,8 @@ class CalculateLineItems
 
             $price = match (true) {
                 isset(static::$priceHook) => (static::$priceHook)($cart, $lineItem),
-                $product->type() === ProductType::Product => $product->price(),
-                $product->type() === ProductType::Variant => $product->variant($lineItem->variant()->key())->price(),
+                $product->isStandardProduct() => $product->price(),
+                $product->isVariantProduct() => $product->variant($lineItem->variant()->key())->price(),
             };
 
             $lineItem->unitPrice($price);

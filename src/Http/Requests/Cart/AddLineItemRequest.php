@@ -32,11 +32,11 @@ class AddLineItemRequest extends FormRequest
                 },
             ],
             'variant' => [
-                Rule::requiredIf(fn () => Product::find($this->product)?->type() === ProductType::Variant),
+                Rule::requiredIf(fn () => Product::find($this->product)?->isVariantProduct()),
                 function ($attribute, $value, $fail) {
                     $product = Product::find($this->product);
 
-                    if ($product->type() === ProductType::Variant) {
+                    if ($product->isVariantProduct()) {
                         $variant = $product->variant($value);
 
                         if (! $variant) {

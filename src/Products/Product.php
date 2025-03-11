@@ -12,19 +12,20 @@ use Statamic\Entries\Entry;
 
 class Product extends Entry implements Contract, Purchasable
 {
-    public function type(): ProductType
+    public function isStandardProduct(): bool
     {
-        if ($this->value('product_variants')) {
-            return ProductType::Variant;
-        }
-
-        return ProductType::Product;
+        return $this->value('product_variants') === null;
     }
 
-    public function price(): int
+    public function isVariantProduct(): bool
     {
-        if ($this->type() === ProductType::Variant) {
-            throw new \Exception('The Product::price() method can not be called on a variant product.');
+        return $this->value('product_variants') !== null;
+    }
+
+    public function price(): ?int
+    {
+        if ($this->isVariantProduct()) {
+            return null;
         }
 
         $price = $this->value('price');
@@ -44,7 +45,7 @@ class Product extends Entry implements Contract, Purchasable
 
     public function stock(): ?int
     {
-        if ($this->type() === ProductType::Variant) {
+        if ($this->isVariantProduct()) {
             return null;
         }
 

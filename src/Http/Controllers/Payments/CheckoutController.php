@@ -108,7 +108,7 @@ class CheckoutController
     private function updateStock(OrderContract $order): void
     {
         $order->lineItems()->each(function (LineItem $lineItem) {
-            if ($lineItem->product()->type() === ProductType::Product) {
+            if ($lineItem->product()->isStandardProduct()) {
                 $product = $lineItem->product();
 
                 // When the Price field isn't localized, we need to update the stock on the origin entry.
@@ -127,7 +127,7 @@ class CheckoutController
                 }
             }
 
-            if ($lineItem->product()->type() === ProductType::Variant) {
+            if ($lineItem->product()->isVariantProduct()) {
                 $product = $lineItem->product();
 
                 // When the Product Variants field isn't localized, we need to update the stock on the origin entry.

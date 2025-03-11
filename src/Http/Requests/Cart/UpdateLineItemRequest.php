@@ -20,20 +20,7 @@ class UpdateLineItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'variant' => [
-                'nullable',
-                //                function ($attribute, $value, $fail) {
-                //                    $product = Product::find($this->product);
-                //
-                //                    if ($product->type() === ProductType::Variant) {
-                //                        $variant = $product->variant($value);
-                //
-                //                        if (! $variant) {
-                //                            return $fail(__('The variant is invalid.'));
-                //                        }
-                //                    }
-                //                }
-            ],
+            'variant' => ['nullable'],
             'quantity' => ['nullable', 'integer', 'gt:0'],
         ];
     }
