@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Orders;
 
+use Illuminate\Support\Arr;
 use Statamic\Facades\Blueprint as BlueprintFacade;
 use Statamic\Fields\Blueprint as StatamicBlueprint;
 
@@ -9,7 +10,7 @@ class Blueprint
 {
     public function __invoke(): StatamicBlueprint
     {
-        return BlueprintFacade::make()->setHandle('orders')->setContents(array_merge_recursive([
+        $contents = [
             'tabs' => [
                 'details' => [
                     'display' => __('Details'),
@@ -184,6 +185,46 @@ class Blueprint
                     ],
                 ],
             ],
-        ], BlueprintFacade::find('simple-commerce::order')->contents()));
+        ];
+
+        $customBlueprint = BlueprintFacade::find('simple-commerce::order');
+
+        foreach (Arr::get($customBlueprint->contents(), 'tabs') as $tabHandle => $tab) {
+            if (isset($contents['tabs'][$tabHandle])) {
+                // Merge fields in existing sections.
+                $sections = array_map(function ($section) use ($tab): array {
+                    $fields = $section['fields'];
+                    $display = $section['display'] ?? null;
+
+                    collect($tab['sections'])
+                        ->filter(fn ($section) => $section['display'] === $display)
+                        ->each(function ($customSection) use (&$fields): void {
+                            $fields = [
+                                ...$fields,
+                                ...$customSection['fields'],
+                            ];
+                        });
+
+                    return ['display' => $display, 'fields' => $fields];
+                }, $contents['tabs'][$tabHandle]['sections']);
+
+                // Merge new sections.
+                collect($tab['sections'])
+                    ->reject(fn($section) => collect($sections)->contains('display', $section['display']))
+                    ->each(function ($section) use (&$sections): void {
+                        $sections[] = $section;
+                    });
+
+                $contents['tabs'][$tabHandle]['sections'] = $sections;
+
+                continue;
+            }
+
+            $contents['tabs'][$tabHandle] = $tab;
+        }
+
+        return BlueprintFacade::make()
+            ->setHandle('orders')
+            ->setContents($contents);
     }
 }
