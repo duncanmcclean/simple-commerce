@@ -10,7 +10,37 @@ class EnsureProductFields
 {
     public function handle(EntryBlueprintFound $event)
     {
-        if ($this->isProductBlueprint($event->blueprint) && SimpleCommerce::usingDefaultTaxDriver() && ! $event->blueprint->hasField('tax_class')) {
+        if (! $this->isProductBlueprint($event->blueprint)) {
+            return;
+        }
+
+        if (config('statamic.simple-commerce.products.digital_products') && ! $event->blueprint->hasField('type')) {
+            $event->blueprint->ensureField('type', [
+                'type' => 'button_group',
+                'display' => 'Product Type',
+                'instructions' => __('Used to determine how the product is delivered.'),
+                'options' => [
+                    'physical' => __('Physical'),
+                    'digital' => __('Digital'),
+                ],
+                'default' => 'physical',
+                'validate' => 'required',
+            ], 'sidebar');
+        }
+
+        if (! $event->blueprint->hasField('price') && ! $event->blueprint->hasField('product_variants')) {
+            $event->blueprint->ensureField('price', [
+                'type' => 'money',
+                'display' => 'Price',
+                'instructions' => config('statamic.simple-commerce.taxes.price_includes_tax')
+                    ? __('Enter the price of the product, inclusive of tax.')
+                    : __('Enter the price of the product, exclusive of tax.'),
+                'listable' => 'hidden',
+                'validate' => 'required',
+            ], 'sidebar');
+        }
+
+        if (SimpleCommerce::usingDefaultTaxDriver() && ! $event->blueprint->hasField('tax_class')) {
             $event->blueprint->ensureField('tax_class', [
                 'type' => 'tax_class',
                 'display' => 'Tax Class',
@@ -23,7 +53,7 @@ class EnsureProductFields
         }
     }
 
-    protected function isProductBlueprint(Blueprint $blueprint): bool
+    private function isProductBlueprint(Blueprint $blueprint): bool
     {
         $collections = config('statamic.simple-commerce.products.collections');
 

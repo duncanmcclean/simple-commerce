@@ -81,17 +81,19 @@
             </div>
         </template>
 
-        <div class="flex items-center justify-between">
-            <span>{{ 'Shipping' | trans }}</span>
+        {{ if {cart:has_physical_products} }}
+            <div class="flex items-center justify-between">
+                <span>{{ 'Shipping' | trans }}</span>
 
-            <template x-if="cart.shipping_option">
-                <span x-text="cart.shipping_option.price"></span>
-            </template>
+                <template x-if="cart.shipping_option">
+                    <span x-text="cart.shipping_option.price"></span>
+                </template>
 
-            <template x-if="!cart.shipping_option">
-                <span class="text-gray-500">{{ 'Enter shipping address' | trans }}</span>
-            </template>
-        </div>
+                <template x-if="!cart.shipping_option">
+                    <span class="text-gray-500">{{ 'Enter shipping address' | trans }}</span>
+                </template>
+            </div>
+        {{ /if }}
 
         {{ if !config:statamic:simple-commerce:taxes:price_includes_tax }}
             <div class="flex items-center justify-between">

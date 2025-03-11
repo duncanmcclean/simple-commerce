@@ -4,7 +4,6 @@ use DuncanMcClean\SimpleCommerce\Http\Controllers\CartController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CartLineItemsController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CartPaymentGatewaysController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\CartShippingController;
-use DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts\DownloadController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Payments\CheckoutController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Payments\WebhookController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\StateController;
@@ -33,12 +32,6 @@ Route::name('simple-commerce.')->group(function () {
         ->group(function () {
             Route::post('{paymentGateway}/webhook', WebhookController::class)->name('webhook');
             Route::match(['get', 'post'], '{paymentGateway}/checkout', CheckoutController::class)->name('checkout');
-        });
-
-    Route::name('digital-products')
-        ->prefix('digital-products')
-        ->group(function () {
-            Route::get('download/{order}/{lineItem}', DownloadController::class)->name('download');
         });
 
     Route::get('states', StateController::class)->name('states');

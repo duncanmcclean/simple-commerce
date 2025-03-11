@@ -6,102 +6,104 @@
     the cart summary will update in real-time.
 #}}
 
-{{ partial:checkout/components/step title="Shipping Method" key="shipping" x-data="Shipping" }}
-    <input type="hidden" name="shipping_method" x-model="selectedShippingMethod">
+{{ if {cart:has_physical_products} }}
+    {{ partial:checkout/components/step title="Shipping Method" key="shipping" x-data="Shipping" }}
+        <input type="hidden" name="shipping_method" x-model="selectedShippingMethod">
 
-    <template x-if="isFetchingShippingOptions">
-        <div class="py-4 flex flex-col items-center justify-center -mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8 animate-spin text-black mb-4">
-                <style>@keyframes spinner_svv2{to{transform:rotate(360deg)}}</style>
-                <path d="M10.14 1.16a11 11 0 0 0-9 8.92A1.59 1.59 0 0 0 2.46 12a1.52 1.52 0 0 0 1.65-1.3 8 8 0 0 1 6.66-6.61A1.42 1.42 0 0 0 12 2.69a1.57 1.57 0 0 0-1.86-1.53Z" style="transform-origin:center;animation:spinner_svv2 1.5s infinite linear" fill="currentColor"/>
-            </svg>
-            <span class="text-gray-500 font-medium">{{ 'Loading...' | trans }}</span>
-        </div>
-    </template>
-
-    <p x-show="!isFetchingShippingOptions && shippingOptions.length === 0">{{ "Sorry, we're not able to ship to your address." | trans }}</p>
-
-    <template x-if="!isFetchingShippingOptions && shippingOptions.length > 0">
-        <ul class="flex flex-col space-y-2">
-            <template x-for="shippingOption in shippingOptions">
-                <li x-data class="bg-white border border-gray-300 rounded-md text-gray-700 text-sm p-4 flex items-center justify-between cursor-pointer" @click="$refs.shippingOption.click()">
-                    <div class="flex items-center space-x-2 flex-1">
-                        <input
-                            x-ref="shippingOption"
-                            type="radio"
-                            name="shipping_option"
-                            class="checked:bg-secondary focus:bg-secondary checked:border-secondary focus:border-secondary accent-secondary"
-                            :id="shippingOption.handle"
-                            :value="shippingOption.handle"
-                            :checked="selectedShippingOption === shippingOption.handle"
-                            @input="selectShippingOption(shippingOption)"
-                            required
-                        >
-                        <label class="block text-gray-700 font-semibold flex-1 cursor-pointer" :for="shippingOption.handle" x-text="shippingOption.name"></label>
-                    </div>
-
-                    <span x-text="shippingOption.price"></span>
-                </li>
-            </template>
-        </ul>
-    </template>
-
-    {{ slot:footer }}
-        <template x-if="!isFetchingShippingOptions">
-            {{ partial:checkout/components/button label="Continue →" type="button" disabled="!selectedShippingOption || busy" xOnClick="nextStep()" }}
+        <template x-if="isFetchingShippingOptions">
+            <div class="py-4 flex flex-col items-center justify-center -mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-8 h-8 animate-spin text-black mb-4">
+                    <style>@keyframes spinner_svv2{to{transform:rotate(360deg)}}</style>
+                    <path d="M10.14 1.16a11 11 0 0 0-9 8.92A1.59 1.59 0 0 0 2.46 12a1.52 1.52 0 0 0 1.65-1.3 8 8 0 0 1 6.66-6.61A1.42 1.42 0 0 0 12 2.69a1.57 1.57 0 0 0-1.86-1.53Z" style="transform-origin:center;animation:spinner_svv2 1.5s infinite linear" fill="currentColor"/>
+                </svg>
+                <span class="text-gray-500 font-medium">{{ 'Loading...' | trans }}</span>
+            </div>
         </template>
-    {{ /slot:footer }}
-{{ /partial:checkout/components/step }}
 
-{{ push:footer_scripts }}
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('Shipping', () => ({
-                shippingOptions: [],
-                selectedShippingMethod: null,
-                selectedShippingOption: null,
-                isFetchingShippingOptions: true,
+        <p x-show="!isFetchingShippingOptions && shippingOptions.length === 0">{{ "Sorry, we're not able to ship to your address." | trans }}</p>
 
-                init() {
-                    this.fetchShippingOptions();
+        <template x-if="!isFetchingShippingOptions && shippingOptions.length > 0">
+            <ul class="flex flex-col space-y-2">
+                <template x-for="shippingOption in shippingOptions">
+                    <li x-data class="bg-white border border-gray-300 rounded-md text-gray-700 text-sm p-4 flex items-center justify-between cursor-pointer" @click="$refs.shippingOption.click()">
+                        <div class="flex items-center space-x-2 flex-1">
+                            <input
+                                x-ref="shippingOption"
+                                type="radio"
+                                name="shipping_option"
+                                class="checked:bg-secondary focus:bg-secondary checked:border-secondary focus:border-secondary accent-secondary"
+                                :id="shippingOption.handle"
+                                :value="shippingOption.handle"
+                                :checked="selectedShippingOption === shippingOption.handle"
+                                @input="selectShippingOption(shippingOption)"
+                                required
+                            >
+                            <label class="block text-gray-700 font-semibold flex-1 cursor-pointer" :for="shippingOption.handle" x-text="shippingOption.name"></label>
+                        </div>
 
-                    this.selectedShippingMethod = this.cart.shipping_method?.handle;
-                    this.selectedShippingOption = this.cart.shipping_option?.handle;
-                },
+                        <span x-text="shippingOption.price"></span>
+                    </li>
+                </template>
+            </ul>
+        </template>
 
-                fetchShippingOptions() {
-                    fetch('{{ route:statamic.simple-commerce.cart.shipping }}', {
-                        method: 'GET',
-                        headers: {'Accept': 'application/json'},
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            this.shippingOptions = data;
+        {{ slot:footer }}
+            <template x-if="!isFetchingShippingOptions">
+                {{ partial:checkout/components/button label="Continue →" type="button" disabled="!selectedShippingOption || busy" xOnClick="nextStep()" }}
+            </template>
+        {{ /slot:footer }}
+    {{ /partial:checkout/components/step }}
 
-                            if (! this.selectedShippingOption && this.shippingOptions.length > 0) {
-                                this.selectShippingOption(this.shippingOptions[0]);
-                            }
+    {{ push:footer_scripts }}
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('Shipping', () => ({
+                    shippingOptions: [],
+                    selectedShippingMethod: null,
+                    selectedShippingOption: null,
+                    isFetchingShippingOptions: true,
 
-                            this.isFetchingShippingOptions = false;
+                    init() {
+                        this.fetchShippingOptions();
+
+                        this.selectedShippingMethod = this.cart.shipping_method?.handle;
+                        this.selectedShippingOption = this.cart.shipping_option?.handle;
+                    },
+
+                    fetchShippingOptions() {
+                        fetch('{{ route:statamic.simple-commerce.cart.shipping }}', {
+                            method: 'GET',
+                            headers: {'Accept': 'application/json'},
                         })
-                        .catch(error => {
-                            alert(`{{ 'Something went wrong while getting your shipping options. Please try again later' | trans }}`);
+                            .then(response => response.json())
+                            .then(data => {
+                                this.shippingOptions = data;
+
+                                if (! this.selectedShippingOption && this.shippingOptions.length > 0) {
+                                    this.selectShippingOption(this.shippingOptions[0]);
+                                }
+
+                                this.isFetchingShippingOptions = false;
+                            })
+                            .catch(error => {
+                                alert(`{{ 'Something went wrong while getting your shipping options. Please try again later' | trans }}`);
+                            });
+                    },
+
+                    // To improve the UX, we'll submit the <form> when the customer selects a shipping option.
+                    // This means the customer can see the updated totals before continuing to the next step.
+                    async selectShippingOption(shippingOption) {
+                        this.selectedShippingOption = shippingOption.handle;
+                        this.selectedShippingMethod = shippingOption.shipping_method;
+
+                        this.busy = true;
+
+                        this.$nextTick(async () => {
+                            await this.submit(this.$el?.form ?? this.$root).finally(() => this.busy = false);
                         });
-                },
-
-                // To improve the UX, we'll submit the <form> when the customer selects a shipping option.
-                // This means the customer can see the updated totals before continuing to the next step.
-                async selectShippingOption(shippingOption) {
-                    this.selectedShippingOption = shippingOption.handle;
-                    this.selectedShippingMethod = shippingOption.shipping_method;
-
-                    this.busy = true;
-
-                    this.$nextTick(async () => {
-                        await this.submit(this.$el?.form ?? this.$root).finally(() => this.busy = false);
-                    });
-                }
-            }));
-        });
-    </script>
-{{ /push:footer_scripts }}
+                    }
+                }));
+            });
+        </script>
+    {{ /push:footer_scripts }}
+{{ /if }}

@@ -8,7 +8,7 @@
     <script>window.addEventListener('load', () => window.print());</script>
 </head>
 <body>
-    <main class="max-w-4xl mx-auto py-20 flex flex-col gap-y-8">
+    <main class="max-w-4xl mx-auto py-12 flex flex-col gap-y-8">
         <h1 class="text-4xl font-bold">Packing Slip</h1>
 
         {{# Company Address #}}
@@ -82,15 +82,19 @@
                 </tr>
             </thead>
             <tbody class="divide-y-2 divide-black">
+                {{ totalQuantity = 0 }}
                 {{ order:line_items }}
-                    <tr class="divide-x-2 divide-black">
-                        <td class="px-2 py-1">{{ product:title }}</td>
-                        <td class="px-2 py-1">{{ quantity }}</td>
-                    </tr>
+                    {{ if product:type === 'physical' }}
+                        {{ totalQuantity += quantity }}
+                        <tr class="divide-x-2 divide-black">
+                            <td class="px-2 py-1">{{ product:title }}</td>
+                            <td class="px-2 py-1">{{ quantity }}</td>
+                        </tr>
+                    {{ /if }}
                 {{ /order:line_items }}
                 <tr class="divide-x-2 divide-black">
                     <td class="px-2 py-1 font-bold">Total Quantity:</td>
-                    <td class="px-2 py-1">{{ order:line_items | pluck('quantity') | sum }}</td>
+                    <td class="px-2 py-1">{{ totalQuantity }}</td>
                 </tr>
             </tbody>
         </table>

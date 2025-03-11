@@ -32,6 +32,8 @@ class AugmentedOrder extends AbstractAugmented
             'shipping_option',
             'payment_gateway',
             'tax_breakdown',
+            'has_physical_products',
+            'has_digital_products',
         ];
 
         if ($this->data instanceof Order) {
@@ -95,5 +97,23 @@ class AugmentedOrder extends AbstractAugmented
         }
 
         return $this->data->status()->value;
+    }
+
+    public function hasPhysicalProducts(): bool
+    {
+        return $this->data->lineItems()
+            ->filter(function (LineItem $lineItem) {
+                return $lineItem->product()->get('type', 'physical') === 'physical';
+            })
+            ->isNotEmpty();
+    }
+
+    public function hasDigitalProducts(): bool
+    {
+        return $this->data->lineItems()
+            ->filter(function (LineItem $lineItem) {
+                return $lineItem->product()->get('type', 'physical') === 'digital';
+            })
+            ->isNotEmpty();
     }
 }

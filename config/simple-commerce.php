@@ -6,10 +6,12 @@ return [
         'collections' => ['products'],
 
         'low_stock_threshold' => 5,
+
+        'digital_products' => true,
     ],
 
     'coupons' => [
-        'directory' => base_path('content/coupons'),
+        'directory' => base_path('content/simple-commerce/coupons'),
     ],
 
     'routes' => [

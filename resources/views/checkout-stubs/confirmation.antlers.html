@@ -16,16 +16,18 @@
         </div>
 
         <div class="grid md:grid-cols-2 gap-8 bg-white p-6 rounded-lg border">
-            <div>
-                <span class="block text-sm mb-2 text-gray-600 uppercase font-medium">{{ 'Shipping address' | trans }}</span>
-                <address>
-                    {{ shipping_line_1 }}<br>
-                    {{ if shipping_line_2 }}{{ shipping_line_2 }}<br>{{ /if }}
-                    {{ shipping_city }}, {{ shipping_postcode }}<br>
-                    {{ if shipping_state }}{{ shipping_state:name }}<br>{{ /if }}
-                    {{ shipping_country }}
-                </address>
-            </div>
+            {{ if shipping_line_1 }}
+                <div>
+                    <span class="block text-sm mb-2 text-gray-600 uppercase font-medium">{{ 'Shipping address' | trans }}</span>
+                    <address>
+                        {{ shipping_line_1 }}<br>
+                        {{ if shipping_line_2 }}{{ shipping_line_2 }}<br>{{ /if }}
+                        {{ shipping_city }}, {{ shipping_postcode }}<br>
+                        {{ if shipping_state }}{{ shipping_state:name }}<br>{{ /if }}
+                        {{ shipping_country }}
+                    </address>
+                </div>
+            {{ /if }}
             <div>
                 <span class="block text-sm mb-2 text-gray-600 uppercase font-medium">{{ 'Billing address' | trans }}</span>
                 <address>
