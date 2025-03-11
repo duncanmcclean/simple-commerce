@@ -89,6 +89,11 @@ class ProductVariant implements Augmentable, Purchasable
             ->args(func_get_args());
     }
 
+    public function isStockEnabled(): bool
+    {
+        return $this->blueprint()->hasField('stock') && $this->stock() !== null;
+    }
+
     public function purchasablePrice(): int
     {
         return $this->price();
@@ -101,12 +106,24 @@ class ProductVariant implements Augmentable, Purchasable
 
     public function blueprint()
     {
-        return Blueprint::makeFromFields($this->product()
-            ->blueprint()
-            ->field('product_variants')
-            ?->fieldtype()
-            ->optionFields()
-            ->items());
+        $blueprint = $this->product()->blueprint();
+
+        return Blueprint::make()
+            ->setHandle($blueprint->handle().'.product_variants')
+            ->setContents([
+                'tabs' => [
+                    'main' => [
+                        'sections' => [[
+                            'fields' => $blueprint
+                                ->field('product_variants')
+                                ?->fieldtype()
+                                ->optionFields()
+                                ->items()
+                                ->all(),
+                        ]],
+                    ],
+                ],
+            ]);
     }
 
     public function shallowAugmentedArrayKeys()

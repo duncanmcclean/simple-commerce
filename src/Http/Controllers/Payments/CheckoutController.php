@@ -15,7 +15,6 @@ use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\ValidatesStock;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
-use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
@@ -108,7 +107,7 @@ class CheckoutController
     private function updateStock(OrderContract $order): void
     {
         $order->lineItems()->each(function (LineItem $lineItem) {
-            if ($lineItem->product()->isStandardProduct()) {
+            if ($lineItem->product()->isStandardProduct() && $lineItem->product()->isStockEnabled()) {
                 $product = $lineItem->product();
 
                 // When the Price field isn't localized, we need to update the stock on the origin entry.
@@ -127,7 +126,7 @@ class CheckoutController
                 }
             }
 
-            if ($lineItem->product()->isVariantProduct()) {
+            if ($lineItem->product()->isVariantProduct() && $lineItem->variant()->isStockEnabled()) {
                 $product = $lineItem->product();
 
                 // When the Product Variants field isn't localized, we need to update the stock on the origin entry.

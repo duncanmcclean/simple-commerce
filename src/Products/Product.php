@@ -52,6 +52,15 @@ class Product extends Entry implements Contract, Purchasable
         return $this->value('stock');
     }
 
+    public function isStockEnabled(): ?bool
+    {
+        if ($this->isVariantProduct()) {
+            return null;
+        }
+
+        return $this->blueprint()->hasField('stock') && $this->stock() !== null;
+    }
+
     public function variantOptions(): Collection
     {
         if (! $this->value('product_variants')) {

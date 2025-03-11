@@ -54,10 +54,19 @@ class ProductRepository implements RepositoryContract
     {
         $product = app(Product::class)
             ->id($entry->id())
-            ->collection($entry->collection())
+            ->collection($entry->collection());
+
+        if ($origin = $entry->origin()) {
+            $product->origin($origin);
+        }
+
+        $product
             ->blueprint($entry->blueprint())
-            ->data($entry->data())
             ->locale($entry->locale())
+            ->initialPath($entry->initialPath())
+            ->published($entry->published())
+            ->data($entry->data())
+            ->slug($entry->slug())
             ->template($entry->template())
             ->layout($entry->layout());
 

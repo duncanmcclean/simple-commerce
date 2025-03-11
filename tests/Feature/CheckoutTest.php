@@ -159,6 +159,16 @@ class CheckoutTest extends TestCase
         ]);
         $product->save();
 
+        $product->blueprint()->ensureField('product_variants', [
+            'type' => 'product_variants',
+            'option_fields' => [
+                [
+                    'handle' => 'stock',
+                    'field' => ['type' => 'integer'],
+                ],
+            ],
+        ])->save();
+
         $this
             ->get('/!/simple-commerce/payments/fake/checkout')
             ->assertRedirect();
@@ -231,8 +241,12 @@ class CheckoutTest extends TestCase
 
     private function makeCart()
     {
-        Collection::make('products')->save();
+        $collection = tap(Collection::make('products'))->save();
         Entry::make()->collection('products')->id('product-1')->data(['price' => 5000])->save();
+
+        $collection->entryBlueprint()->ensureField('stock', [
+            'type' => 'integer',
+        ])->save();
 
         $cart = Cart::make()
             ->customer(['name' => 'John Doe', 'email' => 'john.doe@example.com'])
