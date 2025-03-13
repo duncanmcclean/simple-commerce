@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.8.1 (2025-03-13)
+
+### What's fixed
+* Delete `some-other-collection` blueprint from default blueprints #1204 by @duncanmcclean
+
+
+
 ## v7.8.0 (2025-02-14)
 
 ### What's new
