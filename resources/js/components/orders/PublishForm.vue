@@ -373,7 +373,10 @@ export default {
         afterActionSuccessfullyCompleted(response) {
             if (response.data) {
                 this.title = response.data.title;
+                clearTimeout(this.trackDirtyStateTimeout);
+                this.trackDirtyState = false;
                 this.values = this.resetValuesFromResponse(response.data.values);
+                this.trackDirtyStateTimeout = setTimeout(() => (this.trackDirtyState = true), 500);
                 this.itemActions = response.data.itemActions;
             }
         },

@@ -9,6 +9,8 @@ use Statamic\Http\Controllers\CP\ActionController;
 
 class OrderActionController extends ActionController
 {
+    use ExtractsFromOrderFields;
+
     protected function getSelectedItems($items, $context)
     {
         return $items->map(function ($item) {
@@ -16,11 +18,16 @@ class OrderActionController extends ActionController
         });
     }
 
-    protected function getItemData($order, $context): array
+    protected function getItemData($item, $context): array
     {
-        $order = $order->fresh();
+        $order = $item->fresh();
+
+        $blueprint = $order->blueprint();
+
+        [$values] = $this->extractFromFields($order, $blueprint);
 
         return array_merge((new OrderResource($order))->resolve()['data'], [
+            'values' => $values,
             'itemActions' => Action::for($order, $context),
         ]);
     }
