@@ -171,7 +171,7 @@ class EloquentOrderRepository implements RepositoryContract
         $model->billing_region = $order->get('billing_region');
         $model->billing_country = $order->get('billing_country');
 
-        $model->use_shipping_address_for_billing = $order->get('use_shipping_address_for_billing') == 'true';
+        $model->use_shipping_address_for_billing = $order->get('use_shipping_address_for_billing') && $order->get('use_shipping_address_for_billing') != 'off';
 
         // If anything in the order data has it's own column, save it
         // there, rather than in the data column.
