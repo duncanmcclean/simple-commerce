@@ -53,4 +53,4 @@ The minimum version of PHP is now 8.2. We highly recommend upgrading all the way
 
 ---
 
-[You may also view a diff of changes between v4.x and v5.0](https://github.com/duncanmcclean/simple-commerce/compare/6.x...7.x)
+[You may also view a diff of changes between v6.x and v7.0](https://github.com/duncanmcclean/simple-commerce/compare/6.x...7.x)
