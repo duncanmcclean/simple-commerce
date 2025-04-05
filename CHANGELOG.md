@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.8.2 (2025-04-05)
+
+### What's fixed
+* Fixed `use_shipping_address_for_billing` option when using Database Orders #1213 by @duncanmcclean
+
+
+
 ## v7.8.1 (2025-03-13)
 
 ### What's fixed
