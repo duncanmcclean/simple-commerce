@@ -349,6 +349,32 @@ it('can save order when bit of data has its own column', function () {
     ]);
 });
 
+it('can save use_shipping_address_for_billing column', function () {
+    $orderRecord = OrderModel::create();
+    $order = Order::find($orderRecord->id);
+
+    $order->set('use_shipping_address_for_billing', true)->save();
+    $this->assertDatabaseHas('orders', ['id' => $orderRecord->id, 'use_shipping_address_for_billing' => true]);
+
+    $order->set('use_shipping_address_for_billing', 'true')->save();
+    $this->assertDatabaseHas('orders', ['id' => $orderRecord->id, 'use_shipping_address_for_billing' => true]);
+
+    $order->set('use_shipping_address_for_billing', 'on')->save();
+    $this->assertDatabaseHas('orders', ['id' => $orderRecord->id, 'use_shipping_address_for_billing' => true]);
+
+    $order->set('use_shipping_address_for_billing', false)->save();
+    $this->assertDatabaseHas('orders', ['id' => $orderRecord->id, 'use_shipping_address_for_billing' => false]);
+
+    $order->set('use_shipping_address_for_billing', 'false')->save();
+    $this->assertDatabaseHas('orders', ['id' => $orderRecord->id, 'use_shipping_address_for_billing' => false]);
+
+    $order->set('use_shipping_address_for_billing', 'off')->save();
+    $this->assertDatabaseHas('orders', ['id' => $orderRecord->id, 'use_shipping_address_for_billing' => false]);
+
+    $order->set('use_shipping_address_for_billing', null)->save();
+    $this->assertDatabaseHas('orders', ['id' => $orderRecord->id, 'use_shipping_address_for_billing' => false]);
+});
+
 it('can save order with status log events', function () {
     $product = Product::make()->price(1000);
     $product->save();
