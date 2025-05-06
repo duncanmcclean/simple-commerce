@@ -12,6 +12,7 @@ use DuncanMcClean\SimpleCommerce\Gateways\BaseGateway;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Mollie\Api\MollieApiClient;
 use Mollie\Api\Types\PaymentStatus as MolliePaymentStatus;
@@ -96,7 +97,7 @@ class MollieGateway extends BaseGateway implements Gateway
                 return;
             }
 
-            $order->gatewayData(data: (array) $payment);
+            $order->gatewayData(data: Arr::except((array) $payment, ["\x00*\x00client", '_links']));
             $order->save();
 
             $this->markOrderAsPaid($order);
