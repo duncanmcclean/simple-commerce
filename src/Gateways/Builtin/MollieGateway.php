@@ -64,7 +64,13 @@ class MollieGateway extends BaseGateway implements Gateway
     {
         $this->setupMollie();
 
-        $payment = $this->mollie->payments->get($order->get('gateway')['data']['id']);
+        $paymentId = $order->gatewayData()->data()->get('id');
+
+        if (! $paymentId) {
+            throw new \Exception("Refund failed. Couldn't find payment ID.");
+        }
+
+        $payment = $this->mollie->payments->get($paymentId);
         $payment->refund([]);
 
         return [];
