@@ -18,11 +18,11 @@
 
 [Read the docs](https://simple-commerce.duncanmcclean.com).
 
-## Future of Simple Commerce
+## Upcoming release
 
-I'm currently working hard on the next version of Simple Commerce, which I'm hoping to have in beta in Q1 2025. You can find out more about [the next version](https://duncanmcclean.com/future-of-simple-commerce?utm_source=readme&utm_medium=web&utm_campaign=future_of_sc) on my blog. 
+I’ve been working hard behind the scenes on a new version of Simple Commerce. It’s a complete rethinking of how things work, but with the same goal in mind: making it easy to build flexible e-commerce sites in Statamic.
 
-Since it's just me working on Simple Commerce in my free time, I'm currently only looking into show stopping bugs and PRs. This is so I can maximise the amount of time I'm spending on the next version. I hope you understand!
+A public alpha will be available shortly after the Statamic 6 alpha, with a full launch happening **alongside Statamic 6**. The new version will be a paid upgrade, but if you purchase Simple Commerce now, you’ll get the new version for free.
 
 ## Features
 
