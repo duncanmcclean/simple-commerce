@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.8.3 (2025-05-07)
+
+### What's fixed
+* Fixed error when refunding Mollie payments, and prevented `\x00*\x00client` and `_links` keys saving in order data #1231 #1232 by @duncanmcclean
+
+
+
 ## v7.8.2 (2025-04-05)
 
 ### What's fixed
