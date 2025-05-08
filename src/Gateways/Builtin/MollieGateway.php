@@ -71,7 +71,13 @@ class MollieGateway extends BaseGateway implements Gateway
         }
 
         $payment = $this->mollie->payments->get($paymentId);
-        $payment->refund([]);
+
+        $payment->refund([
+            'amount' => [
+                'currency' => Currency::get($order->site())['code'],
+                'value' => (string) substr_replace($order->grandTotal(), '.', -2, 0),
+            ],
+        ]);
 
         return [];
     }
