@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.8.4 (2025-05-08)
+
+### What's fixed
+* Fixed error when refunding Mollie payments #1231 #1233 by @duncanmcclean
+
+
+
 ## v7.8.3 (2025-05-07)
 
 ### What's fixed
