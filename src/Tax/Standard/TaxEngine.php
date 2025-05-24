@@ -38,7 +38,7 @@ class TaxEngine implements Contract
             }
         }
 
-        if( $taxRate->includeInPrice() ){
+        if ($taxRate->includeInPrice()) {
             $taxAmount = ($lineItem->total() / 100) * ($taxRate->rate() / (100 + $taxRate->rate()));
         } else {
             $taxAmount = ($lineItem->total() / 100) * ($taxRate->rate() / 100);
