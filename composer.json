@@ -42,7 +42,7 @@
         "stripe/stripe-php": "^13.0"
     },
     "require-dev": {
-        "statamic-rad-pack/runway": "^7.13 || ^8.0",
+        "statamic-rad-pack/runway": "dev-statamic-6",
         "orchestra/testbench": "^9.6.1 || ^10.0",
         "phpunit/phpunit": "^11.0",
         "pestphp/pest": "^3.0",
