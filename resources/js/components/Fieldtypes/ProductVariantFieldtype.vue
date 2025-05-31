@@ -68,9 +68,9 @@ export default {
 
     computed: {
         product() {
-            return this.store.values.items[
-                this.namePrefix.match(/\[(.*)\]/).pop()
-            ].product[0]
+            let index = this.fieldPathKeys[this.fieldPathKeys.length - 1];
+
+            return this.store.values['items'][index].product[0];
         },
 
         productVariantOptions() {
