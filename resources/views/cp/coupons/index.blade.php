@@ -3,13 +3,15 @@
 @section('wrapper_class', 'max-w-full')
 
 @section('content')
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="flex-1">{{ __('Coupons') }}</h1>
-
+    <ui-header title="{{ __('Coupons') }}" icon="taxonomies">
         @if(auth()->user()->can('create coupons'))
-            <a class="btn-primary" href="{{ cp_route('simple-commerce.coupons.create') }}">{{ __('Create Coupon') }}</a>
+            <ui-button
+                href="{{ cp_route('simple-commerce.coupons.create') }}"
+                text="{{ __('Create Coupon') }}"
+                variant="primary"
+            ></ui-button>
         @endif
-    </div>
+    </ui-header>
 
     @if ($couponsCount)
         <coupon-listing
