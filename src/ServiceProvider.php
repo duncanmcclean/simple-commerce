@@ -336,7 +336,7 @@ class ServiceProvider extends AddonServiceProvider
                     ->section(__('Simple Commerce'))
                     ->route('collections.show', SimpleCommerce::customerDriver()['collection'])
                     ->can('view', Collection::find(SimpleCommerce::customerDriver()['collection']))
-                    ->icon('user');
+                    ->icon('users');
             } elseif (
                 $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class)
             ) {
@@ -344,7 +344,7 @@ class ServiceProvider extends AddonServiceProvider
                     ->section(__('Simple Commerce'))
                     ->route('users.index')
                     ->can('index', \Statamic\Contracts\Auth\User::class)
-                    ->icon('user');
+                    ->icon('users');
             } elseif (
                 class_exists('StatamicRadPack\Runway\Runway') &&
                 $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository::class)
@@ -355,27 +355,27 @@ class ServiceProvider extends AddonServiceProvider
                     ->section(__('Simple Commerce'))
                     ->route('runway.index', ['resource' => $customerResource->handle()])
                     ->can('view', $customerResource)
-                    ->icon('user');
+                    ->icon('users');
             }
 
             $nav->create(__('Products'))
                 ->section(__('Simple Commerce'))
                 ->route('collections.show', SimpleCommerce::productDriver()['collection'])
                 ->can('view', Collection::find(SimpleCommerce::productDriver()['collection']))
-                ->icon('entries');
+                ->icon('collections');
 
             $nav->create(__('Coupons'))
                 ->section(__('Simple Commerce'))
                 ->route('simple-commerce.coupons.index')
                 ->can('view coupons')
-                ->icon('tags');
+                ->icon('taxonomies');
 
             if (SimpleCommerce::isUsingStandardTaxEngine()) {
                 $nav->create(__('Tax'))
                     ->section(__('Simple Commerce'))
                     ->route('simple-commerce.tax')
                     ->can('view tax rates')
-                    ->icon(SimpleCommerce::svg('money-cash-file-dollar'));
+                    ->icon(SimpleCommerce::svg('percentage'));
             }
 
             // Drop any collection items from 'Collections' nav
