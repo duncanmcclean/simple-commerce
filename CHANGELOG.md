@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.8.5 (2025-05-31)
+
+### What's fixed
+* Correct tax calculations when "Prices include tax" is false (standard tax engine) #1234 by @chellmann
+
+
+
 ## v7.8.4 (2025-05-08)
 
 ### What's fixed
