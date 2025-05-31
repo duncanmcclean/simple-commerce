@@ -95,13 +95,13 @@ test('can correctly calculate line item tax rate based on country', function () 
 
     // Ensure tax on line items are right
     $this->assertSame($recalculate->lineItems()->first()->tax(), [
-        'amount' => 167,
+        'amount' => 200,
         'rate' => 20,
         'price_includes_tax' => false,
     ]);
 
     // Ensure global order tax is right
-    expect(167)->toBe($recalculate->taxTotal());
+    expect(200)->toBe($recalculate->taxTotal());
 });
 
 test('can correctly calculate line item tax rate based on region', function () {
@@ -164,13 +164,13 @@ test('can correctly calculate line item tax rate based on region', function () {
 
     // Ensure tax on line items are right
     $this->assertSame($recalculate->lineItems()->first()->tax(), [
-        'amount' => 130,
+        'amount' => 150,
         'rate' => 15,
         'price_includes_tax' => false,
     ]);
 
     // Ensure global order tax is right
-    expect(130)->toBe($recalculate->taxTotal());
+    expect(150)->toBe($recalculate->taxTotal());
 });
 
 test('can correctly calculate line item tax rate when address has region but no addresses have a region', function () {
@@ -237,13 +237,13 @@ test('can correctly calculate line item tax rate when address has region but no 
 
     // Ensure tax on line items are right
     $this->assertSame($recalculate->lineItems()->first()->tax(), [
-        'amount' => 130,
+        'amount' => 150,
         'rate' => 15,
         'price_includes_tax' => false,
     ]);
 
     // Ensure global order tax is right
-    expect(130)->toBe($recalculate->taxTotal());
+    expect(150)->toBe($recalculate->taxTotal());
 });
 
 test('can correctly calculate line item tax zones when tax rates exists both with and without region', function () {
@@ -328,13 +328,13 @@ test('can correctly calculate line item tax zones when tax rates exists both wit
 
     // Ensure tax on line items are right
     $this->assertSame($recalculate->lineItems()->first()->tax(), [
-        'amount' => 130,
+        'amount' => 150,
         'rate' => 15,
         'price_includes_tax' => false,
     ]);
 
     // Ensure global order tax is right
-    expect(130)->toBe($recalculate->taxTotal());
+    expect(150)->toBe($recalculate->taxTotal());
 });
 
 test('can calculate line item tax rate when included in price', function () {
@@ -756,13 +756,13 @@ test('tax rate with a decimal place is stored correctly', function () {
 
     // Ensure tax on line items are right
     $this->assertSame($recalculate->lineItems()->first()->tax(), [
-        'amount' => 170,
+        'amount' => 205,
         'rate' => 20.5,
         'price_includes_tax' => false,
     ]);
 
     // Ensure global order tax is right
-    expect(170)->toBe($recalculate->taxTotal());
+    expect(205)->toBe($recalculate->taxTotal());
 });
 
 // https://github.com/duncanmcclean/simple-commerce/issues/1234
