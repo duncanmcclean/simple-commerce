@@ -36,7 +36,7 @@ Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
             Route::get('/create', [TaxCategoryController::class, 'create'])->name('create');
             Route::post('/create', [TaxCategoryController::class, 'store'])->name('store');
             Route::get('/{taxCategory}/edit', [TaxCategoryController::class, 'edit'])->name('edit');
-            Route::post('/{taxCategory}/edit', [TaxCategoryController::class, 'update'])->name('update');
+            Route::patch('/{taxCategory}/edit', [TaxCategoryController::class, 'update'])->name('update');
             Route::delete('/{taxCategory}/delete', [TaxCategoryController::class, 'destroy'])->name('destroy');
         });
 
@@ -45,7 +45,7 @@ Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
             Route::get('/create', [TaxRateController::class, 'create'])->name('create');
             Route::post('/create', [TaxRateController::class, 'store'])->name('store');
             Route::get('/{taxRate}/edit', [TaxRateController::class, 'edit'])->name('edit');
-            Route::post('/{taxRate}/edit', [TaxRateController::class, 'update'])->name('update');
+            Route::patch('/{taxRate}/edit', [TaxRateController::class, 'update'])->name('update');
             Route::delete('/{taxRate}/delete', [TaxRateController::class, 'destroy'])->name('destroy');
         });
 
@@ -54,7 +54,7 @@ Route::prefix('simple-commerce')->name('simple-commerce.')->group(function () {
             Route::get('/create', [TaxZoneController::class, 'create'])->name('create');
             Route::post('/create', [TaxZoneController::class, 'store'])->name('store');
             Route::get('/{taxZone}/edit', [TaxZoneController::class, 'edit'])->name('edit');
-            Route::post('/{taxZone}/edit', [TaxZoneController::class, 'update'])->name('update');
+            Route::patch('/{taxZone}/edit', [TaxZoneController::class, 'update'])->name('update');
             Route::delete('/{taxZone}/delete', [TaxZoneController::class, 'destroy'])->name('destroy');
         });
     }

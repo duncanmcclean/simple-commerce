@@ -11,11 +11,15 @@ use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\EditRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\IndexRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\StoreRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\UpdateRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Statamic\CP\PublishForm;
+use Statamic\Facades\Blueprint;
 use Statamic\Facades\Stache;
 
 class TaxRateController
 {
-    public function index(IndexRequest $request)
+    public function index(Request $request)
     {
         return view('simple-commerce::cp.tax-rates.index', [
             'taxRates' => TaxRate::all(),
@@ -23,60 +27,111 @@ class TaxRateController
         ]);
     }
 
-    public function create(CreateRequest $request)
+    public function create(Request $request)
     {
-        return view('simple-commerce::cp.tax-rates.create', [
-            'taxCategory' => TaxCategory::find($request->taxCategory),
-            'taxZones' => TaxZone::all(),
-        ]);
+        return PublishForm::make($this->blueprint())
+            ->title('Create Tax Rate')
+            ->values([])
+            ->submittingTo(cp_route('simple-commerce.tax-rates.store'), 'POST');
     }
 
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
+        $values = PublishForm::make($this->blueprint())->submit($request->values);
+
         $taxRate = TaxRate::make()
             ->id(Stache::generateId())
-            ->name($request->name)
-            ->rate($request->rate)
-            ->category($request->category)
-            ->zone($request->zone)
-            ->includeInPrice($request->include_in_price);
+            ->name($values['name'])
+            ->rate($values['rate'])
+            ->category(Str::after('?taxCategory=', $request->headers->get('referer')))
+            ->zone($values['zone'])
+            ->includeInPrice($values['include_in_price']);
 
         $taxRate->save();
 
-        return redirect(cp_route('simple-commerce.tax-rates.index'));
+        return ['redirect' => cp_route('simple-commerce.tax-rates.edit', $taxRate->id())];
     }
 
-    public function edit(EditRequest $request, $taxRate)
+    public function edit(Request $request, $taxRate)
     {
         $taxRate = TaxRate::find($taxRate);
 
-        return view('simple-commerce::cp.tax-rates.edit', [
-            'taxRate' => $taxRate,
-            'taxCategories' => TaxCategory::all(),
-            'taxZones' => TaxZone::all(),
-        ]);
+        return PublishForm::make($this->blueprint())
+            ->title('Edit Tax Rate')
+            ->values([
+                'name' => $taxRate->name(),
+                'rate' => $taxRate->rate(),
+                'zone' => $taxRate->zone()->id(),
+                'include_in_price' => $taxRate->includeInPrice(),
+            ])
+            ->submittingTo($taxRate->updateUrl());
     }
 
-    public function update(UpdateRequest $request, $taxRate)
+    public function update(Request $request, $taxRate)
     {
+        $values = PublishForm::make($this->blueprint())->submit($request->values);
+
         $taxRate = TaxRate::find($taxRate)
-            ->name($request->name)
-            ->rate($request->rate)
-            ->category($request->category)
-            ->zone($request->zone)
-            ->includeInPrice($request->include_in_price);
+            ->name($values['name'])
+            ->rate($values['rate'])
+            ->zone($values['zone'])
+            ->includeInPrice($values['include_in_price']);
 
         $taxRate->save();
 
-        return redirect($taxRate->editUrl());
+        return [];
     }
 
-    public function destroy(DeleteRequest $request, $taxRate)
+    public function destroy(Request $request, $taxRate)
     {
         TaxRate::find($taxRate)->delete();
 
         return [
             'success' => true,
         ];
+    }
+
+    private function blueprint()
+    {
+        return Blueprint::make('tax_rate')->setContents([
+            'tabs' => ['main' => ['sections' => [['fields' => [
+                [
+                    'handle' => 'name',
+                    'field' => [
+                        'type' => 'text',
+                        'display' => __('Name'),
+                        'validate' => 'required',
+                        'width' => 50,
+                    ],
+                ],
+                [
+                    'handle' => 'rate',
+                    'field' => [
+                        'type' => 'text',
+                        'display' => __('Rate'),
+                        'validate' => 'required|numeric',
+                        'width' => 50,
+                        'append' => '%',
+                    ],
+                ],
+                [
+                    'handle' => 'zone',
+                    'field' => [
+                        'type' => 'select',
+                        'display' => __('Zone'),
+                        'options' => TaxZone::all()->mapWithKeys(fn($zone) => [$zone->id() => $zone->name()]),
+                        'validate' => 'required',
+                    ],
+                ],
+                [
+                    'handle' => 'include_in_price',
+                    'field' => [
+                        'type' => 'toggle',
+                        'display' => __('Include in Price'),
+                        'default' => false,
+                    ],
+                ]
+            ]]]]],
+        ]);
     }
 }
