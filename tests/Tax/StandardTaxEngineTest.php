@@ -774,22 +774,22 @@ test('can calculate line item tax rate when excluded in price', function () {
     ]);
 
     $taxCategory = TaxCategory::make()
-        ->id('standard-vat')
-        ->name('Standard VAT');
+        ->id('vat')
+        ->name('VAT');
 
     $taxCategory->save();
 
     $taxZone = TaxZone::make()
-        ->id('uk')
-        ->name('United Kingdom')
-        ->country('GB');
+        ->id('germany')
+        ->name('Germany')
+        ->country('DE');
 
     $taxZone->save();
 
     $taxRate = TaxRate::make()
-        ->id('uk-20-vat')
-        ->name('20% VAT')
-        ->rate(20)
+        ->id('vat')
+        ->name('VAT')
+        ->rate(19)
         ->category($taxCategory->id())
         ->zone($taxZone->id())
         ->includeInPrice(false);
@@ -797,7 +797,7 @@ test('can calculate line item tax rate when excluded in price', function () {
     $taxRate->save();
 
     $product = Product::make()
-        ->price(1000)
+        ->price(10000)
         ->taxCategory($taxCategory->id())
         ->data([
             'title' => 'Cat Food',
@@ -814,20 +814,21 @@ test('can calculate line item tax rate when excluded in price', function () {
         ],
     ])->merge([
         'billing_address' => '1 Test Street',
-        'billing_country' => 'GB',
+        'billing_country' => 'DE',
         'use_shipping_address_for_billing' => false,
     ]);
 
     $order->save();
 
     $recalculate = $order->recalculate();
+
     // Ensure tax on line items are right
     $this->assertSame($recalculate->lineItems()->first()->tax(), [
-        'amount' => 200,
-        'rate' => 20,
+        'amount' => 1900,
+        'rate' => 19,
         'price_includes_tax' => false,
     ]);
 
     // Ensure global order tax is right
-    expect(200)->toBe($recalculate->taxTotal());
+    expect(1900)->toBe($recalculate->taxTotal());
 });
