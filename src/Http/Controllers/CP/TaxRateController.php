@@ -5,12 +5,6 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
 use DuncanMcClean\SimpleCommerce\Facades\TaxRate;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\CreateRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\DeleteRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\EditRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\IndexRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\StoreRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxRate\UpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Statamic\CP\PublishForm;
@@ -119,7 +113,7 @@ class TaxRateController
                     'field' => [
                         'type' => 'select',
                         'display' => __('Zone'),
-                        'options' => TaxZone::all()->mapWithKeys(fn($zone) => [$zone->id() => $zone->name()]),
+                        'options' => TaxZone::all()->mapWithKeys(fn ($zone) => [$zone->id() => $zone->name()]),
                         'validate' => 'required',
                     ],
                 ],
@@ -130,7 +124,7 @@ class TaxRateController
                         'display' => __('Include in Price'),
                         'default' => false,
                     ],
-                ]
+                ],
             ]]]]],
         ]);
     }
