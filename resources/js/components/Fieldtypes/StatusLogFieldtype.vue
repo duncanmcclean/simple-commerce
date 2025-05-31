@@ -26,6 +26,7 @@
 
 <script>
 import StatusLog from '../StatusLog/StatusLog.vue';
+import { Fieldtype } from 'statamic';
 
 export default {
     name: 'status-log-fieldtype',
@@ -36,7 +37,7 @@ export default {
 
     props: ['meta'],
 
-    inject: ['storeName'],
+    inject: ['store'],
 
     data() {
         return {
@@ -46,19 +47,19 @@ export default {
 
     computed: {
         isCreating() {
-            return this.$store.state.publish[this.storeName].values?.id === null;
+            return this.store.values?.id === null;
         },
 
         orderId() {
-            return this.$store.state.publish[this.storeName].values.id
+            return this.store.values.id;
         },
 
         currentOrderStatus() {
-            return this.$store.state.publish[this.storeName].values.order_status
+            return this.store.values.order_status;
         },
 
         currentPaymentStatus() {
-            return this.$store.state.publish[this.storeName].values.payment_status
+            return this.store.values.payment_status;
         },
     },
 }

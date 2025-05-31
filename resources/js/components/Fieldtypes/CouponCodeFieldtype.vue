@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { Fieldtype } from 'statamic';
+
 export default {
     name: 'CouponCodeFieldtype',
 

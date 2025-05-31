@@ -2,13 +2,13 @@
     <div>
         <money-fieldtype
             v-if="mode === 'fixed'"
-            v-model="couponValue"
+            v-model:value="couponValue"
             :meta="meta.meta.money"
             :config="meta.config.money"
         />
         <integer-fieldtype
             v-else-if="mode === 'percentage'"
-            v-model="couponValue"
+            v-model:value="couponValue"
             :meta="meta.meta.integer"
             :config="meta.config.integer"
         />
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { Fieldtype } from 'statamic';
+
 export default {
     name: 'CouponValueFieldtype',
 
@@ -86,7 +88,7 @@ export default {
             }
 
             this.value = value;
-            this.$emit('input', value);
+            this.$emit('update:value', value);
         },
     },
 }

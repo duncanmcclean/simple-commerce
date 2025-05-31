@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { Fieldtype } from 'statamic';
+
 export default {
     name: 'payment-status-fieldtype',
 

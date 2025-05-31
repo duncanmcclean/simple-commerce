@@ -41,7 +41,8 @@
 
 <script>
 import axios from 'axios'
-import SelectField from '../../../../vendor/statamic/cms/resources/js/components/inputs/Select.vue'
+import SelectField from '@statamic/components/inputs/Select.vue'
+import { Fieldtype } from 'statamic';
 
 export default {
     name: 'product-variant-fieldtype',
@@ -54,7 +55,7 @@ export default {
 
     props: ['meta'],
 
-    inject: ['storeName'],
+    inject: ['store'],
 
     data() {
         return {
@@ -67,7 +68,7 @@ export default {
 
     computed: {
         product() {
-            return Statamic.$store.state.publish[this.storeName].values.items[
+            return this.store.values.items[
                 this.namePrefix.match(/\[(.*)\]/).pop()
             ].product[0]
         },

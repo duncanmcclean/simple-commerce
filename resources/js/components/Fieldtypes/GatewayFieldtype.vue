@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { Fieldtype } from 'statamic';
 // import HasActions from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasActions.vue';
 
 export default {

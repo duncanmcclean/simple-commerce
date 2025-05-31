@@ -41,18 +41,18 @@
 </template>
 
 <script>
-import { __ } from '../../../../vendor/statamic/cms/resources/js/bootstrap/globals'
+import { Fieldtype } from 'statamic';
 
 export default {
     name: 'CouponSummaryFieldtype',
 
     mixins: [Fieldtype],
 
-    inject: ['storeName'],
+    inject: ['store'],
 
     computed: {
         values() {
-            return Statamic.$store.state.publish[this.storeName].values
+            return this.store.values
         },
     },
 

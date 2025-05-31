@@ -34,7 +34,6 @@
 
 <script>
 import axios from 'axios';
-import { __ } from '../../../../vendor/statamic/cms/resources/js/bootstrap/globals';
 
 export default {
     props: {
