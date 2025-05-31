@@ -375,7 +375,12 @@ class ServiceProvider extends AddonServiceProvider
                     ->section(__('Simple Commerce'))
                     ->route('simple-commerce.tax')
                     ->can('view tax rates')
-                    ->icon(SimpleCommerce::svg('percentage'));
+                    ->icon(SimpleCommerce::svg('percentage'))
+                    ->children([
+                        __('Tax Rates') => cp_route('simple-commerce.tax-rates.index'),
+                        __('Tax Categories') => cp_route('simple-commerce.tax-categories.index'),
+                        __('Tax Zones') => cp_route('simple-commerce.tax-zones.index'),
+                    ]);
             }
 
             // Drop any collection items from 'Collections' nav
