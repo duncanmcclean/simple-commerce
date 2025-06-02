@@ -25,7 +25,6 @@ class TaxRateController
     {
         return PublishForm::make($this->blueprint())
             ->title('Create Tax Rate')
-            ->values([])
             ->submittingTo(cp_route('simple-commerce.tax-rates.store'), 'POST');
     }
 

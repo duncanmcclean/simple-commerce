@@ -27,7 +27,6 @@ class TaxCategoryController
     {
         return PublishForm::make($this->blueprint())
             ->title('Create Tax Category')
-            ->values([])
             ->submittingTo(cp_route('simple-commerce.tax-categories.store'), 'POST');
     }
 
