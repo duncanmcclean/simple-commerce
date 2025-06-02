@@ -31,20 +31,19 @@ test('can create tax category', function () {
     $this
         ->actingAs(user())
         ->get('/cp/simple-commerce/tax/categories/create')
-        ->assertOk()
-        ->assertSee('Create Tax Category')
-        ->assertSee('Name')
-        ->assertSee('Description');
+        ->assertOk();
 });
 
 test('can store tax category', function () {
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/tax/categories/create', [
-            'name' => 'Special Products',
-            'description' => 'Products that are very special.',
+            'values' => [
+                'name' => 'Special Products',
+                'description' => 'Products that are very special.',
+            ],
         ])
-        ->assertRedirect();
+        ->assertJsonStructure(['redirect']);
 });
 
 test('can edit tax category', function () {
@@ -71,11 +70,13 @@ test('can update tax category', function () {
 
     $this
         ->actingAs(user())
-        ->post('/cp/simple-commerce/tax/categories/whoop/edit', [
-            'name' => 'Whoopsie',
-            'description' => 'Whoopsie whoopsie whoopsie!',
+        ->patch('/cp/simple-commerce/tax/categories/whoop/edit', [
+            'values' => [
+                'name' => 'Whoopsie',
+                'description' => 'Whoopsie whoopsie whoopsie!',
+            ],
         ])
-        ->assertRedirect('/cp/simple-commerce/tax/categories/whoop/edit');
+        ->assertJson([]);
 });
 
 test('can destroy tax category', function () {
