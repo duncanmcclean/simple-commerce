@@ -1,3 +1,4 @@
+import CountryRegionFieldtype from './components/Fieldtypes/CountryRegionFieldtype.vue'
 import CouponCodeFieldtype from './components/Fieldtypes/CouponCodeFieldtype.vue'
 import CouponSummaryFieldtype from './components/Fieldtypes/CouponSummaryFieldtype.vue'
 import CouponValueFieldtype from './components/Fieldtypes/CouponValueFieldtype.vue'
@@ -10,12 +11,12 @@ import PaymentStatusIndexFieldtype from './components/Fieldtypes/PaymentStatusIn
 import ProductVariantFieldtype from './components/Fieldtypes/ProductVariantFieldtype.vue'
 import ProductVariantsFieldtype from './components/Fieldtypes/ProductVariants/ProductVariantsFieldtype.vue'
 import StatusLogFieldtype from './components/Fieldtypes/StatusLogFieldtype.vue'
-import RegionSelector from './components/Inputs/RegionSelector.vue'
 import CouponListing from './components/Listings/CouponListing.vue'
 import OrdersChart from './components/Widgets/OrdersChart.vue'
 
 Statamic.booting(() => {
     // Fieldtypes
+    Statamic.$components.register('country_region-fieldtype', CountryRegionFieldtype)
     Statamic.$components.register('coupon-code-fieldtype', CouponCodeFieldtype)
     Statamic.$components.register(
         'coupon-summary-fieldtype',
@@ -46,9 +47,6 @@ Statamic.booting(() => {
         ProductVariantsFieldtype
     )
     Statamic.$components.register('sc_status_log-fieldtype', StatusLogFieldtype)
-
-    // Inputs
-    Statamic.$components.register('region-selector', RegionSelector)
 
     // Listings
     Statamic.$components.register('coupon-listing', CouponListing)
