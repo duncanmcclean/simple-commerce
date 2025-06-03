@@ -9,13 +9,15 @@ use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\EditRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\IndexRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\StoreRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\UpdateRequest;
+use Illuminate\Http\Request;
+use Statamic\CP\PublishForm;
 use Statamic\Facades\Scope;
 use Statamic\Support\Arr;
 use Statamic\Support\Str;
 
 class CouponController
 {
-    public function index(IndexRequest $request)
+    public function index(Request $request)
     {
         $columns = CouponBlueprint::getBlueprint()
             ->fields()
@@ -35,7 +37,7 @@ class CouponController
             'couponsCount' => Coupon::all()->count(),
             'columns' => CouponBlueprint::getBlueprint()
                 ->columns()
-                ->filter(fn ($column) => in_array($column->field, collect($columns)->pluck('handle')->toArray()))
+                ->filter(fn($column) => in_array($column->field, collect($columns)->pluck('handle')->toArray()))
                 ->rejectUnlisted()
                 ->values(),
             'filters' => Scope::filters('simple-commerce.coupons'),
@@ -48,34 +50,25 @@ class CouponController
         ]);
     }
 
-    public function create(CreateRequest $request)
+    public function create(Request $request)
     {
         $blueprint = CouponBlueprint::getBlueprint();
         $blueprint = $blueprint->removeField('redeemed');
 
-        $fields = $blueprint->fields();
-        $fields = $fields->preProcess();
-
-        return view('simple-commerce::cp.coupons.create', [
-            'blueprint' => $blueprint->toPublishArray(),
-            'values' => $fields->values(),
-            'meta' => $fields->meta(),
-        ]);
+        return PublishForm::make($blueprint)
+            ->title('Create Coupon')
+            ->submittingTo(cp_route('simple-commerce.coupons.store'), 'POST');
     }
 
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
-        $fields = CouponBlueprint::getBlueprint()
-            ->fields()
-            ->addValues($request->validated())
-            ->process()
-            ->values();
+        $values = PublishForm::make(CouponBlueprint::getBlueprint())->submit($request->values);
 
         $coupon = Coupon::make()
-            ->code(Str::upper($fields->get('code')))
-            ->type($fields->get('type'))
-            ->value($fields->get('value'))
-            ->data(Arr::except($fields, ['code', 'type', 'value']));
+            ->code(Str::upper($values['code']))
+            ->type($values['type'])
+            ->value($values['value'])
+            ->data(Arr::except($values, ['code', 'type', 'value']));
 
         $coupon->save();
 
@@ -84,48 +77,34 @@ class CouponController
         ];
     }
 
-    public function edit(EditRequest $request, $coupon)
+    public function edit(Request $request, $coupon)
     {
         $coupon = Coupon::find($coupon);
 
-        if (! $coupon) {
+        if (!$coupon) {
             abort(404);
         }
 
-        $blueprint = CouponBlueprint::getBlueprint();
-
-        $fields = $blueprint->fields();
-        $fields = $fields->addValues($coupon->toArray())->setParent($coupon);
-        $fields = $fields->preProcess();
-
-        return view('simple-commerce::cp.coupons.edit', [
-            'coupon' => $coupon,
-
-            'blueprint' => $blueprint->toPublishArray(),
-            'values' => $fields->values(),
-            'meta' => $fields->meta(),
-        ]);
+        return PublishForm::make(CouponBlueprint::getBlueprint())
+            ->title('Edit Coupon')
+            ->values($coupon->toArray())
+            ->parent($coupon)
+            ->submittingTo($coupon->updateUrl());
     }
 
-    public function update(UpdateRequest $request, $coupon)
+    public function update(Request $request, $coupon)
     {
+        $values = PublishForm::make(CouponBlueprint::getBlueprint())->submit($request->values);
+
         $coupon = Coupon::find($coupon);
 
-        $fields = CouponBlueprint::getBlueprint()
-            ->fields()
-            ->addValues($request->validated())
-            ->process()
-            ->values();
-
         $coupon
-            ->code(Str::upper($fields->get('code')))
-            ->type($fields->get('type'))
-            ->value($fields->get('value'))
-            ->data(Arr::except($fields, ['code', 'type', 'value']))
+            ->code(Str::upper($values['code']))
+            ->type($values['type'])
+            ->value($values['value'])
+            ->data(Arr::except($values, ['code', 'type', 'value']))
             ->save();
 
-        return [
-            'coupon' => $coupon,
-        ];
+        return [];
     }
 }
