@@ -15,6 +15,9 @@ export default defineConfig(({ command, mode }) => {
             }),
             vue(),
             viteExternalsPlugin({vue: 'Vue', 'vue-demi': 'VueDemi'}),
-        ]
+        ],
+        server: {
+            hmr: false
+        }
     }
 });
