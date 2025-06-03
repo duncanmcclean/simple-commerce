@@ -4,12 +4,6 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 
 use DuncanMcClean\SimpleCommerce\Countries;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\CreateRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\DeleteRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\EditRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\IndexRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\StoreRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxZone\UpdateRequest;
 use DuncanMcClean\SimpleCommerce\Regions;
 use DuncanMcClean\SimpleCommerce\Rules\CountryExists;
 use DuncanMcClean\SimpleCommerce\Rules\RegionExists;
@@ -45,9 +39,9 @@ class TaxZoneController
                 function ($attribute, $value, $fail) use ($request) {
                     if (! isset($request->values['region']) || $request->values['region'] === null) {
                         $taxZoneWithCountryAlreadyExists = TaxZone::all()
-                                ->where('country', $value)
-                                ->where('region', null)
-                                ->count() > 0;
+                            ->where('country', $value)
+                            ->where('region', null)
+                            ->count() > 0;
 
                         if ($taxZoneWithCountryAlreadyExists) {
                             $country = Countries::find($value);
@@ -62,9 +56,9 @@ class TaxZoneController
                 new RegionExists,
                 function ($attribute, $value, $fail) use ($request) {
                     $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
-                            ->where('country', $request->values['country'][0] ?? null)
-                            ->where('region', $value)
-                            ->count() > 0;
+                        ->where('country', $request->values['country'][0] ?? null)
+                        ->where('region', $value)
+                        ->count() > 0;
 
                     if ($taxZoneWithCountryAndRegionAlreadyExists) {
                         $country = Countries::find($request->values['country'][0]);
@@ -118,12 +112,12 @@ class TaxZoneController
                 function ($attribute, $value, $fail) use ($request) {
                     if (! isset($request->values['region']) || $request->values['region'] === null) {
                         $taxZoneWithCountryAlreadyExists = TaxZone::all()
-                                ->where('country', $value)
-                                ->where('region', null)
-                                ->reject(function ($taxZone) use ($request) {
-                                    return $taxZone->id() === $request->route('taxZone');
-                                })
-                                ->count() > 0;
+                            ->where('country', $value)
+                            ->where('region', null)
+                            ->reject(function ($taxZone) use ($request) {
+                                return $taxZone->id() === $request->route('taxZone');
+                            })
+                            ->count() > 0;
 
                         if ($taxZoneWithCountryAlreadyExists) {
                             $country = Countries::find($value);
@@ -138,12 +132,12 @@ class TaxZoneController
                 new RegionExists,
                 function ($attribute, $value, $fail) use ($request) {
                     $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
-                            ->where('country', $request->values['country'][0] ?? null)
-                            ->where('region', $value)
-                            ->reject(function ($taxZone) use ($request) {
-                                return $taxZone->id() === $request->route('taxZone');
-                            })
-                            ->count() > 0;
+                        ->where('country', $request->values['country'][0] ?? null)
+                        ->where('region', $value)
+                        ->reject(function ($taxZone) use ($request) {
+                            return $taxZone->id() === $request->route('taxZone');
+                        })
+                        ->count() > 0;
 
                     if ($taxZoneWithCountryAndRegionAlreadyExists) {
                         $country = Countries::find($request->values['country'][0]);
@@ -213,7 +207,7 @@ class TaxZoneController
                             'name' => 'equals Everywhere',
                         ],
                     ],
-                ]
+                ],
             ]]]]],
         ]);
     }

@@ -69,7 +69,7 @@ class CouponBlueprint
                                                 if (! request()->route('coupon') && CouponFacade::findByCode($value)) {
                                                     $fail(__('A coupon with this code already exists.'));
                                                 }
-                                            }
+                                            },
                                         ],
                                         'listable' => true,
                                         'instructions' => __('Customers will enter this code to redeem the coupon.'),

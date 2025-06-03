@@ -54,18 +54,18 @@ test('can store coupon with expiry date', function () {
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/coupons', [
-           'values' => [
-               'code' => 'thursday-thirty-two',
-               'type' => 'percentage',
-               'value' => [
-                   'mode' => 'percentage',
-                   'value' => 32,
-               ],
-               'description' => '30% discount on a Thursday!',
-               'minimum_cart_value' => '65.00',
-               'expires_at' => '2024-01-01T00:00:00Z',
-               'customer_eligibility' => 'all',
-           ],
+            'values' => [
+                'code' => 'thursday-thirty-two',
+                'type' => 'percentage',
+                'value' => [
+                    'mode' => 'percentage',
+                    'value' => 32,
+                ],
+                'description' => '30% discount on a Thursday!',
+                'minimum_cart_value' => '65.00',
+                'expires_at' => '2024-01-01T00:00:00Z',
+                'customer_eligibility' => 'all',
+            ],
         ])
         ->assertJsonStructure([
             'redirect',

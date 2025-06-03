@@ -6,7 +6,6 @@ use DuncanMcClean\SimpleCommerce\Countries;
 use DuncanMcClean\SimpleCommerce\Regions;
 use Statamic\CP\Column;
 use Statamic\Fields\Fieldtype;
-use Statamic\Fieldtypes\Relationship;
 
 class RegionFieldtype extends Fieldtype
 {

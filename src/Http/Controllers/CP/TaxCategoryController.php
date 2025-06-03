@@ -3,12 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
-use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\CreateRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\EditRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\IndexRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\StoreRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\UpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\CP\PublishForm;
 use Statamic\Facades\Blueprint;
@@ -97,7 +91,7 @@ class TaxCategoryController
                         'type' => 'textarea',
                         'display' => __('Description'),
                     ],
-                ]
+                ],
             ]]]]],
         ]);
     }

@@ -4,11 +4,6 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP\Coupons;
 
 use DuncanMcClean\SimpleCommerce\Coupons\CouponBlueprint;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\CreateRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\EditRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\IndexRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\StoreRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\Coupon\UpdateRequest;
 use Illuminate\Http\Request;
 use Statamic\CP\PublishForm;
 use Statamic\Facades\Scope;
@@ -37,7 +32,7 @@ class CouponController
             'couponsCount' => Coupon::all()->count(),
             'columns' => CouponBlueprint::getBlueprint()
                 ->columns()
-                ->filter(fn($column) => in_array($column->field, collect($columns)->pluck('handle')->toArray()))
+                ->filter(fn ($column) => in_array($column->field, collect($columns)->pluck('handle')->toArray()))
                 ->rejectUnlisted()
                 ->values(),
             'filters' => Scope::filters('simple-commerce.coupons'),
@@ -81,7 +76,7 @@ class CouponController
     {
         $coupon = Coupon::find($coupon);
 
-        if (!$coupon) {
+        if (! $coupon) {
             abort(404);
         }
 
