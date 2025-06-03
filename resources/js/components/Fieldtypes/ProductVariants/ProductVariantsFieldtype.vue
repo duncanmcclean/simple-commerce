@@ -68,10 +68,11 @@
 
 <script>
 import GridRow from '../../../statamic/Row.vue'
-import SortableList from '../../../../../vendor/statamic/cms/resources/js/components/sortable/SortableList.vue'
-import GridHeaderCell from '../../../../../vendor/statamic/cms/resources/js/components/fieldtypes/grid/HeaderCell.vue'
+import SortableList from '@statamic/components/sortable/SortableList.vue'
+import GridHeaderCell from '@statamic/components/fieldtypes/grid/HeaderCell.vue'
 import View from '../../../statamic/View.vue'
 import VariantOptionRow from './VariantOptionRow.vue'
+import { Fieldtype } from 'statamic';
 
 export default {
     name: 'product-variants-fieldtype',
@@ -87,7 +88,7 @@ export default {
 
     props: ['meta'],
 
-    inject: ['storeName'],
+    inject: ['store'],
 
     data() {
         return {
@@ -139,11 +140,13 @@ export default {
             this.updateVariantsAndOptions();
         }
 
-        this.$store.watch((state) => state.publish[this.storeName].site, (newValue, oldValue) => {
-            if (newValue !== oldValue) {
-                this.updateVariantsAndOptions();
+        this.store.$subscribe((mutation, state) => {
+            if (mutation.events.key === 'site') {
+                if (mutation.events.newValue !== mutations.events.oldValue) {
+                    this.updateVariantsAndOptions();
+                }
             }
-        })
+        });
     },
 
     methods: {

@@ -5,9 +5,9 @@ namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 use DuncanMcClean\SimpleCommerce\Countries;
 use DuncanMcClean\SimpleCommerce\Regions;
 use Statamic\CP\Column;
-use Statamic\Fieldtypes\Relationship;
+use Statamic\Fields\Fieldtype;
 
-class RegionFieldtype extends Relationship
+class RegionFieldtype extends Fieldtype
 {
     protected $canCreate = false;
 

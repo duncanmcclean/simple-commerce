@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Coupons;
 
 use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
 use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Facades\Coupon as CouponFacade;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Statamic\Facades\Blueprint;
 use Statamic\Fields\Blueprint as FieldsBlueprint;
@@ -20,6 +21,9 @@ class CouponBlueprint
             'display' => __('Specific Customers'),
             'type' => 'entries',
             'icon' => 'entries',
+            'validate' => [
+                'required_if:customer_eligibility,specific_customers',
+            ],
             'if' => [
                 'customer_eligibility' => 'specific_customers',
             ],
@@ -59,7 +63,14 @@ class CouponBlueprint
                                     'field' => [
                                         'type' => 'coupon_code',
                                         'display' => __('Coupon Code'),
-                                        'validate' => ['required'],
+                                        'validate' => [
+                                            'required',
+                                            function ($attribute, $value, $fail) {
+                                                if (! request()->route('coupon') && CouponFacade::findByCode($value)) {
+                                                    $fail(__('A coupon with this code already exists.'));
+                                                }
+                                            },
+                                        ],
                                         'listable' => true,
                                         'instructions' => __('Customers will enter this code to redeem the coupon.'),
                                     ],
@@ -92,10 +103,9 @@ class CouponBlueprint
                                         'taggable' => false,
                                         'push_tags' => false,
                                         'cast_booleans' => false,
-                                        'type' => 'select',
                                         'display' => 'Type',
                                         'width' => 50,
-                                        'validate' => ['required'],
+                                        'validate' => ['required', 'in:percentage,fixed'],
                                         'listable' => true,
                                         'max_items' => 1,
                                     ],
@@ -106,7 +116,20 @@ class CouponBlueprint
                                         'type' => 'coupon_value',
                                         'display' => __('Value'),
                                         'width' => 50,
-                                        'validate' => ['required'],
+                                        'validate' => [
+                                            'required',
+                                            function ($attribute, $value, $fail) {
+                                                $mode = $value['mode'];
+
+                                                if (! in_array($mode, ['fixed', 'percentage'])) {
+                                                    $fail(__('The selected mode is invalid.'));
+                                                }
+
+                                                if ($mode === 'percentage' && $value['value'] > 100) {
+                                                    $fail(__('For percentage coupons, the value can not be over 100.'));
+                                                }
+                                            },
+                                        ],
                                         'listable' => true,
                                     ],
                                 ],
@@ -141,7 +164,7 @@ class CouponBlueprint
                                         'inline' => false,
                                         'type' => 'radio',
                                         'display' => __('Which customers are eligible for this coupon?'),
-                                        'validate' => ['required'],
+                                        'validate' => ['required', 'in:all,specific_customers,customers_by_domain'],
                                         'default' => 'all',
                                     ],
                                 ],
@@ -156,6 +179,9 @@ class CouponBlueprint
                                         'display' => __('Domains'),
                                         'instructions' => __('Provide a list of domains that are eligible for this coupon. One per line.'),
                                         'add_button' => __('Add Domain'),
+                                        'validate' => [
+                                            'required_if:customer_eligibility,customers_by_domain',
+                                        ],
                                         'if' => [
                                             'customer_eligibility' => 'customers_by_domain',
                                         ],

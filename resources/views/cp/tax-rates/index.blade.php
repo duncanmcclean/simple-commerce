@@ -3,81 +3,64 @@
 @section('wrapper_class', 'max-w-full')
 
 @section('content')
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="flex-1">{{ __('Tax Rates') }}</h1>
-
+    <ui-header title="{{ __('Tax Rates') }}">
         @if(auth()->user()->can('create tax rates'))
-            <dropdown-list class="inline-block">
-                <template v-slot:trigger>
-                    <button class="button btn-primary flex items-center pr-2">
-                        {{ __('Create Tax Rate') }}
-                        <svg-icon name="micro/chevron-down-xs" class="w-2 ml-1" />
-                    </button>
+            <ui-dropdown>
+                <template #trigger>
+                    <ui-button
+                        text="{{ __('Create Tax Rate') }}"
+                        icon-append="ui/chevron-down"
+                        variant="primary"
+                    ></ui-button>
                 </template>
 
-                @foreach ($taxCategories as $taxCategory)
-                    <dropdown-item
-                        redirect="{{ cp_route('simple-commerce.tax-rates.create', ['taxCategory' => $taxCategory->id()]) }}"
-                    >{{ $taxCategory->name() }}</dropdown-item>
-                @endforeach
-            </dropdown-list>
+                <ui-dropdown-menu>
+                    @foreach ($taxCategories as $taxCategory)
+                        <ui-dropdown-item
+                            href="{{ cp_route('simple-commerce.tax-rates.create', ['taxCategory' => $taxCategory->id()]) }}"
+                            text="{{ __($taxCategory->name()) }}"
+                        ></ui-dropdown-item>
+                    @endforeach
+                </ui-dropdown-menu>
+            </ui-dropdown>
         @endif
-    </div>
+    </ui-header>
 
     @if ($taxRates->count())
-        <div class="card p-0">
-            @include('simple-commerce::cp.partials.tax-navigation')
+        <ui-card-list heading="{{ __('Name') }}">
+            @foreach($taxRates as $taxRate)
+                <ui-card-list-item>
+                    <a href="{{ $taxRate->editUrl() }}">{{ $taxRate->name() }}</a>
 
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>{{ __('Name') }}</th>
-                        <th>{{ __('Rate') }}</th>
-                        <th>{{ __('Tax Zone') }}</th>
-                        <th class="actions-column"></th>
-                    </tr>
-                </thead>
+                    <ui-dropdown>
+                        <ui-dropdown-menu>
+                            @if(auth()->user()->can('edit tax rates'))
+                                <ui-dropdown-item
+                                    :text="__('Edit')"
+                                    href="{{ $taxRate->editUrl() }}"
+                                ></ui-dropdown-item>
+                            @endif
 
-                <tbody>
-                    @foreach($taxRates as $taxRate)
-                        <tr id="taxRate_{{ $taxRate->id() }}">
-                            <td>
-                                <div class="flex items-center">
-                                    <a href="{{ $taxRate->editUrl() }}">{{ $taxRate->name() }}</a>
-                                </div>
-                            </td>
-                            <td>
-                                {{ $taxRate->rate() ?? '0' }}%
-                            </td>
-                            <td>
-                                @if ($taxRate->zone())
-                                    {{ $taxRate->zone()->name() }}
-                                @endif
-                            </td>
-                            <td class="flex justify-end">
-                                <dropdown-list class="mr-1">
-                                    @if(auth()->user()->can('edit tax rates'))
-                                        <dropdown-item :text="__('Edit')" redirect="{{ $taxRate->editUrl() }}"></dropdown-item>
-                                    @endif
+                            @if($taxRate->id() !== 'default-rate' && $taxRate->id() !== 'default-shipping-rate' && auth()->user()->can('delete tax rates'))
+                                <ui-dropdown-item
+                                    :text="__('Delete')"
+                                    class="text-red-500"
+                                    @click="$refs.deleter.confirm()"
+                                ></ui-dropdown-item>
+                            @endif
+                        </ui-dropdown-menu>
+                    </ui-dropdown>
 
-                                    @if($taxRate->id() !== 'default-rate' && $taxRate->id() !== 'default-shipping-rate' && auth()->user()->can('delete tax rates'))
-                                        <dropdown-item :text="__('Delete')" class="warning" @click="$refs.deleter.confirm()">
-                                            <resource-deleter
-                                                ref="deleter"
-                                                resource-title="{{ $taxRate->name() }}"
-                                                route="{{ $taxRate->deleteUrl() }}"
-                                                :reload="true"
-                                                @deleted="document.getElementById('taxRate_{{ $taxRate->id() }}').remove()"
-                                            ></resource-deleter>
-                                        </dropdown-item>
-                                    @endif
-                                </dropdown-list>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    <resource-deleter
+                        ref="deleter"
+                        resource-title="{{ $taxRate->name() }}"
+                        route="{{ $taxRate->deleteUrl() }}"
+                        :reload="true"
+                        @deleted="document.getElementById('taxCategory_{{ $taxRate->id() }}').remove()"
+                    ></resource-deleter>
+                </ui-card-list-item>
+            @endforeach
+        </ui-card-list>
     @else
         @include('statamic::partials.empty-state', [
             'title' => __('Tax Rate'),

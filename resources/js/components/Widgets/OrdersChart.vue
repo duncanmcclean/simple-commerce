@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { Line as LineChartGenerator } from 'vue-chartjs/legacy'
+import { Line as LineChartGenerator } from 'vue-chartjs'
 
 import {
     Chart as ChartJS,
