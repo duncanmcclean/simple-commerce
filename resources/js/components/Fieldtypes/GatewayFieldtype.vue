@@ -64,12 +64,12 @@ export default {
 
     data() {
         return {
-            gatewayData: this.value.data,
-            entry: this.value.entry,
-            actions: this.value.actions,
-            actionUrl: this.value.action_url,
-            gatewayClass: this.value.gateway_class,
-            display: this.value.display,
+            gatewayData: this.value?.data,
+            entry: this.value?.entry,
+            actions: this.value?.actions,
+            actionUrl: this.value?.action_url,
+            gatewayClass: this.value?.gateway_class,
+            display: this.value?.display,
         }
     },
 

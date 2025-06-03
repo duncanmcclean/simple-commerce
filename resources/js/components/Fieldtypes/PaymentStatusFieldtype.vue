@@ -1,52 +1,41 @@
 <template>
-    <div class="relationship-input">
-        <div
-            class="relationship-input-items space-y-1 outline-none"
-            tabindex="0"
-        >
-            <div class="item item outline-none" tabindex="0">
-                <div class="item-inner">
-                    <span
-                        class="little-dot mr-2"
-                        :class="littleDotColour"
-                    ></span>
-                    <span>
-                        {{ statusName }}
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
+    <Badge
+        :color="badgeColour"
+        :text="statusLabel"
+        size="lg"
+        :pill="true"
+    />
 </template>
 
 <script>
 import { Fieldtype } from 'statamic';
+import { Badge } from '@statamic/ui'
 
 export default {
     name: 'payment-status-fieldtype',
 
     mixins: [Fieldtype],
 
-    props: ['meta'],
+    components: { Badge },
 
     computed: {
-        littleDotColour() {
+        badgeColour() {
             switch (this.value) {
                 case 'unpaid':
-                    return 'bg-gray-400'
+                    return 'white'
 
                 case 'paid':
-                    return 'bg-green-600'
+                    return 'green'
 
                 case 'refunded':
-                    return 'bg-grey'
+                    return 'yellow'
 
                 default:
                     return ''
             }
         },
 
-        statusName() {
+        statusLabel() {
             return __(this.meta.statuses[this.value])
         },
     },

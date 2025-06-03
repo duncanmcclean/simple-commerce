@@ -1,41 +1,44 @@
 <template>
-    <div class="revision-item">
-        <div class="flex items-center">
-            <div class="revision-item-content w-full flex items-center justify-between">
-                <div>
-                    <p class="ml-2">{{ statusType }} changed to <span class="font-medium">{{ status }}</span></p>
-                    <span class="badge bg-orange" v-if="isCurrent" v-text="__('Current')" />
-                </div>
+    <div
+        class="block space-y-2 px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-900"
+        :class="{
+            'status-published': isCurrent,
+        }"
+    >
+        <div class="revision-item-note truncate">
+            {{ statusType }} changed to <span class="font-medium">{{ status }}</span>
+        </div>
 
-                <div class="flex-1 flex items-center justify-end" style="flex-shrink: 0">
-                    <div>
-                        <div class="revision-author text-gray-700 text-2xs">
-                            {{ date.isBefore($moment().startOf('day')) ? date.format('LT') : date.fromNow() }}
-                        </div>
-                    </div>
+        <div class="flex items-center gap-2">
+            <avatar v-if="event.user" :user="event.user" class="size-6 shrink-0" />
 
-                    <dropdown-list class="ml-2">
-                        <dropdown-item :text="__('Resend notifications')" @click="resendNotifications" />
-                    </dropdown-list>
+            <div class="revision-item-content flex w-full">
+                <div class="flex-1">
+                    <Subheading>
+                        <template v-if="event.user">
+                            {{ event.user.name || event.user.email }} &ndash;
+                        </template>
+                        {{ time }}
+                    </Subheading>
                 </div>
             </div>
+        </div>
+
+        <div v-if="isCurrent" class="flex items-center gap-1">
+            <Badge size="sm" color="orange"  v-text="__('Current')" />
         </div>
 
         <div v-if="event.data?.reason" class="revision-item-note truncate ml-2 mt-3 font-normal text-xs" v-text="event.data.reason" />
-
-        <div v-if="event.user" class="flex items-center ml-2 mt-2" style="flex-shrink: 0">
-            <avatar v-if="event.user" :user="event.user" class="shrink-0 mr-2 w-6" />
-            <div class="flex-1 revision-author text-gray-700 text-2xs">
-                <template v-if="event.user">{{ event.user.name || event.user.email }}</template>
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Avatar from '../../../../vendor/statamic/cms/resources/js/components/Avatar.vue'
+import { Badge, Subheading } from '@statamic/ui'
 
 export default {
+    components: { Badge, Subheading, Avatar },
     props: {
         event: Object,
         orderId: String,
