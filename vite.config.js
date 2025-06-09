@@ -14,7 +14,7 @@ export default defineConfig(({ command, mode }) => {
                 input: ['resources/js/cp.js', 'resources/css/cp.css'],
             }),
             vue(),
-            viteExternalsPlugin({vue: 'Vue', 'vue-demi': 'VueDemi'}),
+            viteExternalsPlugin({vue: 'Vue', 'vue-demi': 'VueDemi', pinia: 'Pinia'}),
         ],
         server: {
             hmr: false

@@ -9,7 +9,7 @@ import OrderStatusIndexFieldtype from './components/Fieldtypes/OrderStatusIndexF
 import PaymentStatusFieldtype from './components/Fieldtypes/PaymentStatusFieldtype.vue'
 import PaymentStatusIndexFieldtype from './components/Fieldtypes/PaymentStatusIndexFieldtype.vue'
 import ProductVariantFieldtype from './components/Fieldtypes/ProductVariantFieldtype.vue'
-import ProductVariantsFieldtype from './components/Fieldtypes/ProductVariants/ProductVariantsFieldtype.vue'
+import ProductVariantsFieldtype from './components/Fieldtypes/ProductVariantsFieldtype.vue'
 import StatusLogFieldtype from './components/Fieldtypes/StatusLogFieldtype.vue'
 import CouponListing from './components/Listings/CouponListing.vue'
 import OrdersChart from './components/Widgets/OrdersChart.vue'

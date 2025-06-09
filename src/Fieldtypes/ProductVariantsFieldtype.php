@@ -28,21 +28,33 @@ class ProductVariantsFieldtype extends Fieldtype
         return array_merge(
             [
                 'variant_fields' => $this->variantFields()->toPublishArray(),
+                'variant_field_meta' => collect($this->field->value()['variants'] ?? [])->map(function ($variant) {
+                    return $this->variantFields()->addValues($variant)->preProcess()->meta();
+                })->all(),
+                'variant_field_defaults' => $this->variantFields()->all()->mapWithKeys(function ($field) {
+                    return [$field->handle() => $field->fieldtype()->preProcess($field->defaultValue())];
+                })->all(),
+
+
                 'option_fields' => $this->optionFields()->toPublishArray(),
+                'option_field_meta' => collect($this->field->value()['options'] ?? [])->map(function ($variant) {
+                    return $this->optionFields()->addValues($variant)->preProcess()->meta();
+                })->all(),
+                'option_field_new' => $this->optionFields()->meta()->all(),
                 'option_field_defaults' => $this->optionFields()->all()->mapWithKeys(function ($field) {
                     return [$field->handle() => $field->fieldtype()->preProcess($field->defaultValue())];
                 })->all(),
                 'variant' => resolve(Textarea::class)->preload(),
                 'price' => resolve(MoneyFieldtype::class)->preload(),
             ],
-            collect($this->optionFields()->meta()->all())->mapWithKeys(function ($value, $handle) {
-                // Fix the assets fieldtype (for now!)
-                if (isset($value['data']) && collect($value['data'])->count() === 0) {
-                    $value['data'] = null;
-                }
-
-                return [$handle => $value];
-            })->all(),
+//            collect($this->optionFields()->meta()->all())->mapWithKeys(function ($value, $handle) {
+//                // Fix the assets fieldtype (for now!)
+//                if (isset($value['data']) && collect($value['data'])->count() === 0) {
+//                    $value['data'] = null;
+//                }
+//
+//                return [$handle => $value];
+//            })->all(),
         );
     }
 
@@ -50,7 +62,7 @@ class ProductVariantsFieldtype extends Fieldtype
     {
         return [
             'variants' => $this->processInsideFields(
-                isset($data['variants']) ? $data['variants'] : [],
+                isset($data['variants']) ? $data['variants'] : [['name' => '', 'values' => []]],
                 $this->preload()['variant_fields'],
                 'preProcess'
             ),
@@ -167,7 +179,7 @@ class ProductVariantsFieldtype extends Fieldtype
             ->pluck('validate', 'handle')
             ->filter()
             ->mapWithKeys(function ($validate, $handle) {
-                return ["variants.*.$handle" => Validator::explodeRules($validate)];
+                return ["product_variants.variants.*.$handle" => Validator::explodeRules($validate)];
             })
             ->toArray();
 
@@ -175,13 +187,18 @@ class ProductVariantsFieldtype extends Fieldtype
             ->pluck('validate', 'handle')
             ->filter()
             ->mapWithKeys(function ($validate, $handle) {
-                return ["options.*.$handle" => Validator::explodeRules($validate)];
+                return ["product_variants.options.*.$handle" => Validator::explodeRules($validate)];
             })
             ->toArray();
 
+//        dd(array_merge([
+//            'variants' => ['array'],
+//            'options' => ['array'],
+//        ], $variantFieldRules, $optionFieldRules));
+
         return array_merge([
-            'variants' => ['array'],
-            'options' => ['array'],
+            'product_variants.variants' => ['array'],
+            'product_variants.options' => ['array'],
         ], $variantFieldRules, $optionFieldRules);
     }
 

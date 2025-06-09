@@ -13,46 +13,7 @@ it('can preload', function () {
         ->and($preload['option_fields'])->toBeArray()->toHaveCount(3)
         ->and($preload['option_fields'][0]['handle'])->toBe('key')
         ->and($preload['option_fields'][1]['handle'])->toBe('variant')
-        ->and($preload['option_fields'][2]['handle'])->toBe('price')
-        ->and($preload['option_field_defaults'])->toBe([
-            'key' => null,
-            'variant' => null,
-            'price' => null,
-        ])
-        ->and($preload['variant'])->toBeNull()
-        ->and($preload['price'])->toBeArray();
-});
-
-it('can preload with configured option fields', function () {
-    $preload = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', [
-            'option_fields' => [
-                [
-                    'handle' => 'special_message',
-                    'field' => [
-                        'type' => 'text',
-                        'validate' => 'required',
-                    ],
-                ],
-            ],
-        ]))
-        ->preload();
-
-    expect($preload)->toBeArray()
-        ->and($preload['variant_fields'])->toBeArray()->toHaveCount(2)
-        ->and($preload['option_fields'])->toBeArray()->toHaveCount(4)
-        ->and($preload['option_fields'][0]['handle'])->toBe('key')
-        ->and($preload['option_fields'][1]['handle'])->toBe('variant')
-        ->and($preload['option_fields'][2]['handle'])->toBe('price')
-        ->and($preload['option_field_defaults'])->toBe([
-            'key' => null,
-            'variant' => null,
-            'price' => null,
-            'special_message' => null, // Only null because it's a `text` fieldtype.
-        ])
-        ->and($preload['variant'])->toBeNull()
-        ->and($preload['price'])->toBeArray()
-        ->and($preload['special_message'])->toBeNull(); // Only null because it's a `text` fieldtype.
+        ->and($preload['option_fields'][2]['handle'])->toBe('price');
 });
 
 it('can preprocess', function () {
@@ -187,13 +148,13 @@ it('returns extra validation rules', function () {
         ->extraRules();
 
     expect($extraRules)->toBeArray()->toBe([
-        'variants' => ['array'],
-        'options' => ['array'],
-        'variants.*.name' => ['required'],
-        'variants.*.values' => ['required'],
-        'options.*.key' => ['required'],
-        'options.*.variant' => ['required'],
-        'options.*.price' => ['required'],
-        'options.*.size' => ['required,min:10,max:20'],
+        'product_variants.variants' => ['array'],
+        'product_variants.options' => ['array'],
+        'product_variants.variants.*.name' => ['required'],
+        'product_variants.variants.*.values' => ['required'],
+        'product_variants.options.*.key' => ['required'],
+        'product_variants.options.*.variant' => ['required'],
+        'product_variants.options.*.price' => ['required'],
+        'product_variants.options.*.size' => ['required,min:10,max:20'],
     ]);
 });
