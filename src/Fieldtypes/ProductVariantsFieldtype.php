@@ -47,7 +47,7 @@ class ProductVariantsFieldtype extends Fieldtype
 
     public function preProcess($data)
     {
-         $defaultVariant = [
+        $defaultVariant = [
             'name' => '',
             'values' => [],
         ];
