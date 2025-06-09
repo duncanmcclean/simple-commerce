@@ -9,11 +9,15 @@ it('can preload', function () {
         ->preload();
 
     expect($preload)->toBeArray()
-        ->and($preload['variant_fields'])->toBeArray()->toHaveCount(2)
-        ->and($preload['option_fields'])->toBeArray()->toHaveCount(3)
-        ->and($preload['option_fields'][0]['handle'])->toBe('key')
-        ->and($preload['option_fields'][1]['handle'])->toBe('variant')
-        ->and($preload['option_fields'][2]['handle'])->toBe('price');
+        ->and($preload['variants']['fields'])->toBeArray()->toHaveCount(2)
+        ->and($preload['variants']['new'])->toBeArray()->toHaveCount(2)
+        ->and($preload['variants']['existing'])->toBeArray()->toHaveCount(0)
+
+        ->and($preload['options']['fields'])->toBeArray()->toHaveCount(3)
+        ->and(array_column($preload['options']['fields'], 'handle'))->toBe(['key', 'variant', 'price'])
+        ->and($preload['options']['defaults'])->toBeArray()->toHaveCount(3)
+        ->and($preload['options']['new'])->toBeArray()->toHaveCount(3)
+        ->and($preload['options']['existing'])->toBeArray()->toHaveCount(0);
 });
 
 it('can preprocess', function () {
@@ -140,7 +144,7 @@ it('returns extra validation rules', function () {
                     'handle' => 'size',
                     'field' => [
                         'type' => 'text',
-                        'validate' => 'required,min:10,max:20',
+                        'validate' => 'required|min:10|max:20',
                     ],
                 ],
             ],
@@ -155,6 +159,6 @@ it('returns extra validation rules', function () {
         'product_variants.options.*.key' => ['required'],
         'product_variants.options.*.variant' => ['required'],
         'product_variants.options.*.price' => ['required'],
-        'product_variants.options.*.size' => ['required,min:10,max:20'],
+        'product_variants.options.*.size' => ['required', 'min:10', 'max:20'],
     ]);
 });

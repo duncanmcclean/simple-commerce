@@ -43,7 +43,7 @@ Statamic.booting(() => {
         ProductVariantFieldtype
     )
     Statamic.$components.register(
-        'product-variants-fieldtype',
+        'product_variants-fieldtype',
         ProductVariantsFieldtype
     )
     Statamic.$components.register('sc_status_log-fieldtype', StatusLogFieldtype)

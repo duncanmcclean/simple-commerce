@@ -3,107 +3,79 @@
 namespace DuncanMcClean\SimpleCommerce\Fieldtypes;
 
 use Illuminate\Support\Arr;
-use Statamic\Fields\Field;
 use Statamic\Fields\Fields;
 use Statamic\Fields\Fieldtype;
-use Statamic\Fields\FieldtypeRepository;
 use Statamic\Fields\Validator;
-use Statamic\Fieldtypes\Textarea;
 
 class ProductVariantsFieldtype extends Fieldtype
 {
+    protected static $title = 'Product Variants';
+
     public function configFieldItems(): array
     {
         return [
             'option_fields' => [
-                'display' => __('Option Fields'),
                 'type' => 'fields',
-                'instructions' => __('Configure fields that will be shown when an option is created.'),
+                'display' => __('Option Fields'),
+                'instructions' => __('Configure fields for variant options.'),
             ],
         ];
     }
 
     public function preload()
     {
-        return array_merge(
-            [
-                'variant_fields' => $this->variantFields()->toPublishArray(),
-                'variant_field_meta' => collect($this->field->value()['variants'] ?? [])->map(function ($variant) {
-                    return $this->variantFields()->addValues($variant)->preProcess()->meta();
-                })->all(),
-                'variant_field_defaults' => $this->variantFields()->all()->mapWithKeys(function ($field) {
-                    return [$field->handle() => $field->fieldtype()->preProcess($field->defaultValue())];
-                })->all(),
-
-
-                'option_fields' => $this->optionFields()->toPublishArray(),
-                'option_field_meta' => collect($this->field->value()['options'] ?? [])->map(function ($variant) {
-                    return $this->optionFields()->addValues($variant)->preProcess()->meta();
-                })->all(),
-                'option_field_new' => $this->optionFields()->meta()->all(),
-                'option_field_defaults' => $this->optionFields()->all()->mapWithKeys(function ($field) {
-                    return [$field->handle() => $field->fieldtype()->preProcess($field->defaultValue())];
-                })->all(),
-                'variant' => resolve(Textarea::class)->preload(),
-                'price' => resolve(MoneyFieldtype::class)->preload(),
+        return [
+            'variants' => [
+                'fields' => $this->variantFields()->toPublishArray(),
+                'new' => $this->variantFields()->meta()->all(),
+                'existing' => collect(Arr::get($this->field->value(), 'variants', []))
+                    ->map(fn (array $variant) => $this->variantFields()->addValues($variant)->preProcess()->meta())
+                    ->all(),
             ],
-//            collect($this->optionFields()->meta()->all())->mapWithKeys(function ($value, $handle) {
-//                // Fix the assets fieldtype (for now!)
-//                if (isset($value['data']) && collect($value['data'])->count() === 0) {
-//                    $value['data'] = null;
-//                }
-//
-//                return [$handle => $value];
-//            })->all(),
-        );
+            'options' => [
+                'fields' => $this->optionFields()->toPublishArray(),
+                'defaults' => $this->optionFields()->all()
+                    ->map(fn ($field) => $field->fieldtype()->preProcess($field->defaultValue()))
+                    ->all(),
+                'new' => $this->optionFields()->meta()->all(),
+                'existing' => collect(Arr::get($this->field->value(), 'options', []))
+                    ->map(fn (array $option) => $this->optionFields()->addValues($option)->preProcess()->meta())
+                    ->all(),
+            ],
+        ];
     }
 
     public function preProcess($data)
     {
+         $defaultVariant = [
+            'name' => '',
+            'values' => [],
+        ];
+
         return [
-            'variants' => $this->processInsideFields(
-                isset($data['variants']) ? $data['variants'] : [['name' => '', 'values' => []]],
-                $this->preload()['variant_fields'],
-                'preProcess'
-            ),
-            'options' => $this->processInsideFields(
-                isset($data['options']) ? $data['options'] : [],
-                $this->preload()['option_fields'],
-                'preProcess'
-            ),
+            'variants' => collect(Arr::get($data, 'variants', [$defaultVariant]))
+                ->map(fn ($variant) => $this->variantFields()->addValues($variant)->preProcess()->values()->all())
+                ->all(),
+            'options' => collect(Arr::get($data, 'options'))
+                ->map(fn ($option) => $this->optionFields()->addValues($option)->preProcess()->values()->all())
+                ->all(),
         ];
     }
 
     public function process($data)
     {
-        $process = [
-            'variants' => $this->processInsideFields(
-                $data['variants'],
-                $this->preload()['variant_fields'],
-                'process'
-            ),
-            'options' => $this->processInsideFields(
-                $data['options'],
-                $this->preload()['option_fields'],
-                'process'
-            ),
-        ];
-
-        if (count($process['variants']) === 0 && count($process['options']) === 0) {
+        if (empty($data) || count($data['variants']) === 0 || count($data['options']) === 0) {
             return null;
         }
 
-        return $process;
-    }
-
-    public static function title()
-    {
-        return __('Product Variants');
-    }
-
-    public function component(): string
-    {
-        return 'product-variants';
+        return [
+            'variants' => collect(Arr::get($data, 'variants'))
+                ->map(fn ($variant) => $this->variantFields()->addValues($variant)->process()->values()->all())
+                ->all(),
+            'options' => collect(Arr::get($data, 'options'))
+                ->map(fn ($option) => $this->optionFields()->addValues($option)->process()->values()->all())
+                ->all(),
+        ];
     }
 
     public function augment($value)
@@ -113,98 +85,53 @@ class ProductVariantsFieldtype extends Fieldtype
         }
 
         return [
-            'variants' => collect($value['variants'] ?? [])
+            'variants' => collect(Arr::get($value, 'variants'))
                 ->map(fn ($option) => $this->variantFields()->addValues($option)->augment()->values()->all())
                 ->all(),
-            'options' => collect($value['options'] ?? [])
+            'options' => collect(Arr::get($value, 'options'))
                 ->map(fn ($option) => $this->optionFields()->addValues($option)->augment()->values()->all())
                 ->all(),
         ];
     }
 
-    protected function processInsideFields(array $fieldValues, array $fields, string $method): array
+    public function preProcessIndex($data)
     {
-        return collect($fieldValues)
-            ->map(function ($optionAttributeValues) use ($fields, $method) {
-                $optionAttributes = collect($fields)->pluck('handle');
-
-                return collect($optionAttributes)
-                    ->mapWithKeys(function ($fieldHandle) use ($fields, $method, $optionAttributeValues) {
-                        $value = $optionAttributeValues[$fieldHandle] ?? null;
-
-                        $fieldValue = collect($fields)
-                            ->where('handle', $fieldHandle)
-                            ->map(function ($field) use ($value, $method) {
-                                return (new FieldtypeRepository)
-                                    ->find($field['type'])
-                                    ->setField(new Field($field['handle'], Arr::except($field, ['handle'])))
-                                    ->{$method}($value);
-                            })
-                            ->first();
-
-                        return [$fieldHandle => $fieldValue];
-                    })
-                    ->toArray();
-            })
-            ->toArray();
-    }
-
-    public static function docsUrl()
-    {
-        return 'https://simple-commerce.duncanmcclean.com/product-variants';
-    }
-
-    public function preProcessIndex($value)
-    {
-        if (! $value) {
+        if (! $data) {
             return __('No variants.');
         }
 
-        $optionsCount = collect($value['options'])->count();
+        $count = collect($data['options'])->count();
 
-        if ($optionsCount === 0) {
-            return __('No variants.');
-        } elseif ($optionsCount === 1) {
-            return $optionsCount.' variant';
-        } else {
-            return $optionsCount.' variants';
-        }
+        return match ($count) {
+            0 => __('No variants.'),
+            1 => __(':count variant', ['count' => $count]),
+            default => __(':count variants', ['count' => $count]),
+        };
     }
 
     public function extraRules(): array
     {
-        $preload = $this->preload();
-
-        $variantFieldRules = collect($preload['variant_fields'])
-            ->pluck('validate', 'handle')
-            ->filter()
-            ->mapWithKeys(function ($validate, $handle) {
-                return ["product_variants.variants.*.$handle" => Validator::explodeRules($validate)];
-            })
-            ->toArray();
-
-        $optionFieldRules = collect($preload['option_fields'])
-            ->pluck('validate', 'handle')
-            ->filter()
-            ->mapWithKeys(function ($validate, $handle) {
-                return ["product_variants.options.*.$handle" => Validator::explodeRules($validate)];
-            })
-            ->toArray();
-
-//        dd(array_merge([
-//            'variants' => ['array'],
-//            'options' => ['array'],
-//        ], $variantFieldRules, $optionFieldRules));
-
-        return array_merge([
-            'product_variants.variants' => ['array'],
-            'product_variants.options' => ['array'],
-        ], $variantFieldRules, $optionFieldRules);
+        return [
+            "{$this->field->handle()}.variants" => ['array'],
+            "{$this->field->handle()}.options" => ['array'],
+            ...$this->variantFields()->all()
+                ->flatMap(fn ($field) => [
+                    "{$this->field->handle()}.variants.*.{$field->handle()}" => Validator::explodeRules($field->get('validate')),
+                ])
+                ->filter()
+                ->all(),
+            ...$this->optionFields()->all()
+                ->flatMap(fn ($field) => [
+                    "{$this->field->handle()}.options.*.{$field->handle()}" => Validator::explodeRules($field->get('validate')),
+                ])
+                ->filter()
+                ->all(),
+        ];
     }
 
-    protected function variantFields(): Fields
+    private function variantFields(): Fields
     {
-        $variantFields = [
+        $fields = [
             [
                 'handle' => 'name',
                 'field' => [
@@ -228,12 +155,12 @@ class ProductVariantsFieldtype extends Fieldtype
             ],
         ];
 
-        return new Fields($variantFields, $this->field()->parent(), $this->field());
+        return new Fields($fields, $this->field()->parent(), $this->field());
     }
 
-    protected function optionFields(): Fields
+    private function optionFields(): Fields
     {
-        $optionFields = collect([
+        $fields = collect([
             [
                 'handle' => 'key',
                 'field' => [
@@ -277,6 +204,6 @@ class ProductVariantsFieldtype extends Fieldtype
             })
             ->toArray();
 
-        return new Fields($optionFields, $this->field()->parent(), $this->field());
+        return new Fields($fields, $this->field()->parent(), $this->field());
     }
 }

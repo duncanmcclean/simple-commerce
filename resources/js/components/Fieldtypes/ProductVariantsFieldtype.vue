@@ -9,12 +9,12 @@
             >
                 <PublishContainer
                     :name="`product-variant-${index}`"
-                    :blueprint="meta.variant_fields"
+                    :blueprint="meta.variants.fields"
                     :values="variant"
-                    :meta="meta.variant_field_meta[index]"
+                    :meta="meta.variants.existing[index]"
                     :errors="getErrorsForVariant(index)"
                 >
-                    <FieldsProvider :fields="meta.variant_fields">
+                    <FieldsProvider :fields="meta.variants.fields">
                         <Fields class="p-4" />
                     </FieldsProvider>
                 </PublishContainer>
@@ -33,14 +33,14 @@
                 class="dark:border-dark-900 rounded-sm border shadow-sm"
             >
                 <PublishContainer
-                    v-if="meta.option_field_meta[index]"
+                    v-if="meta.options.existing[index]"
                     :name="`product-variant-option-${index}`"
-                    :blueprint="meta.option_fields"
+                    :blueprint="meta.options.fields"
                     :values="option"
-                    :meta="meta.option_field_meta[index]"
+                    :meta="meta.options.existing[index]"
                     :errors="getErrorsForOption(index)"
                 >
-                    <FieldsProvider :fields="meta.option_fields">
+                    <FieldsProvider :fields="meta.options.fields">
                         <Fields class="p-4" />
                     </FieldsProvider>
                 </PublishContainer>
@@ -54,7 +54,7 @@ import { Fieldtype, ValidatesFieldConditions } from 'statamic';
 import Fields from '@statamic/components/ui/Publish/Fields.vue';
 import FieldsProvider from '@statamic/components/ui/Publish/FieldsProvider.vue';
 import PublishContainer from '@statamic/components/ui/Publish/Container.vue';
-import { Button } from '../../../../../vendor/statamic/cms/resources/js/components/ui'
+import { Button } from '@statamic/ui'
 
 export default {
     mixins: [
@@ -150,14 +150,14 @@ export default {
                                 price: 0,
                             }
 
-                            Object.entries(this.meta.option_field_defaults).forEach(
+                            Object.entries(this.meta.options.defaults).forEach(
                                 ([key, value]) => {
                                     existingData[key] = value
                                 }
                             )
 
                             let meta = this.meta;
-                            meta['option_field_meta'][index] = this.meta.option_field_new;
+                            meta['options']['existing'][index] = this.meta.options.new;
                             this.updateMeta(meta)
                         }
 
