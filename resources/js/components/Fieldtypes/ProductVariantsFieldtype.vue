@@ -57,11 +57,11 @@
                     v-if="meta.options.existing[index]"
                     :name="`product-variant-option-${index}`"
                     :blueprint="meta.options.fields"
-                    :values="option"
+                    :values="store.values"
                     :meta="meta.options.existing[index]"
                     :errors="getErrorsForOption(index)"
                 >
-                    <FieldsProvider :fields="meta.options.fields">
+                    <FieldsProvider :fields="meta.options.fields" :field-path-prefix="`${handle}.options.${index}`">
                         <Fields class="p-4" />
                     </FieldsProvider>
                 </PublishContainer>
