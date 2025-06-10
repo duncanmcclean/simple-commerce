@@ -12,8 +12,6 @@ class LowStockProducts extends Widget
 {
     public function html()
     {
-        $indexUrl = cp_route('collections.show', SimpleCommerce::productDriver()['collection']);
-
         $standardLowStockProducts = Product::query()
             ->wherePurchaseableType(ProductType::Product)
             ->orderBy('stock', 'asc')
@@ -46,7 +44,7 @@ class LowStockProducts extends Widget
             });
 
         return view('simple-commerce::cp.widgets.low-stock-products', [
-            'url' => $indexUrl,
+            'listingUrl' => cp_route('collections.show', SimpleCommerce::productDriver()['collection']),
             'lowStockProducts' => collect($standardLowStockProducts)->merge($variantProductsWithLowStock),
         ]);
     }

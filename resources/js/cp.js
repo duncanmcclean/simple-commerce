@@ -12,7 +12,10 @@ import ProductVariantFieldtype from './components/Fieldtypes/ProductVariantField
 import ProductVariantsFieldtype from './components/Fieldtypes/ProductVariantsFieldtype.vue'
 import StatusLogFieldtype from './components/Fieldtypes/StatusLogFieldtype.vue'
 import CouponListing from './components/Listings/CouponListing.vue'
-import OrdersChart from './components/Widgets/OrdersChart.vue'
+import LowStockProductsWidget from './components/Widgets/LowStockProducts.vue'
+import OrdersChartWidget from './components/Widgets/OrdersChart.vue'
+import RecentOrdersWidget from './components/Widgets/RecentOrders.vue'
+import TopCustomersWidget from './components/Widgets/TopCustomers.vue'
 
 Statamic.booting(() => {
     // Fieldtypes
@@ -52,5 +55,8 @@ Statamic.booting(() => {
     Statamic.$components.register('coupon-listing', CouponListing)
 
     // Widgets
-    Statamic.$components.register('orders-chart', OrdersChart)
+    Statamic.$components.register('low-stock-products-widget', LowStockProductsWidget)
+    Statamic.$components.register('orders-chart-widget', OrdersChartWidget)
+    Statamic.$components.register('recent-orders-widget', RecentOrdersWidget)
+    Statamic.$components.register('top-customers-widget', TopCustomersWidget)
 });
