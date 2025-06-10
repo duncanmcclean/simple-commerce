@@ -383,34 +383,6 @@ class ServiceProvider extends AddonServiceProvider
                         __('Tax Zones') => cp_route('simple-commerce.tax-zones.index'),
                     ]);
             }
-
-            // Drop any collection items from 'Collections' nav
-            $collectionsNavItem = collect($nav->items())->first(function (NavItem $navItem) {
-                return $navItem->url() === cp_route('collections.index');
-            });
-
-            if ($collectionsNavItem && $collectionsNavItem->children()) {
-                $children = $collectionsNavItem->children()()
-                    ->reject(function ($child) {
-                        return in_array(
-                            $child->name(),
-                            collect(config('simple-commerce.content'))
-                                ->pluck('collection')
-                                ->filter()
-                                ->reject(function ($collectionHandle) {
-                                    return is_null(Collection::find($collectionHandle));
-                                })
-                                ->map(function ($collectionHandle) {
-                                    return __(Collection::find($collectionHandle)->title());
-                                })
-                                ->toArray(),
-                        );
-                    });
-
-                $collectionsNavItem->children(function () use ($children) {
-                    return $children;
-                });
-            }
         });
 
         return $this;
