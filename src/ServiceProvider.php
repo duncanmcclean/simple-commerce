@@ -8,7 +8,6 @@ use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Support\Runway;
 use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Support\Carbon;
-use Statamic\CP\Navigation\NavItem;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Events\UserBlueprintFound;
 use Statamic\Facades\Collection;
