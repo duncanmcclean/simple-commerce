@@ -178,6 +178,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     'listable' => 'hidden',
                     'display' => 'Key',
                     'visibility' => 'hidden',
+                    'always_save' => true,
                     'read_only' => true,
                     'validate' => ['required'],
                 ],
