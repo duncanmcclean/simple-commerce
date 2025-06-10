@@ -14,6 +14,16 @@ class ProductVariantsFieldtype extends Fieldtype
     public function configFieldItems(): array
     {
         return [
+            'columns' => [
+                'type' => 'radio',
+                'display' => __('Columns'),
+                'instructions' => __('Configure the number of columns used when displaying variant options.'),
+                'default' => 2,
+                'options' => [
+                    1 => __('One Column'),
+                    2 => __('Two Columns'),
+                ],
+            ],
             'option_fields' => [
                 'type' => 'fields',
                 'display' => __('Option Fields'),
@@ -167,6 +177,7 @@ class ProductVariantsFieldtype extends Fieldtype
                     'type' => 'hidden',
                     'listable' => 'hidden',
                     'display' => 'Key',
+                    'visibility' => 'hidden',
                     'read_only' => true,
                     'validate' => ['required'],
                 ],
@@ -178,8 +189,9 @@ class ProductVariantsFieldtype extends Fieldtype
                     'listable' => 'hidden',
                     'display' => 'Variant',
                     'read_only' => true,
+                    'visibility' => 'hidden',
+                    'always_save' => true,
                     'validate' => ['required'],
-                    'width' => 50,
                 ],
             ],
             [
@@ -190,7 +202,6 @@ class ProductVariantsFieldtype extends Fieldtype
                     'listable' => 'hidden',
                     'display' => 'Price',
                     'validate' => ['required'],
-                    'width' => 50,
                 ],
             ],
         ])
