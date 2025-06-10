@@ -57,7 +57,7 @@ class ProductVariantFieldtype extends Fieldtype
         }
 
         $variantSearch = collect($augmentedValue['options'])
-            ->where('key', $value['variant']);
+            ->where('key', $value['variant'] ?? $value['key']);
 
         if ($variantSearch->count() === 0) {
             return null;
