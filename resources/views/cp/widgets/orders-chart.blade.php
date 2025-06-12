@@ -1,10 +1,11 @@
-<div class="card p-0 overflow-hidden h-full">
-    <div class="flex justify-between items-center p-4">
-        <h2>
-            <a class="flex items-center" href="{{ $url }}">
-                <span>{{ __('Orders (Last 30 Days)') }}</span>
-            </a>
-        </h2>
-    </div>
-    <orders-chart :data='@json($data)' />
-</div>
+<orders-chart-widget
+    title="{{ __('Orders (Last 30 Days)') }}"
+    icon='{!! DuncanMcClean\SimpleCommerce\SimpleCommerce::svg('shop') !!}'
+    :data='@json($data)'
+>
+    <template #actions>
+        <ui-button href="{{ $url }}">
+            {{ __('View All') }}
+        </ui-button>
+    </template>
+</orders-chart-widget>

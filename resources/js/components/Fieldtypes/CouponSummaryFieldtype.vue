@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="list-disc ltr:pl-3">
+        <ul class="list-disc ltr:pl-6">
             <li v-if="values.type === 'fixed' && values.value && values.value.value !== null" class="text-sm mb-1.5">
                 <span class="font-semibold" v-text="formatCurrency(values.value.value)"></span> off entire order
             </li>
@@ -41,18 +41,18 @@
 </template>
 
 <script>
-import { __ } from '../../../../vendor/statamic/cms/resources/js/bootstrap/globals'
+import { Fieldtype } from 'statamic';
 
 export default {
     name: 'CouponSummaryFieldtype',
 
     mixins: [Fieldtype],
 
-    inject: ['storeName'],
+    inject: ['store'],
 
     computed: {
         values() {
-            return Statamic.$store.state.publish[this.storeName].values
+            return this.store.values
         },
     },
 

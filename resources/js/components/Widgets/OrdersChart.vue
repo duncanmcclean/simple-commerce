@@ -1,53 +1,53 @@
 <template>
-    <div class="flex flex-wrap -mx-2 mb-4">
-        <div class="px-2 w-full">
-            <div class="px-1" v-if="ready">
-                <LineChartGenerator
-                    :chart-options="chartOptions"
-                    :chart-data="chartData"
-                    :chart-id="'orders-chart'"
-                    :dataset-id-key="'label'"
-                    :cssClasses="''"
-                    :styles="{}"
-                    :plugins="[]"
-                    :width="'400'"
-                    :height="'200'"
-                />
+    <Widget :title :icon>
+        <div class="flex flex-wrap -mx-2 mb-4">
+            <div class="px-2 w-full">
+                <div class="px-1" v-if="ready">
+                    <Line :data="chartData" :options="chartOptions" />
+                </div>
             </div>
         </div>
-    </div>
+
+        <template #actions>
+            <slot name="actions" />
+        </template>
+    </Widget>
 </template>
 
 <script>
-import { Line as LineChartGenerator } from 'vue-chartjs/legacy'
+import { Widget } from '@statamic/ui';
 
 import {
     Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
-    Legend,
-    LineElement,
-    LinearScale,
-    CategoryScale,
-    PointElement,
+    Legend
 } from 'chart.js'
+import { Line } from 'vue-chartjs'
 
 ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
     Title,
     Tooltip,
-    Legend,
-    LineElement,
-    LinearScale,
-    CategoryScale,
-    PointElement
+    Legend
 )
 
 export default {
     components: {
-        LineChartGenerator,
+        Widget,
+        Line,
     },
 
     props: {
+        title: { type: String },
+        icon: { type: String },
         data: Array,
     },
 

@@ -33,7 +33,7 @@ class RecentOrders extends Widget
                         ->filter(fn (StatusLogEvent $statusLogEvent) => $statusLogEvent->status->is(PaymentStatus::Paid))
                         ->first()
                         ?->date()
-                        ->format(config('statamic.system.date_format')),
+                        ->format('c'),
                 ];
             })
             ->values();
