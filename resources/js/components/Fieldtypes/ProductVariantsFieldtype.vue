@@ -110,19 +110,15 @@ export default {
         },
 
         cartesian() {
-            let data = this.variants
-                .filter((variant) => {
-                    return variant.values.length != 0
-                })
-                .flatMap((variant) => [variant.values])
+            let cartesian = this.variants
+                .filter((variant) => variant.values.length !== 0)
+                .flatMap((variant) => [variant.values]);
 
-            if (data.length == 0) {
+            if (cartesian.length == 0) {
                 return []
             }
 
-            return data.reduce((acc, curr) =>
-                acc.flatMap((c) => curr.map((n) => [].concat(c, n)))
-            )
+            return cartesian.reduce((acc, curr) => acc.flatMap((c) => curr.map((n) => [].concat(c, n))));
         },
     },
 
