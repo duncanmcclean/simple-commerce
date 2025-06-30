@@ -15,9 +15,10 @@
 
     @if ($couponsCount)
         <coupon-listing
+            sort-column="code"
+            sort-direction="asc"
+            :columns="{{ $columns->toJson() }}"
             :filters="{{ $filters->toJson() }}"
-            :listing-config='@json($listingConfig)'
-            :initial-columns='@json($columns)'
             action-url="{{ $actionUrl }}"
         ></coupon-listing>
     @else

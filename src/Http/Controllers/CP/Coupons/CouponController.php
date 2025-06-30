@@ -36,11 +36,6 @@ class CouponController
                 ->rejectUnlisted()
                 ->values(),
             'filters' => Scope::filters('simple-commerce.coupons'),
-            'listingConfig' => [
-                'preferencesPrefix' => 'simple_commerce.coupons',
-                'requestUrl' => cp_route('simple-commerce.coupons.listing-api'),
-                'listingUrl' => cp_route('simple-commerce.coupons.index'),
-            ],
             'actionUrl' => cp_route('simple-commerce.coupons.actions.run'),
         ]);
     }
