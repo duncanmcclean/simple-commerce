@@ -28,6 +28,10 @@ class CouponController
             })
             ->toArray();
 
+        if (Coupon::query()->count() === 0) {
+            return view('simple-commerce::cp.coupons.empty');
+        }
+
         return view('simple-commerce::cp.coupons.index', [
             'couponsCount' => Coupon::all()->count(),
             'columns' => CouponBlueprint::getBlueprint()
