@@ -47,6 +47,7 @@ class CouponController
 
         return PublishForm::make($blueprint)
             ->title('Create Coupon')
+            ->icon('taxonomies')
             ->submittingTo(cp_route('simple-commerce.coupons.store'), 'POST');
     }
 
@@ -77,6 +78,7 @@ class CouponController
 
         return PublishForm::make(CouponBlueprint::getBlueprint())
             ->title('Edit Coupon')
+            ->icon('taxonomies')
             ->values($coupon->toArray())
             ->parent($coupon)
             ->submittingTo($coupon->updateUrl());

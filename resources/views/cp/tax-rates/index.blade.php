@@ -1,9 +1,10 @@
+@use(DuncanMcClean\SimpleCommerce\SimpleCommerce)
 @extends('statamic::layout')
 @section('title', __('Tax Rates'))
 @section('wrapper_class', 'max-w-full')
 
 @section('content')
-    <ui-header title="{{ __('Tax Rates') }}">
+    <ui-header title="{{ __('Tax Rates') }}" icon="{{ SimpleCommerce::svg('percentage') }}">
         @if(auth()->user()->can('create tax rates'))
             <ui-dropdown>
                 <template #trigger>

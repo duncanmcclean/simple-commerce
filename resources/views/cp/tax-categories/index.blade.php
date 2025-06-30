@@ -1,9 +1,10 @@
+@use(DuncanMcClean\SimpleCommerce\SimpleCommerce)
 @extends('statamic::layout')
 @section('title', __('Tax Categories'))
 @section('wrapper_class', 'max-w-full')
 
 @section('content')
-    <ui-header title="{{ __('Tax Categories') }}">
+    <ui-header title="{{ __('Tax Categories') }}" icon="{{ SimpleCommerce::svg('percentage') }}">
         @if(auth()->user()->can('create tax categories'))
             <ui-button
                 href="{{ cp_route('simple-commerce.tax-categories.create') }}"

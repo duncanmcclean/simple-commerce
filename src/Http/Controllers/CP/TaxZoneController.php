@@ -7,6 +7,7 @@ use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
 use DuncanMcClean\SimpleCommerce\Regions;
 use DuncanMcClean\SimpleCommerce\Rules\CountryExists;
 use DuncanMcClean\SimpleCommerce\Rules\RegionExists;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Statamic\CP\PublishForm;
 use Statamic\Facades\Blueprint;
@@ -25,6 +26,7 @@ class TaxZoneController
     {
         return PublishForm::make($this->blueprint())
             ->title('Create Tax Zone')
+            ->icon(SimpleCommerce::svg('percentage'))
             ->submittingTo(cp_route('simple-commerce.tax-zones.store'), 'POST');
     }
 
@@ -93,6 +95,7 @@ class TaxZoneController
 
         return PublishForm::make($this->blueprint())
             ->title('Edit Tax Zone')
+            ->icon(SimpleCommerce::svg('percentage'))
             ->values([
                 'name' => $taxZone->name(),
                 'country' => $taxZone->country() ? $taxZone->country()['iso'] : null,

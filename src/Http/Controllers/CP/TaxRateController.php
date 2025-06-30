@@ -5,6 +5,7 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
 use DuncanMcClean\SimpleCommerce\Facades\TaxRate;
 use DuncanMcClean\SimpleCommerce\Facades\TaxZone;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Statamic\CP\PublishForm;
@@ -25,6 +26,7 @@ class TaxRateController
     {
         return PublishForm::make($this->blueprint())
             ->title('Create Tax Rate')
+            ->icon(SimpleCommerce::svg('percentage'))
             ->submittingTo(cp_route('simple-commerce.tax-rates.store'), 'POST');
     }
 
@@ -51,6 +53,7 @@ class TaxRateController
 
         return PublishForm::make($this->blueprint())
             ->title('Edit Tax Rate')
+            ->icon(SimpleCommerce::svg('percentage'))
             ->values([
                 'name' => $taxRate->name(),
                 'rate' => $taxRate->rate(),

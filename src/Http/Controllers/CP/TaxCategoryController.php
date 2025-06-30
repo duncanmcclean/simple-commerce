@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Statamic\CP\PublishForm;
 use Statamic\Facades\Blueprint;
@@ -21,6 +22,7 @@ class TaxCategoryController
     {
         return PublishForm::make($this->blueprint())
             ->title('Create Tax Category')
+            ->icon(SimpleCommerce::svg('percentage'))
             ->submittingTo(cp_route('simple-commerce.tax-categories.store'), 'POST');
     }
 
@@ -44,6 +46,7 @@ class TaxCategoryController
 
         return PublishForm::make($this->blueprint())
             ->title('Edit Tax Category')
+            ->icon(SimpleCommerce::svg('percentage'))
             ->values([
                 'name' => $taxCategory->name(),
                 'description' => $taxCategory->description(),
