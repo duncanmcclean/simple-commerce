@@ -47,12 +47,10 @@ test('can store tax rate', function () {
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/tax/rates/create', [
-            'values' => [
                 'name' => 'UK - Special',
                 'rate' => 5,
                 'zone' => 'the-uk',
                 'include_in_price' => 'true',
-            ],
         ], ['referer' => '/cp/simple-commerce/tax/rates/create?taxCategory=special'])
         ->assertJsonStructure(['redirect']);
 });
@@ -93,12 +91,10 @@ test('can update tax rate', function () {
     $this
         ->actingAs(user())
         ->patch('/cp/simple-commerce/tax/rates/uk-standard-products/edit', [
-            'values' => [
                 'name' => 'UK - Standard Products (15% for COVID)',
                 'rate' => 15,
                 'zone' => 'the-uk',
                 'include_in_price' => 'true',
-            ],
         ])
         ->assertJson([]);
 });

@@ -57,7 +57,7 @@ class CouponController
 
     public function store(Request $request)
     {
-        $values = PublishForm::make(CouponBlueprint::getBlueprint())->submit($request->values);
+        $values = PublishForm::make(CouponBlueprint::getBlueprint())->submit($request->all());
 
         $coupon = Coupon::make()
             ->code(Str::upper($values['code']))
@@ -90,7 +90,7 @@ class CouponController
 
     public function update(Request $request, $coupon)
     {
-        $values = PublishForm::make(CouponBlueprint::getBlueprint())->submit($request->values);
+        $values = PublishForm::make(CouponBlueprint::getBlueprint())->submit($request->all());
 
         $coupon = Coupon::find($coupon);
 

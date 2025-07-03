@@ -28,7 +28,7 @@ class TaxCategoryController
 
     public function store(Request $request)
     {
-        $values = PublishForm::make($this->blueprint())->submit($request->values);
+        $values = PublishForm::make($this->blueprint())->submit($request->all());
 
         $taxCategory = TaxCategory::make()
             ->id(Stache::generateId())
@@ -56,7 +56,7 @@ class TaxCategoryController
 
     public function update(Request $request, $taxCategory)
     {
-        $values = PublishForm::make($this->blueprint())->submit($request->values);
+        $values = PublishForm::make($this->blueprint())->submit($request->all());
 
         $taxCategory = TaxCategory::find($taxCategory)
             ->name($values['name'])

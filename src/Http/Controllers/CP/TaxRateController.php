@@ -32,7 +32,7 @@ class TaxRateController
 
     public function store(Request $request)
     {
-        $values = PublishForm::make($this->blueprint())->submit($request->values);
+        $values = PublishForm::make($this->blueprint())->submit($request->all());
 
         $taxRate = TaxRate::make()
             ->id(Stache::generateId())
@@ -65,7 +65,7 @@ class TaxRateController
 
     public function update(Request $request, $taxRate)
     {
-        $values = PublishForm::make($this->blueprint())->submit($request->values);
+        $values = PublishForm::make($this->blueprint())->submit($request->all());
 
         $taxRate = TaxRate::find($taxRate)
             ->name($values['name'])

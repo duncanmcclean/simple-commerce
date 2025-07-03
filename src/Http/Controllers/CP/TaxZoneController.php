@@ -32,14 +32,14 @@ class TaxZoneController
 
     public function store(Request $request)
     {
-        $values = PublishForm::make($this->blueprint())->submit($request->values);
+        $values = PublishForm::make($this->blueprint())->submit($request->all());
 
         $request->validate([
             'values.country.0' => [
                 'required',
                 new CountryExists,
                 function ($attribute, $value, $fail) use ($request) {
-                    if (! isset($request->values['region']) || $request->values['region'] === null) {
+                    if (! $request->region) {
                         $taxZoneWithCountryAlreadyExists = TaxZone::all()
                             ->where('country', $value)
                             ->where('region', null)
@@ -58,12 +58,12 @@ class TaxZoneController
                 new RegionExists,
                 function ($attribute, $value, $fail) use ($request) {
                     $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
-                        ->where('country', $request->values['country'][0] ?? null)
+                        ->where('country', $request->country[0] ?? null)
                         ->where('region', $value)
                         ->count() > 0;
 
                     if ($taxZoneWithCountryAndRegionAlreadyExists) {
-                        $country = Countries::find($request->values['country'][0]);
+                        $country = Countries::find($request->country[0]);
                         $region = Regions::find($value);
 
                         $fail(__('There is already a tax zone for :region, :country.', [
@@ -106,14 +106,14 @@ class TaxZoneController
 
     public function update(Request $request, $taxZone)
     {
-        $values = PublishForm::make($this->blueprint())->submit($request->values);
+        $values = PublishForm::make($this->blueprint())->submit($request->all());
 
         $request->validate([
             'values.country.0' => [
                 'required',
                 new CountryExists,
                 function ($attribute, $value, $fail) use ($request) {
-                    if (! isset($request->values['region']) || $request->values['region'] === null) {
+                    if (! $request->region) {
                         $taxZoneWithCountryAlreadyExists = TaxZone::all()
                             ->where('country', $value)
                             ->where('region', null)
@@ -135,7 +135,7 @@ class TaxZoneController
                 new RegionExists,
                 function ($attribute, $value, $fail) use ($request) {
                     $taxZoneWithCountryAndRegionAlreadyExists = TaxZone::all()
-                        ->where('country', $request->values['country'][0] ?? null)
+                        ->where('country', $request->country[0] ?? null)
                         ->where('region', $value)
                         ->reject(function ($taxZone) use ($request) {
                             return $taxZone->id() === $request->route('taxZone');
@@ -143,7 +143,7 @@ class TaxZoneController
                         ->count() > 0;
 
                     if ($taxZoneWithCountryAndRegionAlreadyExists) {
-                        $country = Countries::find($request->values['country'][0]);
+                        $country = Countries::find($request->country[0]);
                         $region = Regions::find($value);
 
                         $fail(__('There is already a tax zone for :region, :country.', [
