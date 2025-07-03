@@ -38,8 +38,8 @@ test('can store tax category', function () {
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/tax/categories/create', [
-                'name' => 'Special Products',
-                'description' => 'Products that are very special.',
+            'name' => 'Special Products',
+            'description' => 'Products that are very special.',
         ])
         ->assertJsonStructure(['redirect']);
 });
@@ -69,8 +69,8 @@ test('can update tax category', function () {
     $this
         ->actingAs(user())
         ->patch('/cp/simple-commerce/tax/categories/whoop/edit', [
-                'name' => 'Whoopsie',
-                'description' => 'Whoopsie whoopsie whoopsie!',
+            'name' => 'Whoopsie',
+            'description' => 'Whoopsie whoopsie whoopsie!',
         ])
         ->assertJson([]);
 });

@@ -25,16 +25,16 @@ test('can store coupon', function () {
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/coupons', [
-                'code' => 'thursday-thirty',
-                'type' => 'percentage',
-                'value' => [
-                    'mode' => 'percentage',
-                    'value' => 30,
-                ],
-                'description' => '30% discount on a Thursday!',
-                'minimum_cart_value' => '65.00',
-                'expires_at' => null,
-                'customer_eligibility' => 'all',
+            'code' => 'thursday-thirty',
+            'type' => 'percentage',
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 30,
+            ],
+            'description' => '30% discount on a Thursday!',
+            'minimum_cart_value' => '65.00',
+            'expires_at' => null,
+            'customer_eligibility' => 'all',
         ])
         ->assertJsonStructure([
             'redirect',
@@ -52,16 +52,16 @@ test('can store coupon with expiry date', function () {
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/coupons', [
-                'code' => 'thursday-thirty-two',
-                'type' => 'percentage',
-                'value' => [
-                    'mode' => 'percentage',
-                    'value' => 32,
-                ],
-                'description' => '30% discount on a Thursday!',
-                'minimum_cart_value' => '65.00',
-                'expires_at' => '2024-01-01T00:00:00Z',
-                'customer_eligibility' => 'all',
+            'code' => 'thursday-thirty-two',
+            'type' => 'percentage',
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 32,
+            ],
+            'description' => '30% discount on a Thursday!',
+            'minimum_cart_value' => '65.00',
+            'expires_at' => '2024-01-01T00:00:00Z',
+            'customer_eligibility' => 'all',
         ])
         ->assertJsonStructure([
             'redirect',
@@ -90,14 +90,14 @@ test('cant store coupon where a coupon already exists with the provided code', f
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/coupons', [
-                'code' => 'tuesday-subway',
-                'type' => 'percentage',
-                'value' => [
-                    'mode' => 'percentage',
-                    'value' => 30,
-                ],
-                'description' => '30% discount on a Tuesday!',
-                'customer_eligibility' => 'all',
+            'code' => 'tuesday-subway',
+            'type' => 'percentage',
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 30,
+            ],
+            'description' => '30% discount on a Tuesday!',
+            'customer_eligibility' => 'all',
         ])
         ->assertSessionHasErrors('code');
 });
@@ -106,13 +106,13 @@ test('cant store coupon if type is percentage and value is greater than 100', fu
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/coupons', [
-                'code' => 'thursday-thirty',
-                'type' => 'percentage',
-                'value' => [
-                    'mode' => 'percentage',
-                    'value' => 150,
-                ],
-                'description' => '30% discount on a Thursday!',
+            'code' => 'thursday-thirty',
+            'type' => 'percentage',
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 150,
+            ],
+            'description' => '30% discount on a Thursday!',
         ])
         ->assertSessionHasErrors();
 });
@@ -157,16 +157,16 @@ test('can update coupon', function () {
     $this
         ->actingAs(user())
         ->patch('/cp/simple-commerce/coupons/random-id', [
-                'code' => 'fifty-friday',
-                'type' => 'percentage',
-                'value' => [
-                    'mode' => 'percentage',
-                    'value' => 51,
-                ],
-                'description' => 'You can actually get a 51% discount on Friday!',
-                'minimum_cart_value' => '76.00',
-                'expires_at' => null,
-                'customer_eligibility' => 'all',
+            'code' => 'fifty-friday',
+            'type' => 'percentage',
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 51,
+            ],
+            'description' => 'You can actually get a 51% discount on Friday!',
+            'minimum_cart_value' => '76.00',
+            'expires_at' => null,
+            'customer_eligibility' => 'all',
         ])
         ->assertJson([]);
 
@@ -195,16 +195,16 @@ test('can update coupon with expiry date', function () {
     $this
         ->actingAs(user())
         ->patch('/cp/simple-commerce/coupons/random-id', [
-                'code' => 'fifty-friday',
-                'type' => 'percentage',
-                'value' => [
-                    'mode' => 'percentage',
-                    'value' => 51,
-                ],
-                'description' => 'You can actually get a 51% discount on Friday!',
-                'minimum_cart_value' => '76.00',
-                'expires_at' => '2024-01-01T00:00:00Z',
-                'customer_eligibility' => 'all',
+            'code' => 'fifty-friday',
+            'type' => 'percentage',
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 51,
+            ],
+            'description' => 'You can actually get a 51% discount on Friday!',
+            'minimum_cart_value' => '76.00',
+            'expires_at' => '2024-01-01T00:00:00Z',
+            'customer_eligibility' => 'all',
         ])
         ->assertJson([]);
 
@@ -231,14 +231,14 @@ test('cant update coupon if type is percentage and value is greater than 100', f
     $this
         ->actingAs(user())
         ->patch('/cp/simple-commerce/coupons/random-id', [
-                'code' => 'fifty-friday',
-                'type' => 'percentage',
-                'value' => [
-                    'mode' => 'percentage',
-                    'value' => 110,
-                ],
-                'description' => 'You can actually get a 51% discount on Friday!',
-                'customer_eligibility' => 'all',
+            'code' => 'fifty-friday',
+            'type' => 'percentage',
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 110,
+            ],
+            'description' => 'You can actually get a 51% discount on Friday!',
+            'customer_eligibility' => 'all',
         ])
         ->assertSessionHasErrors();
 

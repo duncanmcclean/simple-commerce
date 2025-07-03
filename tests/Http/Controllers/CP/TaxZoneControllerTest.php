@@ -38,8 +38,8 @@ test('can store tax zone', function () {
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/tax/zones/create', [
-                'name' => 'Special Products',
-                'country' => ['DE'],
+            'name' => 'Special Products',
+            'country' => ['DE'],
         ])
         ->assertJsonStructure(['redirect'])
         ->assertSessionHasNoErrors();
@@ -55,8 +55,8 @@ test('cant store tax zone when there is already a tax zone covering the same cou
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/tax/zones/create', [
-                'name' => 'United States',
-                'country' => ['US'],
+            'name' => 'United States',
+            'country' => ['US'],
         ])
         ->assertSessionHasErrors();
 });
@@ -72,9 +72,9 @@ test('cant store tax zone when there is already a tax zone covering the same cou
     $this
         ->actingAs(user())
         ->post('/cp/simple-commerce/tax/zones/create', [
-                'name' => 'Alaska',
-                'country' => ['US'],
-                'region' => 'us-ak',
+            'name' => 'Alaska',
+            'country' => ['US'],
+            'region' => 'us-ak',
         ])
         ->assertSessionHasErrors();
 });
@@ -104,8 +104,8 @@ test('can update tax zone', function () {
     $this
         ->actingAs(user())
         ->patch('/cp/simple-commerce/tax/zones/united-kingdom/edit', [
-                'name' => 'The United Kingdom of Scotland, Northern Ireland, Wales and England',
-                'country' => ['GB'],
+            'name' => 'The United Kingdom of Scotland, Northern Ireland, Wales and England',
+            'country' => ['GB'],
         ])
         ->assertJson([]);
 });
@@ -128,8 +128,8 @@ test('cant update tax zone when there is already a tax zone covering the same co
     $this
         ->actingAs(user())
         ->patch('/cp/simple-commerce/tax/zones/united-states/edit', [
-                'name' => 'United States',
-                'country' => ['US'],
+            'name' => 'United States',
+            'country' => ['US'],
         ])
         ->assertSessionHasErrors();
 });
@@ -154,9 +154,9 @@ test('cant update tax zone when there is already a tax zone covering the same co
     $this
         ->actingAs(user())
         ->patch('/cp/simple-commerce/tax/zones/alaska/edit', [
-                'name' => 'Alaska',
-                'country' => ['US'],
-                'region' => 'us-ak',
+            'name' => 'Alaska',
+            'country' => ['US'],
+            'region' => 'us-ak',
         ])
         ->assertSessionHasErrors();
 });
