@@ -43,7 +43,7 @@
 
 <script>
 import axios from 'axios'
-import { Fieldtype } from 'statamic';
+import { FieldtypeMixin } from 'statamic';
 import { Select } from '@statamic/ui'
 
 export default {
@@ -53,7 +53,7 @@ export default {
         Select,
     },
 
-    mixins: [Fieldtype],
+    mixins: [FieldtypeMixin],
 
     props: ['meta'],
 

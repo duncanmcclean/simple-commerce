@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import { Fieldtype } from 'statamic';
+import { FieldtypeMixin } from 'statamic';
 
 export default {
     name: 'CouponValueFieldtype',
 
-    mixins: [Fieldtype],
+    mixins: [FieldtypeMixin],
 
     props: ['meta'],
 

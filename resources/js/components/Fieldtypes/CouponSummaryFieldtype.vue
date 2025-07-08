@@ -41,12 +41,12 @@
 </template>
 
 <script>
-import { Fieldtype } from 'statamic';
+import { FieldtypeMixin } from 'statamic';
 
 export default {
     name: 'CouponSummaryFieldtype',
 
-    mixins: [Fieldtype],
+    mixins: [FieldtypeMixin],
 
     inject: ['store'],
 

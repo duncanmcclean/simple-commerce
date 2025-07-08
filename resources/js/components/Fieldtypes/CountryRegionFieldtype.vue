@@ -12,11 +12,11 @@
 
 <script>
 import axios from 'axios'
-import { Fieldtype } from 'statamic'
+import { FieldtypeMixin } from 'statamic'
 import { Select } from '@statamic/ui'
 
 export default {
-    mixins: [Fieldtype],
+    mixins: [FieldtypeMixin],
 
     components: { Select },
 

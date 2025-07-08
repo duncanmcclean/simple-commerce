@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { Fieldtype } from 'statamic';
+import { FieldtypeMixin } from 'statamic';
 import { Input } from '@statamic/ui';
 
 export default {
@@ -17,6 +17,6 @@ export default {
 
     components: { Input },
 
-    mixins: [Fieldtype],
+    mixins: [FieldtypeMixin],
 }
 </script>

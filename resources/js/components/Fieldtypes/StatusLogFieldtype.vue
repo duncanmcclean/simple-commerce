@@ -26,7 +26,7 @@
 
 <script>
 import StatusLog from '../StatusLog/StatusLog.vue';
-import { Fieldtype } from 'statamic';
+import { FieldtypeMixin } from 'statamic';
 import { Button } from '@statamic/ui'
 
 export default {
@@ -34,7 +34,7 @@ export default {
 
     components: { Button, StatusLog },
 
-    mixins: [Fieldtype],
+    mixins: [FieldtypeMixin],
 
     inject: ['store'],
 

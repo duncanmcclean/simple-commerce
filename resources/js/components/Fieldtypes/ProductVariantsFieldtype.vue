@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { Fieldtype, ValidatesFieldConditions } from 'statamic';
+import { FieldtypeMixin, ValidatesFieldConditions } from 'statamic';
 import Fields from '@statamic/components/ui/Publish/Fields.vue';
 import FieldsProvider from '@statamic/components/ui/Publish/FieldsProvider.vue';
 import PublishContainer from '@statamic/components/ui/Publish/Container.vue';
@@ -79,7 +79,7 @@ import { Button, Icon, Tooltip } from '@statamic/ui'
 
 export default {
     mixins: [
-        Fieldtype,
+        FieldtypeMixin,
         ValidatesFieldConditions,
     ],
 

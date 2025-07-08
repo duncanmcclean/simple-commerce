@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import { Fieldtype } from 'statamic';
+import { FieldtypeMixin } from 'statamic';
 import { Badge } from '@statamic/ui'
 
 export default {
     name: 'payment-status-fieldtype',
 
-    mixins: [Fieldtype],
+    mixins: [FieldtypeMixin],
 
     components: { Badge },
 

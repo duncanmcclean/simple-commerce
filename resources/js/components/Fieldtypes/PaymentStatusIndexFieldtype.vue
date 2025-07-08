@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import { IndexFieldtype } from 'statamic';
+import { IndexFieldtypeMixin } from 'statamic';
 import { Badge } from '@statamic/ui'
 
 export default {
-    mixins: [IndexFieldtype],
+    mixins: [IndexFieldtypeMixin],
 
     components: { Badge },
 
