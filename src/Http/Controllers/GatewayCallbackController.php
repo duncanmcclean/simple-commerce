@@ -18,11 +18,7 @@ class GatewayCallbackController extends BaseActionController
 
     public function index(Request $request, $gateway)
     {
-        if ($request->has('_order_id')) {
-            $order = Order::find($request->get('_order_id'));
-        } else {
-            $order = $this->getCart();
-        }
+        $order = $this->getOrder($request);
 
         $gatewayName = $gateway;
 
@@ -40,11 +36,16 @@ class GatewayCallbackController extends BaseActionController
             $callbackSuccess = $order->paymentStatus() === PaymentStatus::Paid;
         }
 
+        // Order may have been updated inside Gateway::callback, we fetch it again to have the latest state
+        $order = $this->getOrder($request);
+
         if (! $callbackSuccess) {
             return $this->withErrors($request, "Order [{$order->get('title')}] has not been marked as paid yet.");
         }
 
-        $order->status(OrderStatus::Placed)->save();
+        if ($order->status() !== OrderStatus::Placed) {
+            $order->status(OrderStatus::Placed)->save();
+        }
 
         $this->forgetCart();
 
@@ -53,5 +54,12 @@ class GatewayCallbackController extends BaseActionController
             'cart' => $order->toAugmentedArray(),
             'is_checkout_request' => true,
         ]);
+    }
+
+    protected function getOrder(Request $request)
+    {
+        return $request->has('_order_id')
+          ? Order::find($request->get('_order_id'))
+          : $this->getCart();
     }
 }
