@@ -38,7 +38,6 @@ class GatewayCallbackController extends BaseActionController
             $callbackSuccess = $order->paymentStatus() === PaymentStatus::Paid;
         }
 
-        // Order may have been updated inside Gateway::callback, we fetch it again to have the latest state
         $order->fresh();
 
         if (! $callbackSuccess) {
