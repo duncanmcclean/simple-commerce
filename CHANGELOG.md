@@ -1,5 +1,13 @@
 # Changelog
 
+## v7.8.6 (2025-07-15)
+
+### What's fixed
+* Make it possible to update orders from `Gateway::callback()` #1237 #1240 by @RafaelKr
+* `redirectUrl` and `errorRedirectUrl` are now initialized before `Gateway::prepare()` is called #1238 #1239 by @RafaelKr
+
+
+
 ## v7.8.5 (2025-05-31)
 
 ### What's fixed
