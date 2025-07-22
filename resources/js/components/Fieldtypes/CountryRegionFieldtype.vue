@@ -4,6 +4,8 @@
             class="w-full"
             :options="regions"
             :model-value="selectedRegion"
+            option-value="id"
+            option-label="name"
             @update:modelValue="regionSelected"
         />
     </div>
@@ -30,23 +32,17 @@ export default {
         }
     },
 
-    inject: ['store'],
-
     mounted() {
-        if (this.store.values.country) {
-            this.fetchRegions(this.store.values.country);
+        if (this.publishContainer.values.country) {
+            this.fetchRegions(this.publishContainer.values.country);
         }
-
-        this.store.$subscribe((mutation, state) => {
-            if (mutation.events?.key === 'country') {
-                if (mutation.events.newValue !== mutations.events.oldValue) {
-                    this.fetchRegions(mutation.events.newValue);
-                }
-            }
-        });
     },
 
     computed: {
+        country() {
+            return this.publishContainer.values.country;
+        },
+
         selectedRegion() {
             return this.value?.id;
         },
@@ -54,7 +50,6 @@ export default {
 
     methods: {
         fetchRegions(country) {
-            console.log('getting regions')
             axios
                 .get(
                     cp_url(
@@ -69,8 +64,14 @@ export default {
                 })
         },
 
-        regionSelected(region) {
-            this.update(region.id);
+        regionSelected(regionId) {
+            this.update(this.regions.filter(region => region.id === regionId)[0]);
+        },
+    },
+
+    watch: {
+        country(country) {
+            this.fetchRegions(country);
         },
     },
 }

@@ -29,8 +29,6 @@ export default {
 
     props: ['meta'],
 
-    inject: ['store'],
-
     data() {
         return {
             mode: null,
@@ -42,7 +40,7 @@ export default {
         // Statamic won't show error messages, unless they're for the top-level field.
         // So, we'll show the error message ourselves.
         errors() {
-            let errors = this.store.errors;
+            let errors = this.publishContainer.errors;
 
             return errors[`value.mode`] || errors[`value.value`];
         },
@@ -51,7 +49,7 @@ export default {
     mounted() {
         this.hideValueField();
 
-        this.mode = this.store.values.type;
+        this.mode = this.publishContainer.values.type;
         this.couponValue = this.value;
 
         if (this.mode !== null) {
@@ -59,7 +57,7 @@ export default {
         }
 
         this.$watch(
-            () => this.store.values.type,
+            () => this.publishContainer.values.type,
             (type) => {
                 this.mode = type;
                 this.couponValue = null;

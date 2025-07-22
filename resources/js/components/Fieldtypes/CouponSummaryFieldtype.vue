@@ -48,11 +48,9 @@ export default {
 
     mixins: [FieldtypeMixin],
 
-    inject: ['store'],
-
     computed: {
         values() {
-            return this.store.values
+            return this.publishContainer.values
         },
     },
 

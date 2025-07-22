@@ -36,8 +36,6 @@ export default {
 
     mixins: [FieldtypeMixin],
 
-    inject: ['store'],
-
     data() {
         return {
             showStatusLog: false,
@@ -46,19 +44,19 @@ export default {
 
     computed: {
         isCreating() {
-            return this.store.values?.id === null;
+            return this.publishContainer.values?.id === null;
         },
 
         orderId() {
-            return this.store.values.id;
+            return this.publishContainer.values.id;
         },
 
         currentOrderStatus() {
-            return this.store.values.order_status;
+            return this.publishContainer.values.order_status;
         },
 
         currentPaymentStatus() {
-            return this.store.values.payment_status;
+            return this.publishContainer.values.payment_status;
         },
     },
 }
