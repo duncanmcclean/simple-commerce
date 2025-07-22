@@ -1,52 +1,66 @@
 <template>
-    <Widget :title :icon>
-        <data-list v-if="!initializing && items.length" :rows="items" :columns="cols" :sort="false" class="w-full">
-            <div v-if="initializing" class="loading">
-                <loading-graphic />
-            </div>
-
-            <data-list-table
-                v-else
-                :loading="loading"
-                unstyled
-                class="[&_td]:px-0.5 [&_td]:py-0.75 [&_td]:text-sm [&_thead]:hidden"
-            >
-                <template #cell-title="{ row: entry }">
-                    <a
-                        :href="entry.edit_url"
-                        class="line-clamp-1 overflow-hidden text-ellipsis"
-                    >
-                        {{ entry.title }}
-                    </a>
-                </template>
-                <template #cell-stock="{ row: entry }">
-                    <div
-                        class="text-end font-mono text-xs whitespace-nowrap text-gray-500 antialiased"
-                        v-html="`${entry.stock} remaining`"
-                    />
-                </template>
-            </data-list-table>
-        </data-list>
-
-        <p v-if="!initializing && !items.length" class="p-3 text-center text-sm text-gray-600">
-            {{ __('No products are low in stock at the moment') }}
-        </p>
-
-        <template #actions>
-            <slot name="actions" />
+    <Listing
+        :items
+        :columns
+        :show-pagination-totals="false"
+        :show-pagination-page-links="false"
+        :show-pagination-per-page-selector="false"
+    >
+        <template #initializing>
+            <Widget v-bind="widgetProps"><Icon name="loading" /></Widget>
         </template>
-    </Widget>
+
+        <template #default="{ items, loading }">
+            <Widget v-bind="widgetProps">
+                <ui-description v-if="!items.length" class="flex-1 flex items-center justify-center">
+                    {{ __('No products are low in stock at the moment') }}
+                </ui-description>
+                <div class="px-4 py-3">
+                    <table class="w-full [&_td]:p-0.5 [&_td]:text-sm " :class="{ 'opacity-50': loading }">
+                        <TableHead sr-only />
+                        <TableBody>
+                            <template #cell-title="{ row: entry }">
+                                <div class="flex items-center gap-2">
+                                    <a :href="entry.edit_url" class="line-clamp-1 overflow-hidden text-ellipsis">{{
+                                            entry.title
+                                        }}</a>
+                                </div>
+                            </template>
+                            <template #cell-stock="{ row: entry }">
+                                <ui-description class="flex justify-end">
+                                    {{ entry.stock }} remaining
+                                </ui-description>
+                            </template>
+                        </TableBody>
+                    </table>
+                </div>
+                <template #actions>
+                    <Pagination />
+                    <slot name="actions" />
+                </template>
+            </Widget>
+        </template>
+    </Listing>
 </template>
 
 <script>
-import Listing from '@statamic/components/Listing.vue';
-import { Widget } from '@statamic/ui';
+import {
+    Listing,
+    Widget,
+    Icon,
+    ListingTableHead as TableHead,
+    ListingTableBody as TableBody,
+    ListingPagination as Pagination
+} from '@statamic/ui';
 
 export default {
-    mixins: [Listing],
-
     components: {
+        Listing,
         Widget,
+        Icon,
+        TableHead,
+        TableBody,
+        Pagination
     },
 
     props: {
@@ -57,14 +71,21 @@ export default {
 
     data() {
         return {
-            cols: [
+            items: this.initialItems,
+            columns: [
                 { label: 'Title', field: 'title', visible: true },
                 { label: 'Stock', field: 'stock', visible: true },
             ],
-            items: this.initialItems,
-            initializing: false,
-            listingKey: 'low_stock_products',
         };
+    },
+
+    computed: {
+        widgetProps() {
+            return {
+                title: this.title,
+                icon: this.icon
+            };
+        },
     },
 };
 </script>

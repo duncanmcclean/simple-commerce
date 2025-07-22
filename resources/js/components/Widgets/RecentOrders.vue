@@ -1,56 +1,61 @@
 <template>
-    <Widget :title :icon>
-        <data-list v-if="!initializing && items.length" :rows="items" :columns="cols" :sort="false" class="w-full">
-            <div v-if="initializing" class="loading">
-                <loading-graphic />
-            </div>
-
-            <data-list-table
-                v-else
-                :loading="loading"
-                unstyled
-                class="[&_td]:px-0.5 [&_td]:py-0.75 [&_td]:text-sm [&_thead]:hidden"
-            >
-                <template #cell-order_number="{ row: order }">
-                    <div class="flex items-center gap-2">
-                        <a
-                            :href="order.edit_url"
-                            class="line-clamp-1 overflow-hidden text-ellipsis"
-                        >
-                            #{{ order.order_number }}
-                        </a>
-                        <span class="text-xs text-gray-500">({{ order.grand_total }})</span>
-                    </div>
-                </template>
-                <template #cell-date="{ row: order }">
-                    <div
-                        class="text-end font-mono text-xs whitespace-nowrap text-gray-500 antialiased"
-                        v-html="formatDate(order.date)"
-                    />
-                </template>
-            </data-list-table>
-        </data-list>
-
-        <p v-if="!initializing && !items.length" class="p-3 text-center text-sm text-gray-600">
-            {{ __('No recent orders') }}
-        </p>
-
-        <template #actions>
-            <slot name="actions" />
+    <Listing
+        :items
+        :columns
+        :show-pagination-totals="false"
+        :show-pagination-page-links="false"
+        :show-pagination-per-page-selector="false"
+    >
+        <template #initializing>
+            <Widget v-bind="widgetProps"><Icon name="loading" /></Widget>
         </template>
-    </Widget>
+
+        <template #default="{ items, loading }">
+            <Widget v-bind="widgetProps">
+                <ui-description v-if="!items.length" class="flex-1 flex items-center justify-center">
+                    {{ __('No recent orders') }}
+                </ui-description>
+                <div class="px-4 py-3">
+                    <table class="w-full [&_td]:p-0.5 [&_td]:text-sm " :class="{ 'opacity-50': loading }">
+                        <TableHead sr-only />
+                        <TableBody>
+                            <template #cell-order_number="{ row: order }">
+                                <div class="flex items-center gap-2">
+                                    <a :href="order.edit_url" class="line-clamp-1 overflow-hidden text-ellipsis">
+                                        #{{ order.order_number }}
+                                    </a>
+                                </div>
+                            </template>
+                        </TableBody>
+                    </table>
+                </div>
+                <template #actions>
+                    <Pagination />
+                    <slot name="actions" />
+                </template>
+            </Widget>
+        </template>
+    </Listing>
 </template>
 
 <script>
-import Listing from '@statamic/components/Listing.vue';
-import { DateFormatter } from 'statamic';
-import { Widget } from '@statamic/ui';
+import {
+    Listing,
+    Widget,
+    Icon,
+    ListingTableHead as TableHead,
+    ListingTableBody as TableBody,
+    ListingPagination as Pagination
+} from '@statamic/ui';
 
 export default {
-    mixins: [Listing],
-
     components: {
+        Listing,
         Widget,
+        Icon,
+        TableHead,
+        TableBody,
+        Pagination
     },
 
     props: {
@@ -61,19 +66,21 @@ export default {
 
     data() {
         return {
-            cols: [
-                { label: 'Order Number', field: 'order_number', visible: true },
-                { label: 'Date', field: 'date', visible: true },
-            ],
             items: this.initialItems,
-            initializing: false,
-            listingKey: 'recent_orders',
+            columns: [
+                { label: 'Order Number', field: 'order_number', visible: true },
+                { label: 'Grand Total', fieldtype: 'money', field: 'grand_total', visible: true },
+                { label: 'Date', fieldtype: 'date', field: 'date', visible: true },
+            ],
         };
     },
 
-    methods: {
-        formatDate(value) {
-            return DateFormatter.format(value, { relative: 'hour' }).toString();
+    computed: {
+        widgetProps() {
+            return {
+                title: this.title,
+                icon: this.icon
+            };
         },
     },
 };
