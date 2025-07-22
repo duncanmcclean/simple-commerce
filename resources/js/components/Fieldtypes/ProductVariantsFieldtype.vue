@@ -1,9 +1,8 @@
 <script setup>
 import { Fieldtype } from 'statamic';
-import { Icon, Button, PublishContainer, FieldsProvider, PublishFields as Fields } from '@statamic/ui';
+import { Panel, PanelHeader, Heading, Card, Icon, Button, PublishContainer, FieldsProvider, PublishFields as Fields, injectPublishContext } from '@statamic/ui';
 import { computed, ref, watch } from 'vue';
-import { injectContainerContext } from '@statamic/components/ui/Publish/Container.vue';
-const { values, errors } = injectContainerContext()
+const { values, errors } = injectPublishContext()
 
 const emit = defineEmits(Fieldtype.emits);
 const props = defineProps(Fieldtype.props);
@@ -191,44 +190,42 @@ watch(
 <template>
     <div class="mt-2">
         <!-- Variants -->
-        <div class="mb-10 flex flex-col gap-4">
-            <div
-                v-for="(variant, index) in variants"
-                :key="index"
-                class="dark:border-dark-900 overflow-hidden rounded-lg border shadow-sm"
-            >
-                <header class="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-black/25">
-                    <span class="text-sm">{{ variant.name }}</span>
-                    <button type="button" class="flex items-center cursor-pointer" aria-label="Delete variant" @click="deletingVariant = index">
-                        <Icon name="trash" />
-                    </button>
-                </header>
+        <div class="mb-10 flex flex-col">
+            <Panel v-for="(variant, index) in variants" :key="index">
+                <PanelHeader>
+                    <div class="flex items-center justify-between">
+                        <Heading v-text="variant.name" />
+                        <Button variant="ghost" size="sm" icon="trash" @click="deletingVariant = index" />
+                    </div>
+                </PanelHeader>
 
-                <confirmation-modal
-                    v-if="deletingVariant === index"
-                    :ref="`variant-deleter-${index}`"
-                    :title="__('Delete Variant')"
-                    :danger="true"
-                    @cancel="deletingVariant = null"
-                    @confirm="deleteVariant(index)"
-                >
-                    <p>{{ __('Are you sure you want to delete this variant?') }}</p>
-                </confirmation-modal>
+                <Card>
+                    <confirmation-modal
+                        v-if="deletingVariant === index"
+                        :ref="`variant-deleter-${index}`"
+                        :title="__('Delete Variant')"
+                        :danger="true"
+                        @cancel="deletingVariant = null"
+                        @confirm="deleteVariant(index)"
+                    >
+                        <p>{{ __('Are you sure you want to delete this variant?') }}</p>
+                    </confirmation-modal>
 
-                <PublishContainer
-                    :name="`product-variant-${index}`"
-                    :blueprint="meta.variants.fields"
-                    :model-value="variant"
-                    :meta="meta.variants.existing[index]"
-                    :extra-values="values"
-                    :errors="variantErrors(index)"
-                    @update:model-value="variantUpdated(index, $event)"
-                >
-                    <FieldsProvider :fields="meta.variants.fields">
-                        <Fields class="p-4" />
-                    </FieldsProvider>
-                </PublishContainer>
-            </div>
+                    <PublishContainer
+                        :name="`product-variant-${index}`"
+                        :blueprint="meta.variants.fields"
+                        :model-value="variant"
+                        :meta="meta.variants.existing[index]"
+                        :extra-values="values"
+                        :errors="variantErrors(index)"
+                        @update:model-value="variantUpdated(index, $event)"
+                    >
+                        <FieldsProvider :fields="meta.variants.fields">
+                            <Fields />
+                        </FieldsProvider>
+                    </PublishContainer>
+                </Card>
+            </Panel>
 
             <div>
                 <Button size="sm" :text="__('Add Variant')" @click="addVariant" />
@@ -237,31 +234,27 @@ watch(
 
         <!-- Variant Options -->
         <div class="product-variant-options grid gap-4" :class="{ 'lg:grid-cols-2': config.columns === 2 }">
-            <div
-                v-for="(option, index) in options"
-                :key="option.key"
-                class="dark:border-dark-900 rounded-lg border shadow-sm"
-            >
-                <header class="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-black/25">
-                    <span class="text-sm">{{ option.variant }}</span>
-                </header>
+            <Panel v-for="(option, index) in options" :key="option.key">
+                <PanelHeader :title="option.variant" />
 
-                <PublishContainer
-                    v-if="meta.options.existing[index]"
-                    :name="`product-variant-option-${option.key}`"
-                    :key="option.key"
-                    :blueprint="meta.options.fields"
-                    :model-value="option"
-                    :meta="meta.options.existing[index]"
-                    :extra-values="values"
-                    :errors="optionErrors(index)"
-                    @update:model-value="optionUpdated(index, $event)"
-                >
-                    <FieldsProvider :fields="meta.options.fields">
-                        <Fields class="p-4" />
-                    </FieldsProvider>
-                </PublishContainer>
-            </div>
+                <Card>
+                    <PublishContainer
+                        v-if="meta.options.existing[index]"
+                        :name="`product-variant-option-${option.key}`"
+                        :key="option.key"
+                        :blueprint="meta.options.fields"
+                        :model-value="option"
+                        :meta="meta.options.existing[index]"
+                        :extra-values="values"
+                        :errors="optionErrors(index)"
+                        @update:model-value="optionUpdated(index, $event)"
+                    >
+                        <FieldsProvider :fields="meta.options.fields">
+                            <Fields />
+                        </FieldsProvider>
+                    </PublishContainer>
+                </Card>
+            </Panel>
         </div>
     </div>
 </template>
