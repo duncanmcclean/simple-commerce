@@ -1,17 +1,15 @@
 <script setup>
 import { Fieldtype } from 'statamic';
-import Fields from '@statamic/components/ui/Publish/Fields.vue';
-import FieldsProvider from '@statamic/components/ui/Publish/FieldsProvider.vue';
-import PublishContainer from '@statamic/components/ui/Publish/Container.vue';
-import { Button } from '@statamic/ui';
-import { computed, inject, ref, watch } from 'vue';
+import { Icon, Button, PublishContainer, FieldsProvider, PublishFields as Fields } from '@statamic/ui';
+import { computed, ref, watch } from 'vue';
+import { injectContainerContext } from '@statamic/components/ui/Publish/Container.vue';
+const { values, errors } = injectContainerContext()
 
 const emit = defineEmits(Fieldtype.emits);
 const props = defineProps(Fieldtype.props);
 const { expose, update, updateMeta } = Fieldtype.use(emit, props);
 defineExpose(expose);
 
-const store = inject('store');
 const deletingVariant = ref(null);
 const variants = computed(() => props.value.variants || []);
 const options = computed(() => props.value.options || []);
@@ -46,11 +44,37 @@ function deleteVariant(index) {
         variants: props.value.variants.filter((_, i) => i !== index),
         options: props.value.options,
     });
+
+    deletingVariant.value = null;
 }
 
-function variantUpdated(index, variant) {
+function variantErrors(index) {
+    const prefix = `${props.handle}.variants.${index}.`;
+
+    return Object.keys(errors.value ?? [])
+        .filter((handle) => handle.startsWith(prefix))
+        .reduce((acc, handle) => {
+            const newKey = handle.replace(prefix, '');
+            acc[newKey] = errors.value[handle];
+            return acc;
+        }, {});
+}
+
+function optionErrors(index) {
+    const prefix = `${props.handle}.options.${index}.`;
+
+    return Object.keys(errors.value ?? [])
+        .filter((handle) => handle.startsWith(prefix))
+        .reduce((acc, handle) => {
+            const newKey = handle.replace(prefix, '');
+            acc[newKey] = errors.value[handle];
+            return acc;
+        }, {});
+}
+
+function variantUpdated(index, values) {
     let variants = [...props.value.variants];
-    variants[index] = variant;
+    variants[index] = values;
 
     update({
         variants: variants,
@@ -58,9 +82,9 @@ function variantUpdated(index, variant) {
     });
 }
 
-function optionUpdated(index, option) {
+function optionUpdated(index, values) {
     let options = [...props.value.options];
-    options[index] = option;
+    options[index] = values;
 
     update({
         variants: props.value.variants,
@@ -68,59 +92,96 @@ function optionUpdated(index, option) {
     });
 }
 
-function getErrorsForVariant(index) {
-    return Object.entries(store.errors)
-        .filter(([key]) => key.startsWith(`${props.handle}.variants.${index}.`))
-        .reduce((acc, [key, error]) => {
-            const newKey = key.replace(`${props.handle}.variants.${index}.`, '');
-            acc[newKey] = error;
-            return acc;
-        }, {});
-}
-
-function getErrorsForOption(index) {
-    return Object.entries(store.errors)
-        .filter(([key]) => key.startsWith(`${props.handle}.options.${index}.`))
-        .reduce((acc, [key, error]) => {
-            const newKey = key.replace(`${props.handle}.options.${index}.`, '');
-            acc[newKey] = error;
-            return acc;
-        }, {});
-}
-
 watch(
     variants,
     () => {
+        let values = [];
+        let meta = [];
+
+        let originalOptions = options.value;
+
+        cartesian.value.forEach((keys, index) => {
+            if (typeof keys === 'string') keys = [keys];
+            let key = typeof keys === 'string' ? keys : keys.join('_');
+
+            let existingOption = originalOptions.find((option) => option.key === key);
+
+            // When the option already exists, use its values and meta.
+            if (existingOption) {
+                let existingOptionIndex = originalOptions.findIndex((option) => option.key === key);
+
+                values.push(existingOption);
+                meta.push(props.meta.options.existing[existingOptionIndex]);
+
+                return;
+            }
+
+            // Attempt to find existing options by progressively removing parts of the key.
+            // This handles both adding new variants and removing variants.
+            let keyParts = key.split('_');
+            let foundOption = null;
+            let foundOptionIndex = -1;
+
+            // Try all possible shorter keys (removing parts from the end)
+            for (let i = keyParts.length - 1; i >= 0; i--) {
+                let possibleKey = keyParts.slice(0, i).join('_');
+                if (possibleKey === '') continue;
+
+                foundOption = originalOptions.find(option => option.key === possibleKey);
+
+                if (foundOption) {
+                    foundOptionIndex = originalOptions.findIndex(option => option.key === possibleKey);
+                    break;
+                }
+            }
+
+            // Also check for options that start with our key (for when variants are removed)
+            if (!foundOption) {
+                foundOption = originalOptions.find(option => option.key.startsWith(key + '_'));
+
+                if (foundOption) {
+                    foundOptionIndex = originalOptions.findIndex(option => option.key === foundOption.key);
+                }
+            }
+
+            if (foundOption) {
+                values.push({
+                    ...foundOption,
+                    key: key,
+                    variant: keys.join(', '),
+                });
+
+                meta.push(props.meta.options.existing[foundOptionIndex]);
+
+                return;
+            }
+
+            // Otherwise, create a new option using default values.
+            values.push({
+                ...props.meta.options.defaults,
+                price: 0,
+                key: key,
+                variant: keys.join(', '),
+            });
+
+            meta.push(props.meta.options.new);
+        });
+
+        if (JSON.stringify(values) === JSON.stringify(props.value.options)) {
+            return;
+        }
+
         update({
             variants: props.value.variants,
-            options: cartesian.value.map((item, index) => {
-                let key = typeof item === 'string' ? item : item.join('_');
-                let variantName = typeof item === 'string' ? item : item.join(', ');
+            options: values,
+        });
 
-                let existingData = props.value.options.filter((option) => {
-                    return option.key === key;
-                })[0];
-
-                if (existingData === undefined) {
-                    existingData = {
-                        price: 0,
-                    };
-
-                    Object.entries(props.meta.options.defaults).forEach(([key, value]) => {
-                        existingData[key] = value;
-                    });
-
-                    let meta = props.meta;
-                    meta['options']['existing'][index] = props.meta.options.new;
-                    updateMeta(meta);
-                }
-
-                return {
-                    ...existingData,
-                    key: key,
-                    variant: variantName,
-                };
-            }),
+        updateMeta({
+            ...props.meta,
+            options: {
+                ...props.meta.options,
+                existing: meta,
+            },
         });
     },
     { deep: true }
@@ -128,7 +189,7 @@ watch(
 </script>
 
 <template>
-    <div>
+    <div class="mt-2">
         <!-- Variants -->
         <div class="mb-10 flex flex-col gap-4">
             <div
@@ -138,37 +199,8 @@ watch(
             >
                 <header class="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-black/25">
                     <span class="text-sm">{{ variant.name }}</span>
-                    <button type="button" class="flex items-center" @click="deletingVariant = index">
-                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M1.5 4.01121c3.70225 -0.48695 7.29775 -0.48695 11 0"
-                                stroke-width="1"
-                            />
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M2.48113 3.89331c-0.03491 1.86889 -0.08342 5.02765 0.49568 7.61009 0.22419 0.9997 1.07518 1.7149 2.08968 1.8579 0.65577 0.0925 1.25364 0.1387 1.93361 0.1387 0.68 0 1.27796 -0.0462 1.93382 -0.1387 1.0145 -0.143 1.86548 -0.8582 2.08968 -1.8579 0.5791 -2.58241 0.5306 -5.74115 0.4957 -7.61005 -3.03257 -0.32979 -6.00563 -0.32981 -9.03817 -0.00004Z"
-                                stroke-width="1"
-                            />
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M4.41786 3.70312c-0.00772 -0.10103 -0.01161 -0.50235 -0.01161 -0.60949C4.40625 1.43371 5.33996 0.5 6.99988 0.5s2.59363 0.93371 2.59363 2.59363c0 0.10714 -0.00389 0.50846 -0.01162 0.60949"
-                                stroke-width="1"
-                            />
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M5.3476 6.40408c-0.05908 1.0462 -0.00048 2.90177 0.18132 4.24122m2.94168 0c0.18175 -1.33949 0.24026 -3.19505 0.18117 -4.24125"
-                                stroke-width="1"
-                            />
-                        </svg>
+                    <button type="button" class="flex items-center cursor-pointer" aria-label="Delete variant" @click="deletingVariant = index">
+                        <Icon name="trash" />
                     </button>
                 </header>
 
@@ -176,6 +208,7 @@ watch(
                     v-if="deletingVariant === index"
                     :ref="`variant-deleter-${index}`"
                     :title="__('Delete Variant')"
+                    :danger="true"
                     @cancel="deletingVariant = null"
                     @confirm="deleteVariant(index)"
                 >
@@ -187,7 +220,8 @@ watch(
                     :blueprint="meta.variants.fields"
                     :model-value="variant"
                     :meta="meta.variants.existing[index]"
-                    :errors="getErrorsForVariant(index)"
+                    :extra-values="values"
+                    :errors="variantErrors(index)"
                     @update:model-value="variantUpdated(index, $event)"
                 >
                     <FieldsProvider :fields="meta.variants.fields">
@@ -197,12 +231,12 @@ watch(
             </div>
 
             <div>
-                <Button :text="__('Add Variant')" @click="addVariant" />
+                <Button size="sm" :text="__('Add Variant')" @click="addVariant" />
             </div>
         </div>
 
         <!-- Variant Options -->
-        <div class="grid gap-4" :class="{ 'lg:grid-cols-2': config.columns === 2 }">
+        <div class="product-variant-options grid gap-4" :class="{ 'lg:grid-cols-2': config.columns === 2 }">
             <div
                 v-for="(option, index) in options"
                 :key="option.key"
@@ -214,14 +248,16 @@ watch(
 
                 <PublishContainer
                     v-if="meta.options.existing[index]"
-                    :name="`product-variant-option-${index}`"
+                    :name="`product-variant-option-${option.key}`"
+                    :key="option.key"
                     :blueprint="meta.options.fields"
-                    :model-value="store.values"
+                    :model-value="option"
                     :meta="meta.options.existing[index]"
-                    :errors="getErrorsForOption(index)"
+                    :extra-values="values"
+                    :errors="optionErrors(index)"
                     @update:model-value="optionUpdated(index, $event)"
                 >
-                    <FieldsProvider :fields="meta.options.fields" :field-path-prefix="`${handle}.options.${index}`">
+                    <FieldsProvider :fields="meta.options.fields">
                         <Fields class="p-4" />
                     </FieldsProvider>
                 </PublishContainer>
