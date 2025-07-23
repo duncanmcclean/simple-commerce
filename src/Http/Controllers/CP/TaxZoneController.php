@@ -35,7 +35,7 @@ class TaxZoneController
         $values = PublishForm::make($this->blueprint())->submit($request->all());
 
         $request->validate([
-            'values.country.0' => [
+            'country.0' => [
                 'required',
                 new CountryExists,
                 function ($attribute, $value, $fail) use ($request) {
@@ -53,7 +53,7 @@ class TaxZoneController
                     }
                 },
             ],
-            'values.region' => [
+            'region' => [
                 'nullable',
                 new RegionExists,
                 function ($attribute, $value, $fail) use ($request) {
@@ -109,7 +109,7 @@ class TaxZoneController
         $values = PublishForm::make($this->blueprint())->submit($request->all());
 
         $request->validate([
-            'values.country.0' => [
+            'country.0' => [
                 'required',
                 new CountryExists,
                 function ($attribute, $value, $fail) use ($request) {
@@ -130,7 +130,7 @@ class TaxZoneController
                     }
                 },
             ],
-            'values.region' => [
+            'region' => [
                 'nullable',
                 new RegionExists,
                 function ($attribute, $value, $fail) use ($request) {
