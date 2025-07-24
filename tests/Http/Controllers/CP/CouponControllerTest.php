@@ -60,7 +60,7 @@ test('can store coupon with expiry date', function () {
             ],
             'description' => '30% discount on a Thursday!',
             'minimum_cart_value' => '65.00',
-            'expires_at' => '2024-01-01T00:00:00Z',
+            'expires_at' => '2024-01-01T00:00:00.000Z',
             'customer_eligibility' => 'all',
         ])
         ->assertJsonStructure([
@@ -203,7 +203,7 @@ test('can update coupon with expiry date', function () {
             ],
             'description' => 'You can actually get a 51% discount on Friday!',
             'minimum_cart_value' => '76.00',
-            'expires_at' => '2024-01-01T00:00:00Z',
+            'expires_at' => '2024-01-01T00:00:00.000Z',
             'customer_eligibility' => 'all',
         ])
         ->assertJson([]);
