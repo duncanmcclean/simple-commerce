@@ -11,6 +11,7 @@
         "marked": "^4.0.12",
         "underscore": "^1.13.2",
         "uniqid": "^5.4.0",
+        "vite-svg-loader": "^5.1.0",
         "vue-chartjs": "^5.3.2"
     },
     "devDependencies": {
