@@ -67,7 +67,7 @@ class ShippingMethodFieldtype extends Relationship
         }
 
         return [
-            'id' => $shippingMethod['class'],
+            'id' => $shippingMethod['handle'],
             'title' => $shippingMethod['name'],
         ];
     }
