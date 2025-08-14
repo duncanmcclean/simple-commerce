@@ -1,12 +1,12 @@
 <template>
     <div>
-        <ul class="list-disc ltr:pl-6">
+        <ul class="ltr:pl-6" style="list-style: disc">
             <li v-if="values.type === 'fixed' && values.value && values.value.value !== null" class="text-sm mb-1.5">
-                <span class="font-semibold" v-text="formatCurrency(values.value.value.values)"></span> off entire order
+                <span class="font-semibold" v-text="formatCurrency(values.value.value)"></span> off entire order
             </li>
 
             <li v-if="values.type === 'percentage' && values.value && values.value.value !== null" class="text-sm mb-1.5">
-                <span class="font-semibold" v-text="`${values.value.value.value}%`"></span> off entire order
+                <span class="font-semibold" v-text="`${values.value.value}%`"></span> off entire order
             </li>
 
             <li v-if="values.minimum_cart_value" class="text-sm mb-1.5">
