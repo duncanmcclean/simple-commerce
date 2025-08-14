@@ -2,15 +2,17 @@
     <div>
         <money-fieldtype
             v-if="mode === 'fixed'"
-            v-model:value="couponValue"
+            :value="couponValue"
             :meta="meta.meta.money"
             :config="meta.config.money"
+            @update:value="couponValueUpdated"
         />
         <integer-fieldtype
             v-else-if="mode === 'percentage'"
-            v-model:value="couponValue"
+            :value="couponValue"
             :meta="meta.meta.integer"
             :config="meta.config.integer"
+            @update:value="couponValueUpdated"
         />
 
         <div v-if="errors">
@@ -27,16 +29,15 @@ export default {
 
     mixins: [FieldtypeMixin],
 
-    props: ['meta'],
-
-    data() {
-        return {
-            mode: null,
-            couponValue: null,
-        };
-    },
-
     computed: {
+        mode() {
+            return this.publishContainer.values.type;
+        },
+
+        couponValue() {
+            return this.value?.value;
+        },
+
         // Statamic won't show error messages, unless they're for the top-level field.
         // So, we'll show the error message ourselves.
         errors() {
@@ -44,29 +45,6 @@ export default {
 
             return errors[`value.mode`] || errors[`value.value`];
         },
-    },
-
-    mounted() {
-        this.hideValueField();
-
-        this.mode = this.publishContainer.values.type;
-        this.couponValue = this.value;
-
-        if (this.mode !== null) {
-            this.showValueField();
-        }
-
-        this.$watch(
-            () => this.publishContainer.values.type,
-            (type) => {
-                this.mode = type;
-                this.couponValue = null;
-
-                if (this.mode !== null) {
-                    this.showValueField();
-                }
-            }
-        )
     },
 
     methods: {
@@ -77,16 +55,20 @@ export default {
         showValueField() {
             document.querySelectorAll('.coupon-value-fieldtype').forEach((el) => el.classList.remove('hidden'))
         },
+
+        couponValueUpdated(value) {
+            this.update({
+                mode: this.mode,
+                value: value,
+            });
+        },
     },
 
     watch: {
-        couponValue(couponValue) {
-            let value = {
-                mode: this.mode,
-                value: couponValue,
-            }
+        mode(mode) {
+            this.update({ mode, value: null });
 
-            this.update(value);
+            if (mode !== null) this.showValueField();
         },
     },
 }
