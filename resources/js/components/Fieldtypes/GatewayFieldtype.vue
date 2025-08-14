@@ -1,5 +1,5 @@
 <template>
-    <div class="relationship-input @container">
+    <div class="relationship-input @container w-full h-full">
         <p v-if="value == null" class="text-sm py-1">{{ __('No Gateway') }}</p>
 
         <div
@@ -7,7 +7,7 @@
             class="grid grid-cols-1 gap-2 outline-hidden @xl:grid-cols-2"
             tabindex="0"
         >
-            <div class="shadow-ui-sm relative z-2 flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-white px-1.5 py-2 text-base dark:border-x-0 dark:border-t-0 dark:border-white/15 dark:bg-gray-900 dark:inset-shadow-2xs dark:inset-shadow-black" tabindex="0">
+            <div class="shadow-ui-sm relative z-2 flex w-full h-full items-center gap-2 rounded-lg border border-gray-200 bg-white px-1.5 py-1.5 mb-1.5 last:mb-0 text-base dark:border-x-0 dark:border-t-0 dark:border-white/10 dark:bg-gray-900 dark:inset-shadow-2xs dark:inset-shadow-black">
                 <div class="flex flex-1 items-center">
                     <a class="line-clamp-1 text-sm text-gray-600 dark:text-gray-300" :href="display.url" target="_blank">
                         {{ display.text }}
@@ -16,7 +16,7 @@
                     <div class="flex flex-1 items-center justify-end">
                         <div
                             v-text="gatewayName"
-                            class="text-4xs me-2 hidden whitespace-nowrap text-gray-600 uppercase @sm:block"
+                            class="text-2xs tracking-tight hidden me-2 whitespace-nowrap text-gray-500 @sm:block"
                         />
 
                         <div class="flex items-center" v-if="!readOnly">
