@@ -16,15 +16,17 @@
                 {{ __('No product selected.') }}
             </p>
 
-            <select-field
+            <Select
                 v-else-if="
                     productVariantsData &&
                     productVariantsData.purchasable_type === 'variant'
                 "
+                class="w-full"
                 :options="productVariantOptions"
                 :disabled="readOnly"
-                v-model="variant.variant"
-            ></select-field>
+                :model-value="variant.variant"
+                @update:model-value="variant.variant = $event"
+            />
 
             <p
                 v-else-if="
@@ -41,20 +43,21 @@
 
 <script>
 import axios from 'axios'
-import SelectField from '../../../../vendor/statamic/cms/resources/js/components/inputs/Select.vue'
+import { FieldtypeMixin } from 'statamic';
+import { Select, publishContextKey } from '@statamic/ui'
 
 export default {
     name: 'product-variant-fieldtype',
 
     components: {
-        SelectField,
+        Select,
     },
 
-    mixins: [Fieldtype],
+    mixins: [FieldtypeMixin],
 
-    props: ['meta'],
-
-    inject: ['storeName'],
+    inject: {
+        publishContext: { from: publishContextKey },
+    },
 
     data() {
         return {
@@ -67,9 +70,9 @@ export default {
 
     computed: {
         product() {
-            return Statamic.$store.state.publish[this.storeName].values.items[
-                this.namePrefix.match(/\[(.*)\]/).pop()
-            ].product[0]
+            let index = this.fieldPathKeys[this.fieldPathKeys.length - 1];
+
+            return this.publishContext.values.value.items[index].product[0] || null;
         },
 
         productVariantOptions() {

@@ -1,35 +1,48 @@
 <template>
-    <div class="relationship-input">
+    <div class="relationship-input @container w-full h-full">
         <p v-if="value == null" class="text-sm py-1">{{ __('No Gateway') }}</p>
 
         <div
             v-else
-            class="relationship-input-items space-y-1 outline-none"
+            class="grid grid-cols-1 gap-2 outline-hidden @xl:grid-cols-2"
             tabindex="0"
         >
-            <div class="item select-none item outline-none" tabindex="0">
-                <div class="item-inner">
-                    <a :href="display.url" target="_blank">
+            <div class="shadow-ui-sm relative z-2 flex w-full h-full items-center gap-2 rounded-lg border border-gray-200 bg-white px-1.5 py-1.5 mb-1.5 last:mb-0 text-base dark:border-x-0 dark:border-t-0 dark:border-white/10 dark:bg-gray-900 dark:inset-shadow-2xs dark:inset-shadow-black">
+                <div class="flex flex-1 items-center">
+                    <a class="line-clamp-1 text-sm text-gray-600 dark:text-gray-300" :href="display.url" target="_blank">
                         {{ display.text }}
                     </a>
-                </div>
 
-                <div
-                    class="text-4xs text-grey-60 uppercase whitespace-no-wrap mr-1"
-                >
-                    {{ gatewayName }}
-                </div>
-
-                <div class="pr-1 flex items-center" v-if="!readOnly">
-                    <dropdown-list>
-                        <data-list-inline-actions
-                            :item="entry"
-                            :url="actionUrl"
-                            :actions="actions"
-                            @started="actionStarted"
-                            @completed="actionCompleted"
+                    <div class="flex flex-1 items-center justify-end">
+                        <div
+                            v-text="gatewayName"
+                            class="text-2xs tracking-tight hidden me-2 whitespace-nowrap text-gray-500 @sm:block"
                         />
-                    </dropdown-list>
+
+                        <div class="flex items-center" v-if="!readOnly">
+                            <ItemActions
+                                :url="actionUrl"
+                                :actions="actions"
+                                :item="entry"
+                                @started="actionStarted"
+                                @completed="actionCompleted"
+                                v-slot="{ actions }"
+                            >
+                                <Dropdown placement="left-start">
+                                    <DropdownMenu>
+                                        <DropdownItem
+                                            v-for="action in actions"
+                                            :key="action.handle"
+                                            :text="__(action.title)"
+                                            icon="edit"
+                                            :class="{ 'text-red-500': action.dangerous }"
+                                            @click="action.run"
+                                        />
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </ItemActions>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,26 +50,26 @@
 </template>
 
 <script>
-// import HasActions from '../../../../vendor/statamic/cms/resources/js/components/data-list/HasActions.vue';
+import { FieldtypeMixin, ItemActions } from 'statamic'
+import { Dropdown, DropdownMenu, DropdownItem } from '@statamic/ui'
 
 export default {
     name: 'gateway-fieldtype',
 
-    mixins: [
-        Fieldtype,
-        // HasActions
-    ],
+    mixins: [FieldtypeMixin],
+
+    components: { ItemActions, Dropdown, DropdownMenu, DropdownItem },
 
     props: ['meta'],
 
     data() {
         return {
-            gatewayData: this.value.data,
-            entry: this.value.entry,
-            actions: this.value.actions,
-            actionUrl: this.value.action_url,
-            gatewayClass: this.value.gateway_class,
-            display: this.value.display,
+            gatewayData: this.value?.data,
+            entry: this.value?.entry,
+            actions: this.value?.actions,
+            actionUrl: this.value?.action_url,
+            gatewayClass: this.value?.gateway_class,
+            display: this.value?.display,
         }
     },
 

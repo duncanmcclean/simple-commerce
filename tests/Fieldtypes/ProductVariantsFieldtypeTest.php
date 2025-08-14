@@ -9,50 +9,15 @@ it('can preload', function () {
         ->preload();
 
     expect($preload)->toBeArray()
-        ->and($preload['variant_fields'])->toBeArray()->toHaveCount(2)
-        ->and($preload['option_fields'])->toBeArray()->toHaveCount(3)
-        ->and($preload['option_fields'][0]['handle'])->toBe('key')
-        ->and($preload['option_fields'][1]['handle'])->toBe('variant')
-        ->and($preload['option_fields'][2]['handle'])->toBe('price')
-        ->and($preload['option_field_defaults'])->toBe([
-            'key' => null,
-            'variant' => null,
-            'price' => null,
-        ])
-        ->and($preload['variant'])->toBeNull()
-        ->and($preload['price'])->toBeArray();
-});
+        ->and($preload['variants']['fields'])->toBeArray()->toHaveCount(2)
+        ->and($preload['variants']['new'])->toBeArray()->toHaveCount(2)
+        ->and($preload['variants']['existing'])->toBeArray()->toHaveCount(0)
 
-it('can preload with configured option fields', function () {
-    $preload = (new ProductVariantsFieldtype)
-        ->setField(new Field('product_variants', [
-            'option_fields' => [
-                [
-                    'handle' => 'special_message',
-                    'field' => [
-                        'type' => 'text',
-                        'validate' => 'required',
-                    ],
-                ],
-            ],
-        ]))
-        ->preload();
-
-    expect($preload)->toBeArray()
-        ->and($preload['variant_fields'])->toBeArray()->toHaveCount(2)
-        ->and($preload['option_fields'])->toBeArray()->toHaveCount(4)
-        ->and($preload['option_fields'][0]['handle'])->toBe('key')
-        ->and($preload['option_fields'][1]['handle'])->toBe('variant')
-        ->and($preload['option_fields'][2]['handle'])->toBe('price')
-        ->and($preload['option_field_defaults'])->toBe([
-            'key' => null,
-            'variant' => null,
-            'price' => null,
-            'special_message' => null, // Only null because it's a `text` fieldtype.
-        ])
-        ->and($preload['variant'])->toBeNull()
-        ->and($preload['price'])->toBeArray()
-        ->and($preload['special_message'])->toBeNull(); // Only null because it's a `text` fieldtype.
+        ->and($preload['options']['fields'])->toBeArray()->toHaveCount(3)
+        ->and(array_column($preload['options']['fields'], 'handle'))->toBe(['key', 'variant', 'price'])
+        ->and($preload['options']['defaults'])->toBeArray()->toHaveCount(3)
+        ->and($preload['options']['new'])->toBeArray()->toHaveCount(3)
+        ->and($preload['options']['existing'])->toBeArray()->toHaveCount(0);
 });
 
 it('can preprocess', function () {
@@ -179,7 +144,7 @@ it('returns extra validation rules', function () {
                     'handle' => 'size',
                     'field' => [
                         'type' => 'text',
-                        'validate' => 'required,min:10,max:20',
+                        'validate' => 'required|min:10|max:20',
                     ],
                 ],
             ],
@@ -187,13 +152,13 @@ it('returns extra validation rules', function () {
         ->extraRules();
 
     expect($extraRules)->toBeArray()->toBe([
-        'variants' => ['array'],
-        'options' => ['array'],
-        'variants.*.name' => ['required'],
-        'variants.*.values' => ['required'],
-        'options.*.key' => ['required'],
-        'options.*.variant' => ['required'],
-        'options.*.price' => ['required'],
-        'options.*.size' => ['required,min:10,max:20'],
+        'product_variants.variants' => ['array'],
+        'product_variants.options' => ['array'],
+        'product_variants.variants.*.name' => ['required'],
+        'product_variants.variants.*.values' => ['required'],
+        'product_variants.options.*.key' => ['required'],
+        'product_variants.options.*.variant' => ['required'],
+        'product_variants.options.*.price' => ['required'],
+        'product_variants.options.*.size' => ['required', 'min:10', 'max:20'],
     ]);
 });

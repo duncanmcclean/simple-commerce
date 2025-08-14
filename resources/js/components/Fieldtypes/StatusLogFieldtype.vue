@@ -1,12 +1,12 @@
 <template>
     <div v-if="!isCreating">
-        <button
-            class="flex items-center justify-center btn-flat px-2 w-full"
+        <Button
+            class="w-full"
+            :text="__('Visit Status Log')"
+            icon="light/history"
+            target="_blank"
             @click="showStatusLog = true"
-        >
-            <svg-icon name="light/history" class="h-4 w-4 mr-2" />
-            <span>{{ __('View Status Log') }}</span>
-        </button>
+        />
 
         <stack name="status-log" v-if="showStatusLog" @closed="showStatusLog = false" :narrow="true">
             <status-log
@@ -26,17 +26,15 @@
 
 <script>
 import StatusLog from '../StatusLog/StatusLog.vue';
+import { FieldtypeMixin } from 'statamic';
+import { Button } from '@statamic/ui'
 
 export default {
     name: 'status-log-fieldtype',
 
-    components: { StatusLog },
+    components: { Button, StatusLog },
 
-    mixins: [Fieldtype],
-
-    props: ['meta'],
-
-    inject: ['storeName'],
+    mixins: [FieldtypeMixin],
 
     data() {
         return {
@@ -46,19 +44,19 @@ export default {
 
     computed: {
         isCreating() {
-            return this.$store.state.publish[this.storeName].values?.id === null;
+            return this.publishContainer.values?.id === null;
         },
 
         orderId() {
-            return this.$store.state.publish[this.storeName].values.id
+            return this.publishContainer.values.id;
         },
 
         currentOrderStatus() {
-            return this.$store.state.publish[this.storeName].values.order_status
+            return this.publishContainer.values.order_status;
         },
 
         currentPaymentStatus() {
-            return this.$store.state.publish[this.storeName].values.payment_status
+            return this.publishContainer.values.payment_status;
         },
     },
 }

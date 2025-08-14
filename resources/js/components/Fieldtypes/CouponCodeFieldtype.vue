@@ -1,24 +1,22 @@
 <template>
-    <text-fieldtype
-        :meta="meta"
-        :config="{
-            classes: 'uppercase font-mono',
-            focus: 'code',
-            autoselect: true,
-            input_type: 'text',
-        }"
-        :value="value"
-        @input="updateDebounced"
+    <Input
+        class="uppercase font-mono"
+        :copyable="true"
+        :model-value="value"
+        @update:model-value="updateDebounced"
         @keydown.native.space.prevent
     />
 </template>
 
 <script>
+import { FieldtypeMixin } from 'statamic';
+import { Input } from '@statamic/ui';
+
 export default {
     name: 'CouponCodeFieldtype',
 
-    mixins: [Fieldtype],
+    components: { Input },
 
-    props: ['meta'],
+    mixins: [FieldtypeMixin],
 }
 </script>

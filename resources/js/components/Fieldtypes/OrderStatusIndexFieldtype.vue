@@ -1,42 +1,45 @@
 <template>
-    <div>
-        <div class="flex items-center">
-            <div class="little-dot mr-1" :class="littleDotColour" />
-            <span>
-                {{ statusName }}
-            </span>
-        </div>
-    </div>
+    <Badge
+        :color="badgeColour"
+        :text="statusLabel"
+        :pill="true"
+        variant="flat"
+    />
 </template>
 
 <script>
+import { IndexFieldtypeMixin } from 'statamic';
+import { Badge } from '@statamic/ui'
+
 export default {
-    mixins: [IndexFieldtype],
+    mixins: [IndexFieldtypeMixin],
+
+    components: { Badge },
 
     computed: {
-        littleDotColour() {
+        badgeColour() {
             switch (this.value) {
                 case 'cart':
-                    return 'bg-gray-400'
+                    return 'white'
 
                 case 'placed':
-                    return 'bg-orange'
+                    return 'orange'
 
                 case 'dispatched':
-                    return 'bg-blue-300'
+                    return 'blue'
 
                 case 'delivered':
-                    return 'bg-green-600'
+                    return 'green'
 
                 case 'cancelled':
-                    return 'bg-red-500'
+                    return 'red'
 
                 default:
                     return ''
             }
         },
 
-        statusName() {
+        statusLabel() {
             return __((
                 this.value.charAt(0).toUpperCase() +
                 this.value.substr(1).toLowerCase()

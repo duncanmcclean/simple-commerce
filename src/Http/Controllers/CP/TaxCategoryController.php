@@ -3,58 +3,68 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\CreateRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\EditRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\IndexRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\StoreRequest;
-use DuncanMcClean\SimpleCommerce\Http\Requests\CP\TaxCategory\UpdateRequest;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
+use Statamic\CP\PublishForm;
+use Statamic\Facades\Blueprint;
 use Statamic\Facades\Stache;
 
 class TaxCategoryController
 {
-    public function index(IndexRequest $request)
+    public function index(Request $request)
     {
         return view('simple-commerce::cp.tax-categories.index', [
             'taxCategories' => TaxCategory::all(),
         ]);
     }
 
-    public function create(CreateRequest $request)
+    public function create(Request $request)
     {
-        return view('simple-commerce::cp.tax-categories.create');
+        return PublishForm::make($this->blueprint())
+            ->title('Create Tax Category')
+            ->icon(SimpleCommerce::svg('percentage'))
+            ->submittingTo(cp_route('simple-commerce.tax-categories.store'), 'POST');
     }
 
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
+        $values = PublishForm::make($this->blueprint())->submit($request->all());
+
         $taxCategory = TaxCategory::make()
             ->id(Stache::generateId())
-            ->name($request->name)
-            ->description($request->description);
+            ->name($values['name'])
+            ->description($values['description'] ?? null);
 
         $taxCategory->save();
 
-        return redirect(cp_route('simple-commerce.tax-categories.index'));
+        return ['redirect' => redirect(cp_route('simple-commerce.tax-categories.index'))];
     }
 
-    public function edit(EditRequest $request, $taxCategory)
+    public function edit(Request $request, $taxCategory)
     {
         $taxCategory = TaxCategory::find($taxCategory);
 
-        return view('simple-commerce::cp.tax-categories.edit', [
-            'taxCategory' => $taxCategory,
-        ]);
+        return PublishForm::make($this->blueprint())
+            ->title('Edit Tax Category')
+            ->icon(SimpleCommerce::svg('percentage'))
+            ->values([
+                'name' => $taxCategory->name(),
+                'description' => $taxCategory->description(),
+            ])
+            ->submittingTo($taxCategory->updateUrl());
     }
 
-    public function update(UpdateRequest $request, $taxCategory)
+    public function update(Request $request, $taxCategory)
     {
+        $values = PublishForm::make($this->blueprint())->submit($request->all());
+
         $taxCategory = TaxCategory::find($taxCategory)
-            ->name($request->name)
-            ->description($request->description);
+            ->name($values['name'])
+            ->description($values['description'] ?? null);
 
         $taxCategory->save();
 
-        return redirect($taxCategory->editUrl());
+        return [];
     }
 
     public function destroy(Request $request, $taxCategory)
@@ -64,5 +74,28 @@ class TaxCategoryController
         return [
             'success' => true,
         ];
+    }
+
+    private function blueprint()
+    {
+        return Blueprint::make('tax_category')->setContents([
+            'tabs' => ['main' => ['sections' => [['fields' => [
+                [
+                    'handle' => 'name',
+                    'field' => [
+                        'type' => 'text',
+                        'display' => __('Name'),
+                        'validate' => 'required',
+                    ],
+                ],
+                [
+                    'handle' => 'description',
+                    'field' => [
+                        'type' => 'textarea',
+                        'display' => __('Description'),
+                    ],
+                ],
+            ]]]]],
+        ]);
     }
 }

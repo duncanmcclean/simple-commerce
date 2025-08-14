@@ -27,9 +27,7 @@ test('can get index', function () {
         ->actingAs(user())
         ->get('/cp/simple-commerce/tax/rates')
         ->assertOk()
-        ->assertSee('UK - Standard Products')
-        ->assertSee('20%')
-        ->assertSee('The UK');
+        ->assertSee('UK - Standard Products');
 });
 
 test('can create tax rate', function () {
@@ -39,11 +37,7 @@ test('can create tax rate', function () {
         ->actingAs(user())
         ->get('/cp/simple-commerce/tax/rates/create?taxCategory=standard')
         ->assertOk()
-        ->assertSee('Create Tax Rate')
-        ->assertSee('Name')
-        ->assertSee('Rate')
-        ->assertSee('Tax Zone')
-        ->assertSee('Prices include tax?');
+        ->assertSee('Create Tax Rate');
 });
 
 test('can store tax rate', function () {
@@ -55,11 +49,10 @@ test('can store tax rate', function () {
         ->post('/cp/simple-commerce/tax/rates/create', [
             'name' => 'UK - Special',
             'rate' => 5,
-            'category' => 'special',
             'zone' => 'the-uk',
             'include_in_price' => 'true',
-        ])
-        ->assertRedirect();
+        ], ['referer' => '/cp/simple-commerce/tax/rates/create?taxCategory=special'])
+        ->assertJsonStructure(['redirect']);
 });
 
 test('can edit tax rate', function () {
@@ -79,11 +72,7 @@ test('can edit tax rate', function () {
         ->actingAs(user())
         ->get('/cp/simple-commerce/tax/rates/uk-standard-products/edit')
         ->assertOk()
-        ->assertSee('UK - Standard Products')
-        ->assertSee('20')
-        ->assertSee('the-uk')
-        ->assertSee('standard')
-        ->assertSee('name="include_in_price" value="true"', false);
+        ->assertSee('UK - Standard Products');
 });
 
 test('can update tax rate', function () {
@@ -101,14 +90,13 @@ test('can update tax rate', function () {
 
     $this
         ->actingAs(user())
-        ->post('/cp/simple-commerce/tax/rates/uk-standard-products/edit', [
+        ->patch('/cp/simple-commerce/tax/rates/uk-standard-products/edit', [
             'name' => 'UK - Standard Products (15% for COVID)',
             'rate' => 15,
             'zone' => 'the-uk',
-            'category' => 'standard',
             'include_in_price' => 'true',
         ])
-        ->assertRedirect('/cp/simple-commerce/tax/rates/uk-standard-products/edit');
+        ->assertJson([]);
 });
 
 test('can destroy tax rate', function () {

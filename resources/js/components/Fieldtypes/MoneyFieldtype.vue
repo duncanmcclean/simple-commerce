@@ -1,34 +1,27 @@
 <template>
-    <div>
-        <text-input
-            :type="inputType"
-            :value="value"
-            :prepend="symbol"
-            :isReadOnly="config.read_only || readOnly"
-            placeholder="00.00"
-            @input="update"
-        />
-    </div>
+    <Input
+        :prepend="symbol"
+        :disabled="config.read_only || readOnly"
+        :model-value="value"
+        @update:model-value="update"
+    />
 </template>
 
 <script>
+import { FieldtypeMixin } from 'statamic';
+import { Input } from '@statamic/ui'
+
 export default {
     name: 'money-fieldtype',
 
-    mixins: [Fieldtype],
+    mixins: [FieldtypeMixin],
 
-    props: ['meta'],
+    components: { Input },
 
     data() {
         return {
             symbol: this.meta.symbol,
         }
-    },
-
-    computed: {
-        inputType() {
-            return this.show
-        },
     },
 }
 </script>

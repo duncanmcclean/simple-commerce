@@ -3,7 +3,6 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Resources\CP\Coupons;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Statamic\Facades\Action;
 use Statamic\Facades\User;
 
 class ListedCoupon extends JsonResource
@@ -37,7 +36,6 @@ class ListedCoupon extends JsonResource
                 'edit_url' => cp_route('simple-commerce.coupons.edit', ['coupon' => $coupon->id()]),
                 'editable' => User::current()->can('edit coupons'),
                 'viewable' => User::current()->can('view coupons'),
-                'actions' => Action::for($coupon),
             ],
             $this->values(['type' => $coupon->type()->value])->toArray(),
         );

@@ -31,7 +31,10 @@ class CouponValueFieldtype extends Fieldtype
             return null;
         }
 
-        return $this->resolveValueField($this->field->parent()->type()->value)->fieldtype()->preProcess($data);
+        return [
+            'mode' => $mode = $this->field->parent()->type()->value,
+            'value' => $this->resolveValueField($mode)->fieldtype()->preProcess($data),
+        ];
     }
 
     public function process($data)

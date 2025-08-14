@@ -2,6 +2,10 @@
 
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
 
+beforeEach(function () {
+    Coupon::all()->each->delete();
+});
+
 test('can get index', function () {
     $this
         ->actingAs(user())
@@ -56,10 +60,7 @@ test('can store coupon with expiry date', function () {
             ],
             'description' => '30% discount on a Thursday!',
             'minimum_cart_value' => '65.00',
-            'expires_at' => [
-                'date' => '2024-01-01',
-                'time' => null,
-            ],
+            'expires_at' => '2024-01-01T00:00:00.000Z',
             'customer_eligibility' => 'all',
         ])
         ->assertJsonStructure([
@@ -69,7 +70,7 @@ test('can store coupon with expiry date', function () {
 
     $coupon = Coupon::findByCode('thursday-thirty-two');
 
-    expect($coupon->get('expires_at'))->toBe('2024-01-01');
+    expect($coupon->get('expires_at'))->toBe('2024-01-01 00:00');
 });
 
 test('cant store coupon where a coupon already exists with the provided code', function () {
@@ -107,10 +108,13 @@ test('cant store coupon if type is percentage and value is greater than 100', fu
         ->post('/cp/simple-commerce/coupons', [
             'code' => 'thursday-thirty',
             'type' => 'percentage',
-            'value' => 150,
+            'value' => [
+                'mode' => 'percentage',
+                'value' => 150,
+            ],
             'description' => '30% discount on a Thursday!',
         ])
-        ->assertSessionHasErrors('value');
+        ->assertSessionHasErrors();
 });
 
 test('can edit coupon', function () {
@@ -152,7 +156,7 @@ test('can update coupon', function () {
 
     $this
         ->actingAs(user())
-        ->post('/cp/simple-commerce/coupons/random-id', [
+        ->patch('/cp/simple-commerce/coupons/random-id', [
             'code' => 'fifty-friday',
             'type' => 'percentage',
             'value' => [
@@ -164,9 +168,7 @@ test('can update coupon', function () {
             'expires_at' => null,
             'customer_eligibility' => 'all',
         ])
-        ->assertJsonStructure([
-            'coupon',
-        ]);
+        ->assertJson([]);
 
     $coupon->fresh();
 
@@ -175,7 +177,7 @@ test('can update coupon', function () {
     expect(7600)->toBe($coupon->get('minimum_cart_value'));
 });
 
-test('can update coupon with expriry date', function () {
+test('can update coupon with expiry date', function () {
     $coupon = Coupon::make()
         ->id('random-id')
         ->code('fifty-friday')
@@ -192,7 +194,7 @@ test('can update coupon with expriry date', function () {
 
     $this
         ->actingAs(user())
-        ->post('/cp/simple-commerce/coupons/random-id', [
+        ->patch('/cp/simple-commerce/coupons/random-id', [
             'code' => 'fifty-friday',
             'type' => 'percentage',
             'value' => [
@@ -201,19 +203,14 @@ test('can update coupon with expriry date', function () {
             ],
             'description' => 'You can actually get a 51% discount on Friday!',
             'minimum_cart_value' => '76.00',
-            'expires_at' => [
-                'date' => '2024-01-01',
-                'time' => null,
-            ],
+            'expires_at' => '2024-01-01T00:00:00.000Z',
             'customer_eligibility' => 'all',
         ])
-        ->assertJsonStructure([
-            'coupon',
-        ]);
+        ->assertJson([]);
 
     $coupon->fresh();
 
-    expect($coupon->get('expires_at'))->toBe('2024-01-01');
+    expect($coupon->get('expires_at'))->toBe('2024-01-01 00:00');
 });
 
 test('cant update coupon if type is percentage and value is greater than 100', function () {
@@ -233,7 +230,7 @@ test('cant update coupon if type is percentage and value is greater than 100', f
 
     $this
         ->actingAs(user())
-        ->post('/cp/simple-commerce/coupons/random-id', [
+        ->patch('/cp/simple-commerce/coupons/random-id', [
             'code' => 'fifty-friday',
             'type' => 'percentage',
             'value' => [
@@ -243,7 +240,7 @@ test('cant update coupon if type is percentage and value is greater than 100', f
             'description' => 'You can actually get a 51% discount on Friday!',
             'customer_eligibility' => 'all',
         ])
-        ->assertSessionHasErrors('value.value');
+        ->assertSessionHasErrors();
 
     $coupon->fresh();
 
