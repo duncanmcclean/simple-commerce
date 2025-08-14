@@ -44,7 +44,7 @@
 <script>
 import axios from 'axios'
 import { FieldtypeMixin } from 'statamic';
-import { Select } from '@statamic/ui'
+import { Select, publishContextKey } from '@statamic/ui'
 
 export default {
     name: 'product-variant-fieldtype',
@@ -55,9 +55,9 @@ export default {
 
     mixins: [FieldtypeMixin],
 
-    props: ['meta'],
-
-    inject: ['store'],
+    inject: {
+        publishContext: { from: publishContextKey },
+    },
 
     data() {
         return {
@@ -72,7 +72,7 @@ export default {
         product() {
             let index = this.fieldPathKeys[this.fieldPathKeys.length - 1];
 
-            return this.store.values['items'][index].product[0];
+            return this.publishContext.values.value.items[index].product[0] || null;
         },
 
         productVariantOptions() {
