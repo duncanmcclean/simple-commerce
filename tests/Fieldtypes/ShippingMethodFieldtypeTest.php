@@ -45,7 +45,7 @@ test('can return as item array', function () {
     expect($toItemArray)->toBeArray();
 
     $this->assertSame($toItemArray, [
-        'id' => FreeShipping::class,
+        'id' => 'free_shipping',
         'title' => 'Free Shipping',
     ]);
 });
