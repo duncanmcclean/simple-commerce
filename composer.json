@@ -42,13 +42,14 @@
         "stripe/stripe-php": "^13.0"
     },
     "require-dev": {
-        "statamic-rad-pack/runway": "dev-statamic-6",
+        "laravel/pint": "dev-main",
         "orchestra/testbench": "^9.6.1 || ^10.0",
-        "phpunit/phpunit": "^11.0",
         "pestphp/pest": "^3.0",
         "pestphp/pest-plugin-laravel": "^3.0",
+        "phpunit/phpunit": "^11.0",
         "spatie/ray": "^1.17",
-        "spatie/test-time": "^1.3"
+        "spatie/test-time": "^1.3",
+        "statamic-rad-pack/runway": "dev-statamic-6"
     },
     "config": {
         "optimize-autoloader": true,
