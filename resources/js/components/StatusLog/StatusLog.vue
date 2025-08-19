@@ -39,12 +39,10 @@
 <script>
 import StatusLogEvent from './StatusLogEvent.vue';
 import { Button, Heading } from '@statamic/ui'
-import Revision from '@statamic/components/revision-history/Revision.vue'
 import { DateFormatter } from 'statamic';
 
 export default {
     components: {
-        Revision,
         Button,
         Heading,
         StatusLogEvent,
