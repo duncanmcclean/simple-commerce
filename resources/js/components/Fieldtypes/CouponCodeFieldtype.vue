@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import { FieldtypeMixin } from 'statamic';
-import { Input } from '@statamic/ui';
+import { FieldtypeMixin } from '@statamic/cms';
+import { Input } from '@statamic/cms/ui';
 
 export default {
     name: 'CouponCodeFieldtype',

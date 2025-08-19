@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import { FieldtypeMixin, ItemActions } from 'statamic'
-import { Dropdown, DropdownMenu, DropdownItem } from '@statamic/ui'
+import { FieldtypeMixin, ItemActions } from '@statamic/cms'
+import { Dropdown, DropdownMenu, DropdownItem } from '@statamic/cms/ui'
 
 export default {
     name: 'gateway-fieldtype',

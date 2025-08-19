@@ -14,8 +14,8 @@
 
 <script>
 import axios from 'axios'
-import { FieldtypeMixin } from 'statamic'
-import { Select } from '@statamic/ui'
+import { FieldtypeMixin } from '@statamic/cms'
+import { Select } from '@statamic/cms/ui'
 
 export default {
     mixins: [FieldtypeMixin],

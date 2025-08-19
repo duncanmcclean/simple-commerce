@@ -43,8 +43,8 @@
 
 <script>
 import axios from 'axios'
-import { FieldtypeMixin } from 'statamic';
-import { Select, publishContextKey } from '@statamic/ui'
+import { FieldtypeMixin } from '@statamic/cms';
+import { Select, publishContextKey } from '@statamic/cms/ui'
 
 export default {
     name: 'product-variant-fieldtype',

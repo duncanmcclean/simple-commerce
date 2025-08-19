@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { Widget } from '@statamic/ui';
+import { Widget } from '@statamic/cms/ui';
 
 import {
     Chart as ChartJS,

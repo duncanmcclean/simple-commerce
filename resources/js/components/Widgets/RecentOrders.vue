@@ -46,7 +46,7 @@ import {
     ListingTableHead as TableHead,
     ListingTableBody as TableBody,
     ListingPagination as Pagination
-} from '@statamic/ui';
+} from '@statamic/cms/ui';
 
 export default {
     components: {

@@ -1,6 +1,6 @@
 <script setup>
-import { Fieldtype } from 'statamic';
-import { Panel, PanelHeader, Heading, Card, Icon, Button, PublishContainer, FieldsProvider, PublishFields as Fields, injectPublishContext } from '@statamic/ui';
+import { Fieldtype } from '@statamic/cms';
+import { Panel, PanelHeader, Heading, Card, Icon, Button, PublishContainer, FieldsProvider, PublishFields as Fields, injectPublishContext } from '@statamic/cms/ui';
 import { computed, ref, watch } from 'vue';
 const { values, errors } = injectPublishContext()
 
@@ -190,7 +190,7 @@ watch(
 <template>
     <div class="mt-2">
         <!-- Variants -->
-        <div class="mb-10 flex flex-col">
+        <div class="mb-12 flex flex-col">
             <Panel v-for="(variant, index) in variants" :key="index">
                 <PanelHeader>
                     <div class="flex items-center justify-between">
