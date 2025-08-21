@@ -39,6 +39,7 @@ import { Badge, Subheading } from '@statamic/cms/ui'
 
 export default {
     components: { Badge, Subheading, Avatar },
+
     props: {
         event: Object,
         orderId: String,
