@@ -10,7 +10,7 @@ export default defineConfig({
             publicDirectory: 'dist',
             input: [
                 'resources/js/cp.js',
-                // 'resources/css/cp.css',
+                'resources/css/cp.css',
             ],
         }),
     ],
