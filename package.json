@@ -4,7 +4,7 @@
         "build": "vite build"
     },
     "dependencies": {
-        "@statamic/cms": "file:./vendor/statamic/cms/resources/dist-package",
+        "@statamic/cms": "file:./vendor/statamic/cms/resources/js/package",
         "axios": "^0.21.1",
         "chart.js": "^4.5.0"
     },
