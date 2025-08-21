@@ -1,6 +1,6 @@
 # Changelog
 
-## v8.0.0 (2025-xx-xx)
+## v8.0.0-alpha.1 (2025-08-21)
 
 Simple Commerce has been replaced by [Cargo](https://builtwithcargo.dev), the natural evolution of Simple Commerce. It takes everything you love about Simple Commerce and makes it better in every possible way. Some of the big changes include...
 
@@ -13,9 +13,9 @@ Simple Commerce v8 is the last major version of Simple Commerce, giving you time
 
 ### What's new
 
-* Statamic 6 support #1236 by @duncanmcclean
+- Statamic 6 support #1236 by @duncanmcclean
+- Refreshed the Product Variants fieldtype
 
 ### What's changed
 
-* Dropped PHP 8.2 support
-* Dropped Statamic 5 support
+- Dropped support for PHP 8.2 and Laravel 10
