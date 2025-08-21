@@ -38,8 +38,8 @@
 
 <script>
 import StatusLogEvent from './StatusLogEvent.vue';
-import { Button, Heading } from '@statamic/ui'
-import { DateFormatter } from 'statamic';
+import { Button, Heading } from '@statamic/cms/ui'
+import { DateFormatter } from '@statamic/cms';
 
 export default {
     components: {

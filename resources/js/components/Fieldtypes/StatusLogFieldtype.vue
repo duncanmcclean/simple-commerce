@@ -3,7 +3,7 @@
         <Button
             class="w-full"
             :text="__('Visit Status Log')"
-            icon="light/history"
+            icon="history"
             target="_blank"
             @click="showStatusLog = true"
         />
@@ -26,8 +26,8 @@
 
 <script>
 import StatusLog from '../StatusLog/StatusLog.vue';
-import { FieldtypeMixin } from 'statamic';
-import { Button } from '@statamic/ui'
+import { FieldtypeMixin } from '@statamic/cms';
+import { Button } from '@statamic/cms/ui'
 
 export default {
     name: 'status-log-fieldtype',

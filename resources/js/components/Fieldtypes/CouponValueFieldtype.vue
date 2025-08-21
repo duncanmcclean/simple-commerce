@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { FieldtypeMixin } from 'statamic';
+import { FieldtypeMixin } from '@statamic/cms';
 
 export default {
     name: 'CouponValueFieldtype',

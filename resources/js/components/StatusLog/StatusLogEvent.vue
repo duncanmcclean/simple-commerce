@@ -35,10 +35,11 @@
 <script>
 import axios from 'axios';
 import Avatar from '../../../../vendor/statamic/cms/resources/js/components/Avatar.vue'
-import { Badge, Subheading } from '@statamic/ui'
+import { Badge, Subheading } from '@statamic/cms/ui'
 
 export default {
     components: { Badge, Subheading, Avatar },
+
     props: {
         event: Object,
         orderId: String,

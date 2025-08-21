@@ -2,8 +2,8 @@
     <Widget :title :icon>
         <div class="flex flex-wrap -mx-2 mb-4">
             <div class="px-2 w-full">
-                <div class="px-1" v-if="ready">
-                    <Line :data="chartData" :options="chartOptions" />
+                <div class="px-1">
+                    <canvas ref="chartCanvas"></canvas>
                 </div>
             </div>
         </div>
@@ -15,25 +15,25 @@
 </template>
 
 <script>
-import { Widget } from '@statamic/ui';
-
+import { Widget } from '@statamic/cms/ui';
 import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
+    LineController,
     Title,
     Tooltip,
     Legend
 } from 'chart.js'
-import { Line } from 'vue-chartjs'
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
+    LineController,
     Title,
     Tooltip,
     Legend
@@ -42,7 +42,6 @@ ChartJS.register(
 export default {
     components: {
         Widget,
-        Line,
     },
 
     props: {
@@ -53,33 +52,49 @@ export default {
 
     data() {
         return {
-            ready: false,
-
-            chartData: {
-                labels: [],
-                datasets: [
-                    {
-                        label: __('Paid Orders'),
-                        backgroundColor: '#16a34a',
-                        data: [],
-                    },
-                ],
-            },
-
-            chartOptions: {
-                responsive: true,
-                maintainAspectRatio: false,
-            },
+            chart: null,
         }
     },
 
-    mounted() {
-        this.data.forEach((item) => {
-            this.chartData.labels.push(item.date)
-            this.chartData.datasets[0].data.push(item.count)
-        })
+    methods: {
+        createChart() {
+            const ctx = this.$refs.chartCanvas.getContext('2d');
 
-        this.ready = true
+            const labels = [];
+            const chartData = [];
+
+            this.data.forEach((item) => {
+                labels.push(item.date);
+                chartData.push(item.count);
+            });
+
+            this.chart = new ChartJS(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: __('Paid Orders'),
+                            backgroundColor: '#16a34a',
+                            borderColor: '#16a34a',
+                            data: chartData,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                },
+            });
+        },
+    },
+
+    mounted() {
+        this.createChart();
+    },
+
+    beforeUnmount() {
+        this.chart?.destroy();
     },
 }
 </script>
