@@ -18,11 +18,11 @@
 
 [Read the docs](https://simple-commerce.duncanmcclean.com).
 
-## Upcoming release
+## Cargo
 
-I’ve been working hard behind the scenes on a new version of Simple Commerce. It’s a complete rethinking of how things work, but with the same goal in mind: making it easy to build flexible e-commerce sites in Statamic.
+Simple Commerce will soon be replaced with [Cargo](https://builtwithcargo.dev), the natural evolution of Simple Commerce. It takes everything you love about Simple Commerce and makes it better in every possible way.
 
-A public alpha will be available shortly after the Statamic 6 alpha, with a full launch happening **alongside Statamic 6**. The new version will be a paid upgrade, but if you purchase Simple Commerce now, you’ll get the new version for free.
+Cargo is currently in alpha and will be released shortly after Statamic 6. If you're starting a new project, you should probably [use Cargo instead](https://builtwithcargo.dev/docs/installation). Existing projects can continue to use Simple Commerce, which has been updated to work with Statamic 6. However, you should plan to [migrate to Cargo](https://builtwithcargo.dev/docs/migrating-from-simple-commerce) when possible.
 
 ## Features
 
