@@ -2,6 +2,10 @@
 title: Installation
 ---
 
+:::note
+[Cargo](https://builtwithcargo.dev), the successor to Simple Commerce, is now in alpha and will be released fully in the next couple of months. If you're starting a new project, you should probably use Cargo instead. To learn more, check out the [Cargo documentation](https://builtwithcargo.dev).
+:::
+
 To install Simple Commerce, there's two routes you can take. You can either [install into an existing site](#content-installing-into-an-existing-site) or create a fresh Statamic project using the Simple Commerce [starter kit](#content-installing-with-the-starter-kit).
 
 ## Requirements
