@@ -76,7 +76,6 @@ class StripeGateway extends BaseGateway implements Gateway
         if ($this->inPaymentElementsMode()) {
             $intentData['automatic_payment_methods'] = [
                 'enabled' => true,
-                'allow_redirects' => $this->config()->get('allow_redirects', 'never'),
             ];
         }
 
