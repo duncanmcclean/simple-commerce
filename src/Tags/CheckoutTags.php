@@ -34,13 +34,13 @@ class CheckoutTags extends SubTag
                     return true;
                 })
                 ->each(function ($gateway) use (&$cart, &$data) {
-                    $config = Gateway::use($gateway['handle'])->config();
-                    $prepare = Gateway::use($gateway['handle'])->prepare(request(), $cart);
-
-                    $callbackUrl = Gateway::use($gateway['handle'])
+                    $gatewayInstance = Gateway::use($gateway['handle'])
                         ->withRedirectUrl($this->params->get('redirect') ?? request()->path())
-                        ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path())
-                        ->callbackUrl();
+                        ->withErrorRedirectUrl($this->params->get('error_redirect') ?? request()->path());
+
+                    $config = $gatewayInstance->config();
+                    $prepare = $gatewayInstance->prepare(request(), $cart);
+                    $callbackUrl = $gatewayInstance->callbackUrl();
 
                     $data[$gateway['handle']] = array_merge($prepare, [
                         'config' => $config,
