@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.8.7 (2025-10-16)
+
+### What's fixed
+* Drop `allow_redirects` parameter from Stripe Payment Intent API request #1247 by @parkerman92
+
+
+
 ## v7.8.6 (2025-07-15)
 
 ### What's fixed
