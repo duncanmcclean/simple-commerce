@@ -13,8 +13,21 @@ class HandleDigitalProducts
     public function handle(Order $order, Closure $next)
     {
         $hasDownloads = $order->lineItems()
-            ->filter(function ($lineItem) {
-                return $lineItem->product()->get('product_type') === 'digital';
+            ->filter(function ($lineItem) {;
+                if ($lineItem->product()->get('product_type') === 'digital') {
+                    return true;
+                }
+
+                $itemVariantKey = $lineItem->variant()['variant'] ?? null;
+
+                if ( ! $itemVariantKey) {
+                    return true;
+                }
+
+                $productVariants = collect($lineItem->product()->productVariants()['options']);
+                $itemVariant = $productVariants->firstWhere('key', $itemVariantKey);
+
+                return $itemVariant['is_digital_product'] ?? false;
             })
             ->each(function ($lineItem) use ($order) {
                 $order->updateLineItem($lineItem->id(), [
