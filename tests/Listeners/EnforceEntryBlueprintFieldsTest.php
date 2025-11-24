@@ -4,6 +4,13 @@ use DuncanMcClean\SimpleCommerce\Listeners\EnforceEntryBlueprintFields;
 use Statamic\Events\EntryBlueprintFound;
 use Statamic\Facades\Blueprint;
 
+afterEach(function () {
+    Blueprint::find('collections.customers.customer')?->delete();
+    Blueprint::find('collections.products.product')?->delete();
+    Blueprint::find('collections.orders.orders')?->delete();
+    Blueprint::find('collections.orders.order')?->delete();
+});
+
 test('fields can be added to customer blueprint', function () {
     $blueprint = Blueprint::make('customer')
         ->setNamespace('collections.customers')

@@ -34,8 +34,8 @@ trait HasLineItems
 
                     $lineItem = (new LineItem($item))
                         ->id($item['id'])
-                        ->product($item['product'])
-                        ->quantity($item['quantity'])
+                        ->product($item['product'] ?? null)
+                        ->quantity($item['quantity'] ?? 1)
                         ->total($item['total']);
 
                     if (isset($item['variant'])) {
