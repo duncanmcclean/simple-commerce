@@ -67,11 +67,13 @@ class EloquentQueryBuilder extends QueryEloquentQueryBuilder
 
     public function whereStatusLogDate(OrderStatus|PaymentStatus $status, Carbon $date)
     {
-        return $this->whereHas('statusLog', function ($query) use ($status, $date) {
+        $this->builder->whereHas('statusLog', function ($query) use ($status, $date) {
             return $query
                 ->where('status', $status->value)
                 ->whereDate('timestamp', $date->format('Y-m-d'));
         });
+
+        return $this;
     }
 
     protected function columnExists(string $column): bool
