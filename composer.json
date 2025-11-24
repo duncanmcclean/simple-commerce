@@ -31,7 +31,7 @@
     "require": {
         "php": "^8.3",
         "ext-intl": "*",
-        "laravel/framework": "^11.0.3 || ^12.0",
+        "laravel/framework": "^12.0",
         "mollie/mollie-api-php": "^2.30.0",
         "moneyphp/money": "^4.0",
         "paypal/paypal-checkout-sdk": "^1.0",
@@ -43,13 +43,13 @@
     },
     "require-dev": {
         "laravel/pint": "dev-main",
-        "orchestra/testbench": "^9.6.1 || ^10.0",
+        "orchestra/testbench": "^10.0",
         "pestphp/pest": "^3.0",
         "pestphp/pest-plugin-laravel": "^3.0",
         "phpunit/phpunit": "^11.0",
         "spatie/ray": "^1.17",
         "spatie/test-time": "^1.3",
-        "statamic-rad-pack/runway": "^9.0"
+        "statamic-rad-pack/runway": "^9.0.0-alpha.5"
     },
     "config": {
         "optimize-autoloader": true,
