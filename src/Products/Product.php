@@ -133,7 +133,7 @@ class Product implements Contract
                     ->key($variantOption['key'])
                     ->product($this)
                     ->name($variantOption['variant'])
-                    ->price($variantOption['price'])
+                    ->price($variantOption['price'] ?? null)
                     ->data(Arr::except($variantOption, ['key', 'variant', 'price', 'stock']));
 
                 if (isset($variantOption['stock'])) {
