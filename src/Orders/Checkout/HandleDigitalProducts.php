@@ -21,7 +21,7 @@ class HandleDigitalProducts
                 $itemVariantKey = $lineItem->variant()['variant'] ?? null;
 
                 if ( ! $itemVariantKey) {
-                    return true;
+                    return false;
                 }
 
                 $productVariants = collect($lineItem->product()->productVariants()['options']);
