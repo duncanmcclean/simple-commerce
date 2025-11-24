@@ -12,6 +12,10 @@ use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 
 uses(PreventsSavingStacheItemsToDisk::class);
 
+beforeEach(function () {
+    Stache::store('entries')->clear();
+});
+
 afterEach(function () {
     Collection::find('customers')->queryEntries()->get()->each->delete();
 });
