@@ -74,10 +74,6 @@ export default {
     },
 
     computed: {
-        display() {
-            return this.value.display
-        },
-
         gatewayName() {
             const gatewayClass = this.value.gateway_class
 
