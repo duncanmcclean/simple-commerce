@@ -191,7 +191,7 @@ watch(
 <template>
     <div class="mt-2">
         <!-- Variants -->
-        <div class="mb-12 flex flex-col">
+        <div class="mb-8 flex flex-col">
             <Panel v-for="(variant, index) in variants" :key="index">
                 <PanelHeader>
                     <div class="flex items-center justify-between">
