@@ -10,6 +10,8 @@ class Delete extends Action
 
     protected static $handle = 'simple-commerce-delete';
 
+    protected $icon = 'trash';
+
     public static function title()
     {
         return __('Delete');

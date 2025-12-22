@@ -15,6 +15,11 @@ class RefundAction extends Action
         return __('Refund');
     }
 
+    public function icon(): string
+    {
+        return SimpleCommerce::svg('refund');
+    }
+
     public function visibleTo($item)
     {
         if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {

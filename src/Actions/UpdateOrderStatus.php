@@ -18,6 +18,11 @@ class UpdateOrderStatus extends Action
         return __('Update Order Status');
     }
 
+    public function icon(): string
+    {
+        return 'cog';
+    }
+
     protected function fieldItems()
     {
         return [
