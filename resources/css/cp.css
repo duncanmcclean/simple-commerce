@@ -4,8 +4,8 @@
 
 .product-variant-options {
     .publish-fields {
-      display: grid;
-      grid-template-columns: none !important;
-      --grid-columns: none !important;
+        display: grid;
+        grid-template-columns: none !important;
+        --grid-columns: none !important;
     }
 }
