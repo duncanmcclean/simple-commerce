@@ -19,5 +19,5 @@
         ></ui-empty-state-item>
     </ui-empty-state-menu>
 
-    <x-statamic::docs-callout :topic="__('Coupons')" url="https://simple-commerce.duncanmcclean.com/coupons" />
+    <ui-docs-callout :topic="__('Coupons')" url="https://simple-commerce.duncanmcclean.com/coupons"></ui-docs-callout>
 @stop

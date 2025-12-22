@@ -21,5 +21,5 @@
         action-url="{{ $actionUrl }}"
     ></coupon-listing>
 
-    <x-statamic::docs-callout :topic="__('Coupons')" url="https://simple-commerce.duncanmcclean.com/coupons" />
+    <ui-docs-callout :topic="__('Coupons')" url="https://simple-commerce.duncanmcclean.com/coupons"></ui-docs-callout>
 @endsection

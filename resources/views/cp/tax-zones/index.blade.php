@@ -42,5 +42,5 @@
       @endforeach
     </ui-card-list>
 
-    <x-statamic::docs-callout :topic="__('Taxes')" url="https://simple-commerce.duncanmcclean.com/tax#content-standard-tax-engine" />
+    <ui-docs-callout :topic="__('Taxes')" url="https://simple-commerce.duncanmcclean.com/tax#content-standard-tax-engine"></ui-docs-callout>
 @endsection
