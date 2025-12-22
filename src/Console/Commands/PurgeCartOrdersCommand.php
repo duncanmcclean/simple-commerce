@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Console\Commands;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
+use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Statamic\Console\RunsInPlease;
@@ -20,9 +21,15 @@ class PurgeCartOrdersCommand extends Command
     {
         $this->info('Cleaning up..');
 
+        $fourteenDaysFromNow = Carbon::now()->subDays(14);
+
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository::class)) {
+            $fourteenDaysFromNow = $fourteenDaysFromNow->timestamp;
+        }
+
         Order::query()
             ->whereOrderStatus(OrderStatus::Cart)
-            ->where('updated_at', '<=', Carbon::now()->subDays(14)->timestamp)
+            ->where('updated_at', '<=', $fourteenDaysFromNow)
             ->chunk(100, function ($orders) {
                 $orders->each(function ($order) {
                     $this->line("Deleting Order: {$order->id()}");
