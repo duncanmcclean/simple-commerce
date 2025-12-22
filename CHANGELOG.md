@@ -1,5 +1,15 @@
 # Changelog
 
+## v8.0.0-alpha.2 (2025-12-22)
+
+### What's improved
+- Dropped support for Laravel 11 #1252 by @duncanmcclean
+
+### What's fixed
+- A bunch of Control Panel UI bugs
+
+
+
 ## v8.0.0-alpha.1 (2025-08-21)
 
 Simple Commerce has been replaced by [Cargo](https://builtwithcargo.dev), the natural evolution of Simple Commerce. It takes everything you love about Simple Commerce and makes it better in every possible way. Some of the big changes include...
