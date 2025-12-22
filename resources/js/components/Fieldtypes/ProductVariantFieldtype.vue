@@ -4,7 +4,7 @@
             v-if="initializing"
             class="flex flex-col items-center justify-center text-center p-1"
         >
-            <loading-graphic />
+            <Icon name="loading" />
         </div>
 
         <div v-else>
@@ -44,13 +44,14 @@
 <script>
 import axios from 'axios'
 import { FieldtypeMixin } from '@statamic/cms';
-import { Select, publishContextKey } from '@statamic/cms/ui'
+import { Select, Icon, publishContextKey } from '@statamic/cms/ui'
 
 export default {
     name: 'product-variant-fieldtype',
 
     components: {
         Select,
+        Icon,
     },
 
     mixins: [FieldtypeMixin],
