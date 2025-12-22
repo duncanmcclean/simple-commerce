@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        php: [8.3, 8.4]
+        php: [8.3, 8.4, 8.5]
         laravel: [12.*]
         stability: [prefer-lowest, prefer-stable]
         os: [ubuntu-latest]
@@ -37,7 +37,7 @@ jobs:
       - name: Run PHPUnit
         run: vendor/bin/pest
         env:
-          STRIPE_KEY: ${{ matrix.php == '8.4' && secrets.STRIPE_KEY || '' }}
-          STRIPE_SECRET: ${{ matrix.php == '8.4' && secrets.STRIPE_SECRET || '' }}
-          MOLLIE_KEY: ${{ matrix.php == '8.4' && secrets.MOLLIE_KEY || '' }}
-          MOLLIE_PROFILE: ${{ matrix.php == '8.4' && secrets.MOLLIE_PROFILE || '' }}
+          STRIPE_KEY: ${{ matrix.php == '8.5' && secrets.STRIPE_KEY || '' }}
+          STRIPE_SECRET: ${{ matrix.php == '8.5' && secrets.STRIPE_SECRET || '' }}
+          MOLLIE_KEY: ${{ matrix.php == '8.5' && secrets.MOLLIE_KEY || '' }}
+          MOLLIE_PROFILE: ${{ matrix.php == '8.5' && secrets.MOLLIE_PROFILE || '' }}
