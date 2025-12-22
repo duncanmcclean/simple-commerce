@@ -8,7 +8,7 @@
             @click="showStatusLog = true"
         />
 
-        <stack name="status-log" v-if="showStatusLog" @closed="showStatusLog = false" :narrow="true">
+        <Stack name="status-log" v-if="showStatusLog" @closed="showStatusLog = false" :narrow="true">
             <status-log
                 slot-scope="{ close }"
                 :index-url="meta.indexUrl"
@@ -20,19 +20,19 @@
                 :current-payment-status="currentPaymentStatus"
                 @closed="close"
             />
-        </stack>
+        </Stack>
     </div>
 </template>
 
 <script>
 import StatusLog from '../StatusLog/StatusLog.vue';
 import { FieldtypeMixin } from '@statamic/cms';
-import { Button } from '@statamic/cms/ui'
+import { Button, Stack } from '@statamic/cms/ui'
 
 export default {
     name: 'status-log-fieldtype',
 
-    components: { Button, StatusLog },
+    components: { Button, Stack, StatusLog },
 
     mixins: [FieldtypeMixin],
 

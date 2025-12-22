@@ -1,7 +1,7 @@
 <template>
     <div class="m-2 flex h-full flex-col rounded-xl bg-white dark:bg-gray-800">
         <header
-            class="flex items-center justify-between rounded-t-xl border-b border-gray-300 bg-gray-50 px-4 py-2 dark:border-gray-950 dark:bg-gray-900"
+            class="flex items-center justify-between rounded-t-xl border-b border-gray-300 px-4 mb-3 py-2 dark:border-gray-950 dark:bg-gray-800"
         >
             <Heading size="lg">{{ __('Status Log') }}</Heading>
             <Button icon="x" variant="ghost" class="-me-2" @click="close" />
@@ -9,7 +9,7 @@
 
         <div class="flex-1 overflow-auto">
             <div class="loading flex h-full items-center justify-center" v-if="loading">
-                <loading-graphic />
+                <Icon name="loading" />
             </div>
 
             <Heading size="sm" class="p-3" v-if="!loading && statusLog.length === 0">
@@ -17,8 +17,9 @@
             </Heading>
 
             <div v-for="group in statusLog" :key="group.day">
-                <Heading size="sm" class="p-3" v-text="formatRelativeDate(group.day)" />
-                <div class="divide-y divide-gray-200 dark:divide-gray-900">
+                <Heading size="sm" class="p-3 text-gray-600 dark:text-gray-300" v-text="formatRelativeDate(group.day)" />
+                <div class="relative grid gap-3">
+                    <div class="absolute inset-y-0 left-6 top-3 border-l-1 border-gray-400 dark:border-gray-600 border-dashed" />
                     <status-log-event
                         v-for="event in group.events"
                         :key="event.timestamp"
@@ -38,13 +39,14 @@
 
 <script>
 import StatusLogEvent from './StatusLogEvent.vue';
-import { Button, Heading } from '@statamic/cms/ui'
+import { Button, Heading, Icon } from '@statamic/cms/ui'
 import { DateFormatter } from '@statamic/cms';
 
 export default {
     components: {
         Button,
         Heading,
+        Icon,
         StatusLogEvent,
     },
 

@@ -1,41 +1,42 @@
 <template>
     <div
-        class="block space-y-2 px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-gray-900"
+        class="relative block cursor-pointer space-y-2 px-3 py-2 text-sm hover:[&_.revision-message]:underline"
         :class="{
             'status-published': isCurrent,
         }"
     >
-        <div class="revision-item-note truncate">
-            {{ statusType }} changed to <span class="font-medium">{{ status }}</span>
-        </div>
+        <div class="flex gap-3">
+            <Avatar v-if="event.user" :user="event.user" class="size-6 shrink-0 mt-1" />
+            <div v-else class="size-6 shrink-0 mt-1" />
 
-        <div class="flex items-center gap-2">
-            <avatar v-if="event.user" :user="event.user" class="size-6 shrink-0" />
-
-            <div class="revision-item-content flex w-full">
-                <div class="flex-1">
-                    <Subheading>
-                        <template v-if="event.user">
-                            {{ event.user.name || event.user.email }} &ndash;
-                        </template>
-                        {{ time }}
-                    </Subheading>
+            <div class="grid gap-1">
+                <div class="revision-message font-medium">
+                    {{ statusType }} changed to <span class="font-medium">{{ status }}</span>
                 </div>
+                <div v-if="event.data.reason" class="revision-message font-medium text-xs" v-text="event.data.reason" />
+                <Subheading class="text-xs text-gray-500! dark:text-gray-400!">
+                    {{ time }}
+                    <template v-if="event.user">
+                        by {{ event.user.name || event.user.email }}
+                    </template>
+                </Subheading>
+            </div>
+
+            <div class="flex items-center gap-1 ml-auto">
+                <Badge
+                    v-if="isCurrent"
+                    size="sm"
+                    color="gray"
+                    :text="__('Current')"
+                />
             </div>
         </div>
-
-        <div v-if="isCurrent" class="flex items-center gap-1">
-            <Badge size="sm" color="orange"  v-text="__('Current')" />
-        </div>
-
-        <div v-if="event.data?.reason" class="revision-item-note truncate ml-2 mt-3 font-normal text-xs" v-text="event.data.reason" />
     </div>
 </template>
 
 <script>
 import axios from 'axios';
-import Avatar from '../../../../vendor/statamic/cms/resources/js/components/Avatar.vue'
-import { Badge, Subheading } from '@statamic/cms/ui'
+import { Badge, Subheading, Avatar } from '@statamic/cms/ui'
 
 export default {
     components: { Badge, Subheading, Avatar },
