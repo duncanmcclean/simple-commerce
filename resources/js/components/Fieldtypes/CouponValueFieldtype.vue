@@ -2,6 +2,7 @@
     <div>
         <money-fieldtype
             v-if="mode === 'fixed'"
+            handle="value"
             :value="couponValue"
             :meta="meta.meta.money"
             :config="meta.config.money"
@@ -9,6 +10,7 @@
         />
         <integer-fieldtype
             v-else-if="mode === 'percentage'"
+            handle="value"
             :value="couponValue"
             :meta="meta.meta.integer"
             :config="meta.config.integer"
