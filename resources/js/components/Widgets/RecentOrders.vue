@@ -30,7 +30,6 @@
                     </table>
                 </div>
                 <template #actions>
-                    <Pagination />
                     <slot name="actions" />
                 </template>
             </Widget>
@@ -45,7 +44,6 @@ import {
     Icon,
     ListingTableHead as TableHead,
     ListingTableBody as TableBody,
-    ListingPagination as Pagination
 } from '@statamic/cms/ui';
 
 export default {
@@ -55,7 +53,6 @@ export default {
         Icon,
         TableHead,
         TableBody,
-        Pagination
     },
 
     props: {
