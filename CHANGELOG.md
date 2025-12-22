@@ -1,5 +1,16 @@
 # Changelog
 
+## v7.8.8 (2025-12-22)
+
+### What's improved
+* PHP 8.5 compatibility #1253 by @duncanmcclean
+
+### What's fixed
+* Fixed `sc:purge-cart-orders` command when orders are stored in database #1258 by @duncanmcclean
+* Fixed failing tests #1254 by @duncanmcclean
+
+
+
 ## v7.8.7 (2025-10-16)
 
 ### What's fixed
