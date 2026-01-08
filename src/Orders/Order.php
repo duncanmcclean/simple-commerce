@@ -227,6 +227,13 @@ class Order implements Contract
         return new GatewayData($this->gateway);
     }
 
+    public function clearGatewayData(): self
+    {
+        $this->gateway = null;
+
+        return $this;
+    }
+
     public function resource($resource = null)
     {
         return $this

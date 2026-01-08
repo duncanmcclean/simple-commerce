@@ -124,6 +124,19 @@ class MollieGateway extends BaseGateway implements Gateway
 
             event(new OrderPaymentFailed($order));
         }
+
+        if ($payment->status === MolliePaymentStatus::STATUS_EXPIRED) {
+            $order = $this->getOrderFromWebhookRequest($request);
+
+            if (! $order) {
+                throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
+            }
+
+            $order
+                ->remove('mollie')
+                ->clearGatewayData()
+                ->save();
+        }
     }
 
     public function fieldtypeDisplay($value): array
