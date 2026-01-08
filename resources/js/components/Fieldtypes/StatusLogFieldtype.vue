@@ -8,7 +8,12 @@
             @click="showStatusLog = true"
         />
 
-        <Stack name="status-log" v-if="showStatusLog" @closed="showStatusLog = false" :narrow="true">
+        <Stack
+            ref="statusLogStack"
+            size="narrow"
+            :title="__('Status Log')"
+            v-model:open="showStatusLog"
+        >
             <status-log
                 slot-scope="{ close }"
                 :index-url="meta.indexUrl"
@@ -18,7 +23,7 @@
                 :payment-statuses="meta.paymentStatuses"
                 :current-order-status="currentOrderStatus"
                 :current-payment-status="currentPaymentStatus"
-                @closed="close"
+                @closed="$refs.statusLogStack.close()"
             />
         </Stack>
     </div>
