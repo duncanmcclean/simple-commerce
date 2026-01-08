@@ -1,7 +1,6 @@
 <script setup>
 import { Fieldtype } from '@statamic/cms';
-import { Panel, PanelHeader, Heading, Card, Button, PublishContainer, PublishFieldsProvider as FieldsProvider, PublishFields as Fields, injectPublishContext } from '@statamic/cms/ui';
-import { ConfirmationModal } from '@statamic/cms/temporary';
+import { Panel, PanelHeader, Heading, Card, Button, PublishContainer, PublishFieldsProvider as FieldsProvider, PublishFields as Fields, injectPublishContext, ConfirmationModal } from '@statamic/cms/ui';
 import { computed, ref, watch } from 'vue';
 const { values, errors } = injectPublishContext()
 
