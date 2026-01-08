@@ -36,6 +36,7 @@
 
 <script>
 import axios from 'axios';
+import { DateFormatter } from '@statamic/cms';
 import { Badge, Subheading, Avatar } from '@statamic/cms/ui'
 
 export default {
@@ -71,6 +72,10 @@ export default {
 
         date() {
             return moment.unix(this.event.timestamp);
+        },
+
+        time() {
+            return DateFormatter.format(this.event.timestamp * 1000, 'time');
         },
 
         isCurrent() {
