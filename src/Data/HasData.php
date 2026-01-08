@@ -46,6 +46,13 @@ trait HasData
         return $this;
     }
 
+    public function remove(string $key): self
+    {
+        unset($this->data[$key]);
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return $this->data()->toArray();
