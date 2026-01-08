@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.8.1 (2026-01-08)
+
+### What's fixed
+- Clear order's gateway data when Mollie payment expires #1193 #1261 by @duncanmcclean
+
+
+
 ## v7.8.8 (2025-12-22)
 
 ### What's improved
