@@ -1,7 +1,17 @@
 <script setup>
 import { Fieldtype } from '@statamic/cms';
-import { Panel, PanelHeader, Heading, Card, Button, PublishContainer, PublishFieldsProvider as FieldsProvider, PublishFields as Fields, injectPublishContext } from '@statamic/cms/ui';
-import { ConfirmationModal } from '@statamic/cms/temporary';
+import {
+    Panel,
+    PanelHeader,
+    Heading,
+    Card,
+    Button,
+    PublishContainer,
+    PublishFieldsProvider as FieldsProvider,
+    PublishFields as Fields,
+    injectPublishContext,
+    ConfirmationModal
+} from '@statamic/cms/ui';
 import { computed, ref, watch } from 'vue';
 const { values, errors } = injectPublishContext()
 
@@ -202,7 +212,7 @@ watch(
 
                 <Card>
                     <ConfirmationModal
-                        v-if="deletingVariant === index"
+                        :open="deletingVariant === index"
                         :ref="`variant-deleter-${index}`"
                         :title="__('Delete Variant')"
                         :danger="true"
