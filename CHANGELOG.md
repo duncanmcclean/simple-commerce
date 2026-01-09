@@ -1,5 +1,13 @@
 # Changelog
 
+## v8.0.0-alpha.3 (2026-01-09)
+
+### What's fixed
+- Sort out temporary JS imports #1259 by @duncanmcclean
+- Update status log stack #1260 by @duncanmcclean
+
+
+
 ## v8.0.0-alpha.2 (2025-12-22)
 
 ### What's improved
