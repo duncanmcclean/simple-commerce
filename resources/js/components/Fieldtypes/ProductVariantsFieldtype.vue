@@ -212,7 +212,7 @@ watch(
 
                 <Card>
                     <ConfirmationModal
-                        v-if="deletingVariant === index"
+                        :open="deletingVariant === index"
                         :ref="`variant-deleter-${index}`"
                         :title="__('Delete Variant')"
                         :danger="true"
