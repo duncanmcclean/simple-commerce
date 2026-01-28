@@ -10,7 +10,7 @@
 
 <!-- /statamic:hide -->
 
-Simple Commerce has been replaced by [Cargo](https://builtwithcargo.dev), the natural evolution of Simple Commerce. It takes everything you love about Simple Commerce and makes it better in every possible way. Some of the big changes include...
+Simple Commerce has been replaced by [Cargo](https://builtwithcargo.dev), the natural evolution of Simple Commerce. It takes everything you love about Simple Commerce and makes it better in every possible way. Some of the big changes include:
 
 * **A complete re-working of carts & orders** to ultimately make things faster and more reliable.
 * **A redesigned Control Panel UI**, ensuring your admins can get what they need at a glance.
