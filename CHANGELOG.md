@@ -9,7 +9,7 @@ Simple Commerce has been replaced by [Cargo](https://builtwithcargo.dev), the na
 * **A massive overhaul to discounting**, allowing for automatic site-wide discounts, as well as traditional coupon-style discounts.
 * **Pre-built Checkout Page**, allowing you to level up your customer's purchasing experience.
 
-Simple Commerce v8 is the last major version of Simple Commerce, giving you time to migrate to Cargo. You should read the [upgrade guide](https://github.com/duncanmcclean/simple-commerce/blob/main/docs/upgrade-guides/v7-to-v8.md) before upgrading, in case you need to make any manual changes.
+Simple Commerce v8 is the last major version of Simple Commerce, giving you time to migrate to Cargo. You should read the [upgrade guide](https://simple-commerce.duncanmcclean.com/upgrade-guides/v7-to-v8) before upgrading, in case you need to make any manual changes.
 
 ### What's new
 - Statamic 6 support #1236 by @duncanmcclean
