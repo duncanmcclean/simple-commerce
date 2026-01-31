@@ -2146,5 +2146,158 @@ test('can destroy item', function () {
         'cart',
     ]);
 
+    $cart = $cart->fresh();
+
     expect($cart->lineItems()->toArray())->toBeEmpty();
-})->skip();
+});
+
+test('can add item after destroying it and quantity should be correct', function () {
+    $product = Product::make()
+        ->price(1000)
+        ->data([
+            'title' => 'Food',
+        ]);
+
+    $product->save();
+
+    // Step 1: Add product with quantity 1
+    $response = $this
+        ->from('/products/food')
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'quantity' => 1,
+        ]);
+
+    $response->assertRedirect('/products/food');
+    $response->assertSessionHas('simple-commerce-cart');
+
+    $cartId = session()->get('simple-commerce-cart');
+    $cart = Order::find($cartId);
+
+    expect($cart->lineItems()->count())->toBe(1);
+    expect($cart->lineItems()->first()->quantity())->toBe(1);
+
+    $lineItemId = $cart->lineItems()->first()->id();
+
+    // Step 2: Remove the product
+    $response = $this
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cartId])
+        ->deleteJson(route('statamic.simple-commerce.cart-items.destroy', [
+            'item' => $lineItemId,
+        ]));
+
+    $response->assertJsonStructure([
+        'status',
+        'message',
+        'cart',
+    ]);
+
+    $cart = Order::find($cartId);
+    expect($cart->lineItems()->count())->toBe(0);
+
+    // Step 3: Add the same product again with quantity 1
+    $response = $this
+        ->from('/products/food')
+        ->withSession(['simple-commerce-cart' => $cartId])
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'quantity' => 1,
+        ]);
+
+    $response->assertRedirect('/products/food');
+
+    $cart = Order::find($cartId);
+
+    // The quantity should be 1, not 2
+    expect($cart->lineItems()->count())->toBe(1);
+    expect($cart->lineItems()->first()->quantity())->toBe(1);
+});
+
+test('can add variant item after destroying it and quantity should be correct', function () {
+    $product = Product::make()
+        ->data([
+            'title' => 'Dog Food',
+            'slug' => 'dog-food',
+        ])
+        ->productVariants([
+            'variants' => [
+                [
+                    'name' => 'Sizes',
+                    'values' => [
+                        'Small',
+                        'Large',
+                    ],
+                ],
+            ],
+            'options' => [
+                [
+                    'key' => 'Small',
+                    'variant' => 'Small',
+                    'price' => 1000,
+                ],
+                [
+                    'key' => 'Large',
+                    'variant' => 'Large',
+                    'price' => 2000,
+                ],
+            ],
+        ]);
+
+    $product->save();
+
+    // Step 1: Add product with variant
+    $response = $this
+        ->from('/products/dog-food')
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'variant' => 'Small',
+            'quantity' => 1,
+        ]);
+
+    $response->assertRedirect('/products/dog-food');
+    $response->assertSessionHas('simple-commerce-cart');
+
+    $cartId = session()->get('simple-commerce-cart');
+    $cart = Order::find($cartId);
+
+    expect($cart->lineItems()->count())->toBe(1);
+    expect($cart->lineItems()->first()->quantity())->toBe(1);
+
+    $lineItemId = $cart->lineItems()->first()->id();
+
+    // Step 2: Remove the product
+    $response = $this
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cartId])
+        ->deleteJson(route('statamic.simple-commerce.cart-items.destroy', [
+            'item' => $lineItemId,
+        ]));
+
+    $response->assertJsonStructure([
+        'status',
+        'message',
+        'cart',
+    ]);
+
+    $cart = Order::find($cartId);
+    expect($cart->lineItems()->count())->toBe(0);
+
+    // Step 3: Add the same product/variant again with quantity 1
+    $response = $this
+        ->from('/products/dog-food')
+        ->withSession(['simple-commerce-cart' => $cartId])
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'variant' => 'Small',
+            'quantity' => 1,
+        ]);
+
+    $response->assertRedirect('/products/dog-food');
+
+    $cart = Order::find($cartId);
+
+    // The quantity should be 1, not 2
+    expect($cart->lineItems()->count())->toBe(1);
+    expect($cart->lineItems()->first()->quantity())->toBe(1);
+});
