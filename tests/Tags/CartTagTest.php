@@ -14,6 +14,7 @@ use Statamic\Facades\Antlers;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
+use Statamic\Fields\Value;
 use Statamic\Statamic;
 
 uses(SetupCollections::class);
@@ -943,8 +944,8 @@ test('can get data from cart', function () {
 
     $usage = $this->tag->wildcard('note');
 
-    expect($usage instanceof \Statamic\Fields\Value || is_string($usage))->toBeTrue();
-    expect('Deliver by front door.')->toBe($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage);
+    expect($usage instanceof Value || is_string($usage))->toBeTrue();
+    expect('Deliver by front door.')->toBe($usage instanceof Value ? $usage->value() : $usage);
 });
 
 /**
@@ -963,8 +964,8 @@ test('can get data from cart when method should be converted to studly case', fu
 
     $usage = $this->tag->wildcard('raw_grand_total');
 
-    expect($usage instanceof \Statamic\Fields\Value || is_int($usage))->toBeTrue();
-    expect(1590)->toBe($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage);
+    expect($usage instanceof Value || is_int($usage))->toBeTrue();
+    expect(1590)->toBe($usage instanceof Value ? $usage->value() : $usage);
 });
 
 test('cant get data from cart if there is no cart', function () {
@@ -973,6 +974,6 @@ test('cant get data from cart if there is no cart', function () {
 
     $usage = $this->tag->wildcard('note');
 
-    expect($usage instanceof \Statamic\Fields\Value || is_string($usage))->toBeFalse();
-    expect(null)->toBe($usage instanceof \Statamic\Fields\Value ? $usage->value() : $usage);
+    expect($usage instanceof Value || is_string($usage))->toBeFalse();
+    expect(null)->toBe($usage instanceof Value ? $usage->value() : $usage);
 });

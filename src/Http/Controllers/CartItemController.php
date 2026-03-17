@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns\HandlesCustomerInformation;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
@@ -47,7 +48,7 @@ class CartItemController extends BaseActionController
 
         // If this product requires another one, ensure the customer has already purchased it...
         if ($product->has('prerequisite_product')) {
-            /** @var \DuncanMcClean\SimpleCommerce\Contracts\Customer $customer */
+            /** @var Customer $customer */
             $customer = $cart->customer();
 
             if (! $customer) {

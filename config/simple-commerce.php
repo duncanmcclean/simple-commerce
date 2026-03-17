@@ -1,5 +1,12 @@
 <?php
 
+use DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Gateways\Builtin\DummyGateway;
+use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
+use DuncanMcClean\SimpleCommerce\Products\EntryProductRepository;
+use DuncanMcClean\SimpleCommerce\Shipping\FreeShipping;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine;
+
 return [
 
     /*
@@ -20,7 +27,7 @@ return [
 
             'shipping' => [
                 'methods' => [
-                    \DuncanMcClean\SimpleCommerce\Shipping\FreeShipping::class => [],
+                    FreeShipping::class => [],
                 ],
             ],
         ],
@@ -39,7 +46,7 @@ return [
     */
 
     'gateways' => [
-        \DuncanMcClean\SimpleCommerce\Gateways\Builtin\DummyGateway::class => [
+        DummyGateway::class => [
             'display' => 'Card',
         ],
     ],
@@ -110,7 +117,7 @@ return [
     |
     */
 
-    'tax_engine' => \DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine::class,
+    'tax_engine' => TaxEngine::class,
 
     'tax_engine_config' => [
         // Basic Engine
@@ -161,17 +168,17 @@ return [
 
     'content' => [
         'customers' => [
-            'repository' => \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class,
+            'repository' => EntryCustomerRepository::class,
             'collection' => 'customers',
         ],
 
         'orders' => [
-            'repository' => \DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository::class,
+            'repository' => EntryOrderRepository::class,
             'collection' => 'orders',
         ],
 
         'products' => [
-            'repository' => \DuncanMcClean\SimpleCommerce\Products\EntryProductRepository::class,
+            'repository' => EntryProductRepository::class,
             'collection' => 'products',
         ],
     ],

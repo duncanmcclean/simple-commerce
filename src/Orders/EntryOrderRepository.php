@@ -10,6 +10,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Statamic\Eloquent\Entries\EntryModel;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Stache;
 
@@ -175,7 +176,7 @@ class EntryOrderRepository implements RepositoryContract
 
     protected function isUsingEloquentDriverWithIncrementingIds(): bool
     {
-        return config('statamic.eloquent-driver.entries.model') === \Statamic\Eloquent\Entries\EntryModel::class;
+        return config('statamic.eloquent-driver.entries.model') === EntryModel::class;
     }
 
     protected function generateOrderNumber(): int

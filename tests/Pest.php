@@ -1,5 +1,8 @@
 <?php
 
+use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository;
+use DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
@@ -129,12 +132,12 @@ function fakeCart($cart = null)
 function setupUserCustomerRepository(): void
 {
     Config::set('simple-commerce.content.customers', [
-        'repository' => \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class,
+        'repository' => UserCustomerRepository::class,
     ]);
 
     Statamic::repository(
-        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class
+        CustomerRepository::class,
+        UserCustomerRepository::class
     );
 
     File::deleteDirectory(__DIR__.'/../__fixtures__/users');
@@ -144,12 +147,12 @@ function setupUserCustomerRepository(): void
 function tearDownUserCustomerRepository(): void
 {
     Config::set('simple-commerce.content.customers', [
-        'repository' => \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class,
+        'repository' => EntryCustomerRepository::class,
         'collection' => 'customers',
     ]);
 
     Statamic::repository(
-        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class
+        CustomerRepository::class,
+        EntryCustomerRepository::class
     );
 }

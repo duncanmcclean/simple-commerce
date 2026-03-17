@@ -168,7 +168,7 @@ it('can delete customer', function () {
         ])
         ->save();
 
-    expect($customer->resource())->toBeInstanceOf(\Statamic\Contracts\Entries\Entry::class);
+    expect($customer->resource())->toBeInstanceOf(Statamic\Contracts\Entries\Entry::class);
 
     $customer->delete();
 

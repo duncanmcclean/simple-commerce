@@ -5,16 +5,19 @@ namespace DuncanMcClean\SimpleCommerce\Http\Middleware;
 use Closure;
 use DuncanMcClean\SimpleCommerce\Exceptions\InvalidFormParametersException;
 use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class EnsureFormParametersArriveIntact
 {
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
+     * @throws AccessDeniedHttpException
      */
     public function handle($request, Closure $next)
     {

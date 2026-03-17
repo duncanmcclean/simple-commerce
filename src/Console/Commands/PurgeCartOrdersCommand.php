@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Console\Commands;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
@@ -23,7 +24,7 @@ class PurgeCartOrdersCommand extends Command
 
         $fourteenDaysFromNow = Carbon::now()->subDays(14);
 
-        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], \DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository::class)) {
+        if ($this->isOrExtendsClass(SimpleCommerce::orderDriver()['repository'], EntryOrderRepository::class)) {
             $fourteenDaysFromNow = $fourteenDaysFromNow->timestamp;
         }
 
