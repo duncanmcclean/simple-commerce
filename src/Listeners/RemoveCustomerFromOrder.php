@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Listeners;
 
+use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Auth\Events\Logout;
@@ -12,7 +13,7 @@ class RemoveCustomerFromOrder
 
     public function handle(Logout $event)
     {
-        if (! $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class)) {
+        if (! $this->isOrExtendsClass(SimpleCommerce::customerDriver()['repository'], UserCustomerRepository::class)) {
             return;
         }
 

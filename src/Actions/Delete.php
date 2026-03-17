@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Actions;
 
+use DuncanMcClean\SimpleCommerce\Coupons\Coupon;
 use Statamic\Actions\Action;
 
 class Delete extends Action
@@ -20,7 +21,7 @@ class Delete extends Action
     public function visibleTo($item)
     {
         switch (true) {
-            case $item instanceof \DuncanMcClean\SimpleCommerce\Coupons\Coupon:
+            case $item instanceof Coupon:
                 return true;
             default:
                 return false;
@@ -30,7 +31,7 @@ class Delete extends Action
     public function authorize($user, $item)
     {
         switch (true) {
-            case $item instanceof \DuncanMcClean\SimpleCommerce\Coupons\Coupon:
+            case $item instanceof Coupon:
                 return $user->can('delete coupons');
             default:
                 return false;

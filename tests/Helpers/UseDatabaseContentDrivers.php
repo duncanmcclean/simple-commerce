@@ -2,6 +2,12 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tests\Helpers;
 
+use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository;
+use DuncanMcClean\SimpleCommerce\Contracts\OrderRepository;
+use DuncanMcClean\SimpleCommerce\Customers\CustomerModel;
+use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\OrderModel;
 use Illuminate\Support\Facades\File;
 
 trait UseDatabaseContentDrivers
@@ -25,22 +31,22 @@ trait UseDatabaseContentDrivers
         $this->runLaravelMigrations();
 
         $this->app['config']->set('simple-commerce.content.customers', [
-            'repository' => \DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository::class,
-            'model' => \DuncanMcClean\SimpleCommerce\Customers\CustomerModel::class,
+            'repository' => EloquentCustomerRepository::class,
+            'model' => CustomerModel::class,
         ]);
 
         $this->app['config']->set('simple-commerce.content.orders', [
-            'repository' => \DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository::class,
-            'model' => \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class,
+            'repository' => EloquentOrderRepository::class,
+            'model' => OrderModel::class,
         ]);
 
         $this->app->bind(
-            \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
+            CustomerRepository::class,
             $this->app['config']->get('simple-commerce.content.customers.repository')
         );
 
         $this->app->bind(
-            \DuncanMcClean\SimpleCommerce\Contracts\OrderRepository::class,
+            OrderRepository::class,
             $this->app['config']->get('simple-commerce.content.orders.repository')
         );
     }

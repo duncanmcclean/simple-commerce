@@ -5,6 +5,8 @@ namespace DuncanMcClean\SimpleCommerce\Tests;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\SessionDriver;
 use DuncanMcClean\SimpleCommerce\ServiceProvider;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Tax\BasicTaxEngine;
+use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine;
 use DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine as StandardTaxEngine;
 use Statamic\Facades\AssetContainer;
 use Statamic\Facades\Blueprint;
@@ -113,11 +115,11 @@ abstract class TestCase extends AddonTestCase
 
     protected function useBasicTaxEngine()
     {
-        SimpleCommerce::setTaxEngine(\DuncanMcClean\SimpleCommerce\Tax\BasicTaxEngine::class);
+        SimpleCommerce::setTaxEngine(BasicTaxEngine::class);
     }
 
     protected function useStandardTaxEngine()
     {
-        SimpleCommerce::setTaxEngine(\DuncanMcClean\SimpleCommerce\Tax\Standard\TaxEngine::class);
+        SimpleCommerce::setTaxEngine(TaxEngine::class);
     }
 }

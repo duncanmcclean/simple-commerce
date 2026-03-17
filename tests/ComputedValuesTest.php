@@ -3,9 +3,10 @@
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
+use DuncanMcClean\SimpleCommerce\Tests\TestCase;
 use Illuminate\Support\Carbon;
 
-uses(DuncanMcClean\SimpleCommerce\Tests\TestCase::class);
+uses(TestCase::class);
 uses(SetupCollections::class);
 
 test('product returns with raw price value', function () {

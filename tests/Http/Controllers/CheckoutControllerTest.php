@@ -2224,10 +2224,10 @@ test('can post checkout and ensure user is redirected', function () {
 
 test('can post checkout and ensure order paid notifications are sent', function () {
     config(['simple-commerce.notifications.order_paid' => [
-        \DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderPaid::class => [
+        CustomerOrderPaid::class => [
             'to' => 'customer',
         ],
-        \DuncanMcClean\SimpleCommerce\Notifications\BackOfficeOrderPaid::class => [
+        BackOfficeOrderPaid::class => [
             'to' => 'duncan@example.com',
         ],
     ]]);
