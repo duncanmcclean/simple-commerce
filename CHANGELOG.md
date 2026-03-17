@@ -1,5 +1,12 @@
 # Changelog
 
+## v8.1.0 (2026-03-17)
+
+### What's new
+- Supports Laravel 13 [#1264](https://github.com/duncanmcclean/simple-commerce/issues/1264) by @duncanmcclean
+
+
+
 ## v8.0.0 (2026-01-28)
 
 Simple Commerce has been replaced by [Cargo](https://builtwithcargo.dev), the natural evolution of Simple Commerce.
