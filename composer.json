@@ -38,7 +38,7 @@
         "pixelfear/composer-dist-plugin": "^0.1.0",
         "spatie/ignition": "^1.13",
         "statamic/cms": "^6.5",
-        "stillat/proteus": "^4.0",
+        "stillat/proteus": "^4.2.1",
         "stripe/stripe-php": "^13.0"
     },
     "require-dev": {
