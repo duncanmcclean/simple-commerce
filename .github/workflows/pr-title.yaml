@@ -8,6 +8,6 @@ jobs:
   pr-title:
     runs-on: ubuntu-latest
     steps:
-      - uses: deepakputhraya/action-pr-title@master
+      - uses: deepakputhraya/action-pr-title@077bddd7bdabd0d2b1b25ed0754c7e62e184d7ee # master
         with:
           regex: '^\[\d+\.x\]\s'
