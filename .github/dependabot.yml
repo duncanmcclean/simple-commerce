@@ -8,3 +8,7 @@ updates:
       github-actions:
         patterns:
           - "*"
+    # Supply chain attack mitigation: wait 7 days before updating
+    # to allow community detection of compromised releases
+    cooldown:
+      default-days: 7
