@@ -38,19 +38,17 @@ beforeEach(function () {
 test('can output checkout form', function () {
     fakeCartWithLineItem();
 
-    $this->tag->setParameters([]);
+    $usage = (string) tag('
+        {{ sc:checkout }}
+            <h2>Checkout</h2>
 
-    $this->tag->setContent('
-        <h2>Checkout</h2>
-
-        {{ sc:gateways }}
-            ---
-            {{ name }} - Duncan Cool ({{ config:is-duncan-cool }}) - Haggis - Tatties
-            ---
-        {{ /sc:gateways }}
+            {{ sc:gateways }}
+                ---
+                {{ name }} - Duncan Cool ({{ config:is-duncan-cool }}) - Haggis - Tatties
+                ---
+            {{ /sc:gateways }}
+        {{ /sc:checkout }}
     ');
-
-    $usage = $this->tag->index();
 
     expect($usage)->toContain('Test On-site Gateway - Duncan Cool (yes) - Haggis - Tatties');
     expect($usage)->toContain('<form method="POST" action="http://localhost/!/simple-commerce/checkout"');
