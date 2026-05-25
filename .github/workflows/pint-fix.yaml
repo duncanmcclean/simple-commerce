@@ -20,11 +20,11 @@ jobs:
       contents: write # Required to commit style fixes
 
     steps:
-      # zizmor: ignore[artipacked] - credentials required to push commits
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.head_ref }}
+          persist-credentials: false
 
       - name: Fix PHP code style issues
         uses: aglipanci/laravel-pint-action@36de00d5f5a8a4e12d443e01671daa12a18f4c79 # 2.6
