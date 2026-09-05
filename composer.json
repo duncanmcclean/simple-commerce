@@ -14,10 +14,6 @@
         }
     },
     "extra": {
-        "download-dist": {
-            "url": "https://github.com/duncanmcclean/simple-commerce/releases/download/{$version}/dist.tar.gz",
-            "path": "dist"
-        },
         "statamic": {
             "name": "Simple Commerce",
             "description": "A simple, yet powerful e-commerce addon for Statamic."
@@ -35,7 +31,6 @@
         "mollie/mollie-api-php": "^2.30.0",
         "moneyphp/money": "^4.0",
         "paypal/paypal-checkout-sdk": "^1.0",
-        "pixelfear/composer-dist-plugin": "^0.1.0",
         "spatie/ignition": "^1.13",
         "statamic/cms": "^6.5",
         "stillat/proteus": "^4.2.1",
@@ -57,7 +52,6 @@
         "process-timeout": 0,
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
-            "pixelfear/composer-dist-plugin": true,
             "pestphp/pest-plugin": true
         }
     },
