@@ -9,6 +9,10 @@ jobs:
   release:
     name: Prepare & Create Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@50fbc622fc4ef5163becd7fab6573eac35f8462e # v1
