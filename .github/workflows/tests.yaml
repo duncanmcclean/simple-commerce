@@ -43,6 +43,8 @@ jobs:
         run: |
           composer require "illuminate/contracts:${{ matrix.laravel }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
+        env:
+          COMPOSER_NO_SECURITY_BLOCKING: 1
 
       - name: Run PHPUnit
         run: vendor/bin/pest
