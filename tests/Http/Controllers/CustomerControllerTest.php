@@ -105,6 +105,36 @@ test('can update customer and request json', function () {
     expect(true)->toBe($customer->data()->get('vip'));
 });
 
+test('cant update customer when email contains path characters', function (string $email) {
+    Config::set('simple-commerce.field_whitelist.customers', [
+        'name', 'email',
+    ]);
+
+    $customer = Entry::make()
+        ->collection('customers')
+        ->slug('duncan_double_three_digital')
+        ->data([
+            'title' => 'Duncan McClean <duncan@doublethree.digital>',
+            'name' => 'Duncan McClean',
+            'email' => 'duncan@doublethree.digital',
+        ]);
+
+    $customer->save();
+
+    $this
+        ->from('/account')
+        ->post(route('statamic.simple-commerce.customer.update', [
+            'customer' => $customer->id(),
+        ]), ['email' => $email])
+        ->assertSessionHasErrors('email');
+
+    expect($customer->fresh()->get('email'))->toBe('duncan@doublethree.digital');
+})->with([
+    'leading slash' => '/joe@example.com',
+    'quoted traversal' => '"x/../../p"@example.com',
+    'backslash' => '"x\\y"@example.com',
+]);
+
 test('can update customer and ensure custom form request is used', function () {
     $customer = Entry::make()
         ->collection('customers')

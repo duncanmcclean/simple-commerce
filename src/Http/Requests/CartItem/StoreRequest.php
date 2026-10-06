@@ -10,6 +10,7 @@ use DuncanMcClean\SimpleCommerce\Rules\ProductExists;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Statamic\Rules\EmailWithoutPathCharacters;
 
 class StoreRequest extends FormRequest
 {
@@ -41,6 +42,7 @@ class StoreRequest extends FormRequest
             'email' => [
                 'nullable',
                 'email',
+                new EmailWithoutPathCharacters,
                 function ($attribute, $value, $fail) {
                     if (preg_match('/^\S*$/u', $value) === 0) {
                         return $fail(__('Your email may not contain any spaces.'));
@@ -50,6 +52,7 @@ class StoreRequest extends FormRequest
             'customer.email' => [
                 'nullable',
                 'email',
+                new EmailWithoutPathCharacters,
                 function ($attribute, $value, $fail) {
                     if (preg_match('/^\S*$/u', $value) === 0) {
                         return $fail(__('Your email may not contain any spaces.'));

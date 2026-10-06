@@ -98,7 +98,7 @@ function buildCartWithProducts()
 
 function tag($tag)
 {
-    return Parse::template($tag, []);
+    return Parse::template($tag, [], trusted: true);
 }
 
 function fakeCart($cart = null)
