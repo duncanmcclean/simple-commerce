@@ -161,13 +161,13 @@ it('can save order', function () {
 
     $order->save();
 
-    expect($order->resource())->toBeInstanceOf(\Statamic\Contracts\Entries\Entry::class);
+    expect($order->resource())->toBeInstanceOf(Statamic\Contracts\Entries\Entry::class);
 });
 
 it('can delete order', function () {
     $order = Order::make()->id('one')->save();
 
-    expect($order->resource())->toBeInstanceOf(\Statamic\Contracts\Entries\Entry::class);
+    expect($order->resource())->toBeInstanceOf(Statamic\Contracts\Entries\Entry::class);
 
     $order->delete();
 

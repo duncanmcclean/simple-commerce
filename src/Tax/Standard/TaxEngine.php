@@ -53,7 +53,7 @@ class TaxEngine implements Contract
     {
         $product = $lineItem->product();
 
-        /** @var \DuncanMcClean\SimpleCommerce\Orders\Address */
+        /** @var Address */
         $address = config('simple-commerce.tax_engine_config.address') === 'billing'
             ? $order->billingAddress()
             : $order->shippingAddress();
@@ -133,7 +133,7 @@ class TaxEngine implements Contract
 
     protected function decideOnShippingRate(Order $order, ShippingMethod $shippingMethod): ?StandardTaxRate
     {
-        /** @var \DuncanMcClean\SimpleCommerce\Orders\Address */
+        /** @var Address */
         $address = config('simple-commerce.tax_engine_config.address') === 'billing'
             ? $order->billingAddress()
             : $order->shippingAddress();

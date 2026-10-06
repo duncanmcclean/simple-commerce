@@ -1,8 +1,11 @@
 <?php
 
 use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
+use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository;
 use DuncanMcClean\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository;
 use DuncanMcClean\SimpleCommerce\Customers\StacheUserQueryBuilder;
+use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
 use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
@@ -16,8 +19,8 @@ use Statamic\Statamic;
 
 beforeEach(function () {
     Statamic::repository(
-        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository::class
+        CustomerRepository::class,
+        UserCustomerRepository::class
     );
 
     File::deleteDirectory(__DIR__.'/../__fixtures__/users');
@@ -27,8 +30,8 @@ beforeEach(function () {
 
 afterEach(function () {
     Statamic::repository(
-        \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository::class,
-        \DuncanMcClean\SimpleCommerce\Customers\EntryCustomerRepository::class
+        CustomerRepository::class,
+        EntryCustomerRepository::class
     );
 });
 

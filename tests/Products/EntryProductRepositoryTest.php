@@ -4,6 +4,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Product as ProductContract;
 use DuncanMcClean\SimpleCommerce\Exceptions\ProductNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Products\EntryQueryBuilder;
+use Statamic\Contracts\Entries\Entry;
 use Statamic\Facades\Stache;
 use Statamic\Testing\Concerns\PreventsSavingStacheItemsToDisk;
 
@@ -69,13 +70,13 @@ it('can save product', function () {
 
     $product->save();
 
-    expect($product->resource())->toBeInstanceOf(\Statamic\Contracts\Entries\Entry::class);
+    expect($product->resource())->toBeInstanceOf(Entry::class);
 });
 
 it('can delete product', function () {
     $product = Product::make()->id('one')->price(1500)->save();
 
-    expect($product->resource())->toBeInstanceOf(\Statamic\Contracts\Entries\Entry::class);
+    expect($product->resource())->toBeInstanceOf(Entry::class);
 
     $product->delete();
 

@@ -6,7 +6,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DuncanMcClean\SimpleCommerce\Contracts\CustomerRepository
+ * @see CustomerRepository
  */
 class Customer extends Facade
 {

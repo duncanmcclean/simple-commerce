@@ -2,6 +2,10 @@
 
 namespace DuncanMcClean\SimpleCommerce\Console\Commands;
 
+use DuncanMcClean\SimpleCommerce\Customers\CustomerModel;
+use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
+use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
+use DuncanMcClean\SimpleCommerce\Orders\OrderModel;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -111,12 +115,12 @@ class SwitchToDatabase extends Command
 
         ConfigWriter::edit('simple-commerce')
             ->replace('content.orders', [
-                'repository' => \DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository::class,
-                'model' => \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class,
+                'repository' => EloquentOrderRepository::class,
+                'model' => OrderModel::class,
             ])
             ->replace('content.customers', [
-                'repository' => \DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository::class,
-                'model' => \DuncanMcClean\SimpleCommerce\Customers\CustomerModel::class,
+                'repository' => EloquentCustomerRepository::class,
+                'model' => CustomerModel::class,
             ])
             ->save();
 

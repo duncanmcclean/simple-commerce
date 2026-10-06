@@ -2,10 +2,12 @@
 
 namespace DuncanMcClean\SimpleCommerce;
 
+use DebugBar\DataCollector\DataCollector;
+use DebugBar\DataCollector\Renderable;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Statamic\Facades\Site;
 
-class DebugbarDataCollector extends \DebugBar\DataCollector\DataCollector implements \DebugBar\DataCollector\Renderable
+class DebugbarDataCollector extends DataCollector implements Renderable
 {
     use CartDriver;
 

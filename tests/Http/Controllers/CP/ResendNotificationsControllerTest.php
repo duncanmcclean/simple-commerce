@@ -18,7 +18,7 @@ it('can resend notifications for order statuses', function () {
 
     Config::set('simple-commerce.notifications', [
         'order_dispatched' => [
-            \DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderShipped::class => ['to' => 'customer'],
+            CustomerOrderShipped::class => ['to' => 'customer'],
         ],
     ]);
 
@@ -40,7 +40,7 @@ it('can resend notifications for payment statuses', function () {
 
     Config::set('simple-commerce.notifications', [
         'order_paid' => [
-            \DuncanMcClean\SimpleCommerce\Notifications\CustomerOrderPaid::class => ['to' => 'customer'],
+            CustomerOrderPaid::class => ['to' => 'customer'],
         ],
     ]);
 
