@@ -8,6 +8,7 @@ use DuncanMcClean\SimpleCommerce\Rules\ValidCoupon;
 use DuncanMcClean\SimpleCommerce\Rules\ValidGateway;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Foundation\Http\FormRequest;
+use Statamic\Rules\EmailWithoutPathCharacters;
 
 class CheckoutRequest extends FormRequest
 {
@@ -22,12 +23,12 @@ class CheckoutRequest extends FormRequest
     {
         $rules = [
             'name' => ['sometimes', 'string'],
-            'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
+            'email' => ['nullable', 'email', new EmailWithoutPathCharacters, function ($attribute, $value, $fail) {
                 if (preg_match('/^\S*$/u', $value) === 0) {
                     return $fail(__('Your email may not contain any spaces.'));
                 }
             }],
-            'customer.email' => ['nullable', 'email', function ($attribute, $value, $fail) {
+            'customer.email' => ['nullable', 'email', new EmailWithoutPathCharacters, function ($attribute, $value, $fail) {
                 if (preg_match('/^\S*$/u', $value) === 0) {
                     return $fail(__('Your email may not contain any spaces.'));
                 }
