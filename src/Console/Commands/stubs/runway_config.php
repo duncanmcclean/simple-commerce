@@ -1,5 +1,8 @@
 <?php
 
+use DuncanMcClean\SimpleCommerce\Customers\CustomerModel;
+use DuncanMcClean\SimpleCommerce\Orders\OrderModel;
+
 return [
 
     /*
@@ -12,13 +15,13 @@ return [
     */
 
     'resources' => [
-        \DuncanMcClean\SimpleCommerce\Customers\CustomerModel::class => [
+        CustomerModel::class => [
             'name' => 'Customers',
             'handle' => 'customers',
             'hidden' => true,
         ],
 
-        \DuncanMcClean\SimpleCommerce\Orders\OrderModel::class => [
+        OrderModel::class => [
             'name' => 'Orders',
             'handle' => 'orders',
             'hidden' => true,
