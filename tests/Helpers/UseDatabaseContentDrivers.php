@@ -9,6 +9,7 @@ use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
 use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
 use DuncanMcClean\SimpleCommerce\Orders\OrderModel;
 use Illuminate\Support\Facades\File;
+use StatamicRadPack\Runway\Runway;
 
 trait UseDatabaseContentDrivers
 {
@@ -39,6 +40,23 @@ trait UseDatabaseContentDrivers
             'repository' => EloquentOrderRepository::class,
             'model' => OrderModel::class,
         ]);
+
+        $this->app['config']->set('runway.resources', [
+            CustomerModel::class => [
+                'name' => 'Customers',
+                'handle' => 'customers',
+                'hidden' => true,
+            ],
+            OrderModel::class => [
+                'name' => 'Orders',
+                'handle' => 'orders',
+                'hidden' => true,
+                'read_only' => true,
+                'nested_field_prefixes' => ['data'],
+            ],
+        ]);
+
+        Runway::discoverResources();
 
         $this->app->bind(
             CustomerRepository::class,
