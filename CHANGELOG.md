@@ -1,5 +1,12 @@
 # Changelog
 
+## v7.8.10 (2026-10-06)
+
+### What's fixed
+- Harden email address validation #1287 by @duncanmcclean
+
+
+
 ## v7.8.9 (2026-01-08)
 
 ### What's fixed
