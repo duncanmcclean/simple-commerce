@@ -28,7 +28,9 @@ jobs:
         run: npm install
 
       - name: Install Composer Dependencies
-        run: composer install
+        run: |
+          composer config preferred-install.statamic/cms source
+          composer install
 
       - name: Compile assets
         run: npm run build
