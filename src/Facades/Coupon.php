@@ -6,7 +6,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\CouponRepository;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \DuncanMcClean\SimpleCommerce\Contracts\CouponRepository
+ * @see CouponRepository
  */
 class Coupon extends Facade
 {
