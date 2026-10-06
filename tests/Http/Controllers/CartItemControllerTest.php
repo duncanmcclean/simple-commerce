@@ -771,6 +771,25 @@ test('cant store item with email that contains spaces', function () {
     }
 });
 
+test('cant store item with email that contains path characters', function (string $email) {
+    $product = Product::make()->price(1000)->data(['title' => 'Dog Food']);
+    $product->save();
+
+    $this
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'quantity' => 1,
+            'email' => $email,
+        ])
+        ->assertSessionHasErrors('email')
+        ->assertSessionMissing('simple-commerce-cart');
+})->with([
+    'leading slash' => '/joe@example.com',
+    'quoted traversal' => '"x/../../p"@example.com',
+    'backslash' => '"x\\y"@example.com',
+]);
+
 test('can store item with only email', function () {
     $product = Product::make()
         ->price(1000)
