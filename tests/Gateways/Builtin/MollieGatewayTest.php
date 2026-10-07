@@ -60,7 +60,7 @@ test('can prepare', function () {
     expect($molliePayment->amount->value)->toBe('55.00');
     expect($molliePayment->description)->toBe('Order '.$order->orderNumber());
     expect($molliePayment->redirectUrl)->toContain('/!/simple-commerce/gateways/mollie/callback?_order_id='.$order->id());
-})->skip(! env('MOLLIE_KEY'));
+})->skip('Mollie test account is not activated.');
 
 test('can refund charge', function () {
     $this->markTestIncomplete('Need to figure out how we can fake a REAL payment, so we can then go onto refund it.');
@@ -96,4 +96,4 @@ test('can hit webhook', function () {
     $webhook = $this->gateway->webhook(new Request([], $payload));
 
     expect(null)->toBe($webhook);
-})->skip(! env('MOLLIE_KEY'));
+})->skip('Mollie test account is not activated.');
