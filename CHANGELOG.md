@@ -1,5 +1,12 @@
 # Changelog
 
+## v8.1.1 (2026-10-07)
+
+### What's fixed
+- Harden email address validation [#1289](https://github.com/duncanmcclean/simple-commerce/issues/1289) by @duncanmcclean
+
+
+
 ## v8.1.0 (2026-03-17)
 
 ### What's new
