@@ -304,6 +304,34 @@ test('cant post checkout with name and email when email address contains spaces'
     expect(session()->has('simple-commerce-cart'))->toBeTrue();
 });
 
+test('cant post checkout when email address contains path characters', function (string $email) {
+    Event::fake();
+
+    [$product, $order] = buildCartWithProducts();
+
+    $this
+        ->withSession(['simple-commerce-cart' => $order->id])
+        ->post(route('statamic.simple-commerce.checkout.store'), [
+            'name' => 'Mike Scott',
+            'email' => $email,
+            'gateway' => DummyGateway::handle(),
+            'card_number' => '4242424242424242',
+            'expiry_month' => '01',
+            'expiry_year' => '2025',
+            'cvc' => '123',
+        ])
+        ->assertSessionHasErrors('email');
+
+    Event::assertNotDispatched(PreCheckout::class);
+    Event::assertNotDispatched(PostCheckout::class);
+
+    expect($order->fresh()->customer())->toBeNull();
+})->with([
+    'leading slash' => '/joe@example.com',
+    'quoted traversal' => '"x/../../p"@example.com',
+    'backslash' => '"x\\y"@example.com',
+]);
+
 test('can post checkout with only email', function () {
     Event::fake();
 

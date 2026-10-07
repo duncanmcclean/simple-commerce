@@ -329,6 +329,23 @@ test('cant update cart and create new customer if email contains spaces', functi
     }
 });
 
+test('cant update cart and create new customer if email contains path characters', function (string $email) {
+    $cart = Order::make();
+    $cart->save();
+
+    $this
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), ['email' => $email])
+        ->assertSessionHasErrors('email');
+
+    expect($cart->fresh()->customer())->toBeNull();
+})->with([
+    'leading slash' => '/joe@example.com',
+    'quoted traversal' => '"x/../../p"@example.com',
+    'backslash' => '"x\\y"@example.com',
+]);
+
 test('can update cart and existing customer by id', function () {
     $customer = Customer::make()->email('jordan.smith@example.com')->data([
         'name' => 'Jordan Smith',
@@ -546,6 +563,23 @@ test('cant update cart and create new customer via customer array if email conta
         expect(true)->toBeTrue();
     }
 });
+
+test('cant update cart and create new customer via customer array if email contains path characters', function (string $email) {
+    $cart = Order::make();
+    $cart->save();
+
+    $this
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), ['customer' => ['email' => $email]])
+        ->assertSessionHasErrors('customer.email');
+
+    expect($cart->fresh()->customer())->toBeNull();
+})->with([
+    'leading slash' => '/joe@example.com',
+    'quoted traversal' => '"x/../../p"@example.com',
+    'backslash' => '"x\\y"@example.com',
+]);
 
 /**
  * PR: https://github.com/duncanmcclean/simple-commerce/pull/337

@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Http\Requests\Customer;
 
 use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
 use Illuminate\Foundation\Http\FormRequest;
+use Statamic\Rules\EmailWithoutPathCharacters;
 
 class UpdateRequest extends FormRequest
 {
@@ -16,11 +17,18 @@ class UpdateRequest extends FormRequest
 
     public function rules()
     {
+        $rules = [
+            'email' => ['nullable', 'email', new EmailWithoutPathCharacters],
+        ];
+
         if ($formRequest = $this->get('_request')) {
-            return $this->buildFormRequest($formRequest, $this)->rules();
+            return array_merge(
+                $rules,
+                $this->buildFormRequest($formRequest, $this)->rules()
+            );
         }
 
-        return [];
+        return $rules;
     }
 
     public function messages()

@@ -32,7 +32,7 @@
         "moneyphp/money": "^4.0",
         "paypal/paypal-checkout-sdk": "^1.0",
         "spatie/ignition": "^1.13",
-        "statamic/cms": "^6.5",
+        "statamic/cms": "^6.35.1",
         "stillat/proteus": "^4.2.1",
         "stripe/stripe-php": "^13.0"
     },
