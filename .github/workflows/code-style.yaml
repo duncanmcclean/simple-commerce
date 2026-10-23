@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint-code-styling:
-    uses: duncanmcclean/.github/.github/workflows/code-style.yaml@3f08f281d0facb49b1a1f7ad5c94c58b3b2b61df
+  pint:
+    uses: duncanmcclean/.github/.github/workflows/code-style.yaml@bcdd4b7632e98497b7d2e251aff2222d0b5a181d
     permissions:
       contents: read

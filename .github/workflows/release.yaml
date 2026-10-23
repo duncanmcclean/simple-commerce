@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   release:
-    uses: duncanmcclean/.github/.github/workflows/release.yaml@3f08f281d0facb49b1a1f7ad5c94c58b3b2b61df
+    uses: duncanmcclean/.github/.github/workflows/release.yaml@bcdd4b7632e98497b7d2e251aff2222d0b5a181d
     permissions: {}
     with:
       version: ${{ inputs.version }}
