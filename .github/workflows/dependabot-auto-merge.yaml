@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   dependabot:
-    uses: duncanmcclean/.github/.github/workflows/dependabot-auto-merge.yaml@a7b7c24ac637a77cc5b4d1835ae3bccbd902ca48
+    uses: duncanmcclean/.github/.github/workflows/dependabot-auto-merge.yaml@3f08f281d0facb49b1a1f7ad5c94c58b3b2b61df
     permissions:
       contents: write # Merge the PR
       pull-requests: write # Merge the PR
