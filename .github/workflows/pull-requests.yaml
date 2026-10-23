@@ -13,6 +13,6 @@ concurrency:
 
 jobs:
   uneditable:
-    uses: duncanmcclean/.github/.github/workflows/pull-requests.yaml@bcdd4b7632e98497b7d2e251aff2222d0b5a181d
+    uses: duncanmcclean/.github/.github/workflows/pull-requests.yaml@cf61113f3bcbc7fb40ab88d094d2be7b8a474f50 # v1.0.0
     permissions:
       pull-requests: write # Post comment and close PRs that don't allow maintainer edits
