@@ -12,120 +12,12 @@ permissions: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    environment: Releases
-    permissions: {} # all writes go through the App token; GITHUB_TOKEN needs no scopes
-    steps:
-      - name: Resolve and validate version
-        env:
-          INPUT_VERSION: ${{ inputs.version }}
-          BRANCH: ${{ github.ref_name }}
-        run: |
-          version="${INPUT_VERSION#v}"
-
-          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
-            echo "::error::Version must look like 1.2.0 (got: $INPUT_VERSION)"
-            exit 1
-          fi
-
-          if [[ "$BRANCH" =~ ^[0-9]+\.x$ ]] && [ "${version%%.*}" != "${BRANCH%%.*}" ]; then
-            echo "::error::Version $version does not belong on the $BRANCH branch"
-            exit 1
-          fi
-
-          echo "TAG=v$version" >> "$GITHUB_ENV"
-
-      - name: Get release bot token
-        id: app-token
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
-        with:
-          client-id: ${{ secrets.RELEASE_APP_CLIENT_ID }}
-          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
-          permission-contents: write
-          permission-issues: write # Comment on related issues
-          permission-pull-requests: write # Comment on related PRs
-
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          persist-credentials: true # zizmor: ignore[artipacked] App token is needed to push the tag
-
-      - name: Assert tag does not already exist
-        run: |
-          existing="$(git ls-remote --tags origin "$TAG")"
-          [ -z "$existing" ] || { echo "::error::Tag $TAG already exists on remote. Aborting."; exit 1; }
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
-        with:
-          php-version: 8.4
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
-          tools: composer:v2
-
-      - name: Use Node.js 20.19.0
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: 20.19.0
-          package-manager-cache: false
-
-      - name: Install Composer dependencies
-        run: composer install
-
-      - name: Install NPM dependencies
-        run: npm ci
-
-      - name: Build release assets
-        run: npm run build
-
-      - name: Create the build commit
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
-        run: |
-          USER_ID="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
-          git config user.name "${APP_SLUG}[bot]"
-          git config user.email "${USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
-          git add --force dist
-          git commit -m "Build assets for $TAG"
-
-      - name: Tag and push the build commit
-        run: |
-          git tag "$TAG"
-          git push origin "$TAG"
-
-      - name: Get Changelog
-        id: changelog
-        uses: statamic/changelog-action@5d112d0d790cdeeb5adca3e584e37edc474ab51b # v1.0.2
-        with:
-          version: ${{ env.TAG }}
-
-      - name: Create release
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          RELEASE_NOTES: ${{ steps.changelog.outputs.text }}
-          IS_DEFAULT_BRANCH: ${{ github.ref_name == github.event.repository.default_branch }}
-        run: |
-          latest="$IS_DEFAULT_BRANCH"
-          prerelease=false
-          case "$TAG" in
-            *-*) prerelease=true; latest=false ;;
-          esac
-          gh release create "$TAG" \
-            --title "$TAG" \
-            --notes "$RELEASE_NOTES" \
-            --latest="$latest" \
-            --prerelease="$prerelease"
-
-      - name: Comment on related issues
-        uses: duncanmcclean/post-release-comments@ee2d062e73bd6f0898f36ed892953ed88134cc19 # v1.0.6
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-        with:
-          version: ${{ env.TAG }}
-          changelog: ${{ steps.changelog.outputs.text }}
+    uses: duncanmcclean/.github/.github/workflows/release.yaml@cf61113f3bcbc7fb40ab88d094d2be7b8a474f50 # v1.0.0
+    permissions: {}
+    with:
+      version: ${{ inputs.version }}
+      assets: dist
