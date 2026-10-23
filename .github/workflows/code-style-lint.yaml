@@ -1,0 +1,16 @@
+name: Lint code style issues
+
+on:
+  pull_request:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-code-styling:
+    uses: duncanmcclean/.github/.github/workflows/code-style-lint.yaml@a7b7c24ac637a77cc5b4d1835ae3bccbd902ca48
+    permissions:
+      contents: read
