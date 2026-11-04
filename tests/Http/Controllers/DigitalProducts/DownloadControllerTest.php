@@ -2,6 +2,7 @@
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Event;
@@ -45,9 +46,9 @@ afterEach(function () {
     Storage::disk('test')->delete('manual.pdf');
 });
 
-function makeOrderWithVariantDownload($product, array $downloadHistory = [])
+function makeOrderWithVariantDownload($product, array $downloadHistory = [], PaymentStatus $paymentStatus = PaymentStatus::Paid)
 {
-    $order = Order::make()->lineItems([
+    $order = Order::make()->paymentStatus($paymentStatus)->lineItems([
         [
             'id' => Stache::generateId(),
             'product' => $product->id(),
@@ -98,4 +99,19 @@ it('refuses to download a variant once its download limit has been reached', fun
         ->assertStatus(405);
 
     expect($order->fresh()->lineItems()->first()->metadata()->get('download_history'))->toHaveCount(1);
+});
+
+it('refuses to download a variant when the order has not been paid', function () {
+    $order = makeOrderWithVariantDownload($this->product, paymentStatus: PaymentStatus::Unpaid);
+    $lineItem = $order->lineItems()->first();
+
+    $this
+        ->get(route('statamic.simple-commerce.digital-products.download', [
+            'orderId' => $order->id(),
+            'lineItemId' => $lineItem->id(),
+            'license_key' => 'secret-license-key',
+        ]))
+        ->assertForbidden();
+
+    expect($order->fresh()->lineItems()->first()->metadata()->get('download_history'))->toBeNull();
 });

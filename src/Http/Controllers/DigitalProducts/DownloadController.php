@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -20,6 +21,8 @@ class DownloadController extends Controller
         if (! $item->metadata()->has('license_key') || $item->metadata()->get('license_key') !== $request->get('license_key')) {
             abort(401);
         }
+
+        abort_unless($order->paymentStatus() === PaymentStatus::Paid, 403);
 
         $product = $item->product();
 
