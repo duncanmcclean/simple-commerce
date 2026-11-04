@@ -10,6 +10,7 @@ use DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts\VerificationCo
 use DuncanMcClean\SimpleCommerce\Http\Controllers\GatewayCallbackController;
 use DuncanMcClean\SimpleCommerce\Http\Controllers\GatewayWebhookController;
 use DuncanMcClean\SimpleCommerce\Http\Middleware\EnsureFormParametersArriveIntact;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
@@ -37,7 +38,7 @@ Route::name('simple-commerce.')->group(function () {
 
     Route::post('/gateways/{gateway}/webhook', [GatewayWebhookController::class, 'index'])
         ->name('gateways.webhook')
-        ->withoutMiddleware([VerifyCsrfToken::class]);
+        ->withoutMiddleware([VerifyCsrfToken::class, PreventRequestForgery::class]);
 
     Route::prefix('digital-products')->name('digital-products.')->group(function () {
         Route::get('download/{orderId}/{lineItemId}', DownloadController::class)->name('download');
