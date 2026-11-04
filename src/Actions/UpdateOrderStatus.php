@@ -6,6 +6,8 @@ use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Support\Runway;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
@@ -63,6 +65,18 @@ class UpdateOrderStatus extends Action
         });
 
         return $items->count() === $allowedOnItems->count();
+    }
+
+    public function authorize($user, $item)
+    {
+        switch (true) {
+            case $item instanceof Entry:
+                return $user->can('edit', $item);
+            case $item instanceof Model:
+                return $user->can('edit', [Runway::orderModel(), $item]);
+            default:
+                return false;
+        }
     }
 
     public function run($items, $values)
