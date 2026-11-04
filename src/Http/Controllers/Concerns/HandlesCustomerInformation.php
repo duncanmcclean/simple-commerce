@@ -67,7 +67,7 @@ trait HandlesCustomerInformation
                 return $cart;
             }
 
-            if ($this->belongsToCurrentUser($customer)) {
+            if ($this->belongsToCurrentUser($customer) && ! $this->emailBelongsToAnotherCustomer($email, $customer)) {
                 $customer->email($email)->save();
 
                 return $cart;
@@ -91,6 +91,15 @@ trait HandlesCustomerInformation
         $user = User::current();
 
         return $user && $user->email() === $customer->email();
+    }
+
+    private function emailBelongsToAnotherCustomer(string $email, CustomerContract $customer): bool
+    {
+        try {
+            return Customer::findByEmail($email)->id() !== $customer->id();
+        } catch (CustomerNotFound $e) {
+            return false;
+        }
     }
 
     private function updateCustomer(OrderContract $cart, array $data): OrderContract
