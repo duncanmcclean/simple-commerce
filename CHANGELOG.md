@@ -1,5 +1,16 @@
 # Changelog
 
+## v7.8.11 (2026-11-04)
+
+### What's fixed
+- Harden CP authorization #1295 by @duncanmcclean
+- Cart & checkout tweaks #1297 by @duncanmcclean
+- Harden customer handling #1299 #1302 by @duncanmcclean
+- Harden payment gateways #1298 by @duncanmcclean
+- Cap cart line item quantities #1301 by @duncanmcclean
+
+
+
 ## v7.8.10 (2026-10-06)
 
 ### What's fixed
