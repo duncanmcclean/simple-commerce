@@ -171,13 +171,22 @@ class PayPalGateway extends BaseGateway implements Gateway
         $payload = json_decode($request->getContent(), true);
 
         if ($payload['event_type'] === 'CHECKOUT.ORDER.APPROVED') {
-            $order = OrderFacade::find($payload['resource']['purchase_units'][0]['custom_id']);
-
             $request = new OrdersCaptureRequest($payload['resource']['id']);
+            $request->prefer('return=representation');
 
             /** @var \PayPalHttp\HttpResponse $response */
             $response = $this->paypalClient->execute($request);
             $responseBody = json_decode(json_encode($response->result), true);
+
+            if ($responseBody['status'] !== 'COMPLETED') {
+                return new HttpResponse;
+            }
+
+            $order = OrderFacade::find($responseBody['purchase_units'][0]['custom_id']);
+
+            if (! $order || ! $this->captureMatchesOrder($order, $responseBody['purchase_units'][0]['payments']['captures'][0])) {
+                return new HttpResponse;
+            }
 
             if (is_null($order->customer()) && $responseBody['payer']['name'] && $responseBody['payer']['email_address']) {
                 try {
@@ -217,6 +226,12 @@ class PayPalGateway extends BaseGateway implements Gateway
         }
 
         return new HttpResponse;
+    }
+
+    private function captureMatchesOrder(Order $order, array $capture): bool
+    {
+        return (int) round($capture['amount']['value'] * 100) === (int) $order->grandTotal()
+            && $capture['amount']['currency_code'] === Currency::get($order->site())['code'];
     }
 
     public function fieldtypeDisplay($value): array
