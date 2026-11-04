@@ -140,7 +140,7 @@ function setupUserCustomerRepository(): void
         UserCustomerRepository::class
     );
 
-    File::deleteDirectory(__DIR__.'/../__fixtures__/users');
+    File::deleteDirectory(__DIR__.'/__fixtures__/users');
     app('stache')->stores()->get('users')->clear();
 }
 

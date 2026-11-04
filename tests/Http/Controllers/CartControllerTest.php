@@ -271,6 +271,33 @@ test('can update cart and change the email of the logged in users customer', fun
     tearDownUserCustomerRepository();
 });
 
+test('cant update cart and change the email of the logged in users customer to another users email', function () {
+    setupUserCustomerRepository();
+
+    $admin = User::make()->email('admin@example.com')->makeSuper();
+    $admin->save();
+
+    $user = User::make()->email('james@example.com');
+    $user->save();
+
+    $cart = Order::make()->customer($user->id());
+    $cart->save();
+
+    $this
+        ->actingAs($user)
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), ['email' => 'admin@example.com'])
+        ->assertRedirect('/cart');
+
+    expect(User::find($admin->id())->email())->toBe('admin@example.com');
+    expect(User::find($admin->id())->isSuper())->toBeTrue();
+    expect(User::find($user->id())->email())->toBe('james@example.com');
+    expect($cart->fresh()->customer()->id())->toBe($admin->id());
+
+    tearDownUserCustomerRepository();
+});
+
 test('cant update cart and change the email of another users customer', function () {
     setupUserCustomerRepository();
 
