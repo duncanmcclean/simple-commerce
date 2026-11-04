@@ -10,6 +10,8 @@ class LineItem
 {
     use FluentlyGetsAndSets;
 
+    public const MAXIMUM_QUANTITY = 100000;
+
     public $id;
 
     public $product;

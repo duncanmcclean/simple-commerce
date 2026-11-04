@@ -4,6 +4,7 @@ use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartItemStoreFormRequest;
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartItemUpdateFormRequest;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
@@ -1602,6 +1603,69 @@ test('cant store item with zero or fractional quantity', function ($quantity) {
     'fractional' => '1.5',
 ]);
 
+test('can store item with maximum quantity', function () {
+    $product = Product::make()->price(1000)->data(['title' => 'Dog Food', 'slug' => 'dog-food']);
+    $product->save();
+
+    $this
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'quantity' => LineItem::MAXIMUM_QUANTITY,
+        ])
+        ->assertSessionHasNoErrors()
+        ->assertSessionHas('simple-commerce-cart');
+
+    $cart = Order::find(session()->get('simple-commerce-cart'));
+
+    expect($cart->lineItems()->first()->quantity())->toBe(LineItem::MAXIMUM_QUANTITY);
+    expect($cart->itemsTotal())->toBe(100000000);
+});
+
+test('cant store item with quantity above the maximum', function ($quantity) {
+    $product = Product::make()->price(1000)->data(['title' => 'Dog Food', 'slug' => 'dog-food']);
+    $product->save();
+
+    $this
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'quantity' => $quantity,
+        ])
+        ->assertSessionHasErrors('quantity')
+        ->assertSessionMissing('simple-commerce-cart');
+})->with([
+    'one above the maximum' => LineItem::MAXIMUM_QUANTITY + 1,
+    'near PHP_INT_MAX' => PHP_INT_MAX - 1,
+]);
+
+test('cant store item when combined quantity would be above the maximum', function () {
+    $product = Product::make()->price(1000)->data(['title' => 'Dog Food', 'slug' => 'dog-food']);
+    $product->save();
+
+    $cart = Order::make()->lineItems([
+        [
+            'id' => Stache::generateId(),
+            'product' => $product->id,
+            'quantity' => LineItem::MAXIMUM_QUANTITY,
+            'total' => 100000000,
+        ],
+    ]);
+
+    $cart->save();
+
+    $this
+        ->from('/products/'.$product->get('slug'))
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'quantity' => 1,
+        ])
+        ->assertSessionHasErrors();
+
+    expect($cart->fresh()->lineItems()->first()->quantity())->toBe(LineItem::MAXIMUM_QUANTITY);
+});
+
 test('can update item', function () {
     $product = Product::make()
         ->price(1000)
@@ -1743,6 +1807,60 @@ test('cant update item with fractional quantity', function () {
 
     expect($cart->fresh()->lineItems()->toArray()[0]->quantity())->toBe(1);
 });
+
+test('can update item to maximum quantity', function () {
+    $product = Product::make()->price(1000)->data(['title' => 'Food']);
+    $product->save();
+
+    $cart = Order::make()->lineItems([
+        [
+            'id' => Stache::generateId(),
+            'product' => $product->id,
+            'quantity' => 1,
+            'total' => 1000,
+        ],
+    ]);
+
+    $cart->save();
+
+    $this
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->postJson(route('statamic.simple-commerce.cart-items.update', [
+            'item' => $cart->lineItems()->toArray()[0]->id(),
+        ]), ['quantity' => LineItem::MAXIMUM_QUANTITY])
+        ->assertOk();
+
+    expect($cart->fresh()->lineItems()->toArray()[0]->quantity())->toBe(LineItem::MAXIMUM_QUANTITY);
+    expect($cart->fresh()->itemsTotal())->toBe(100000000);
+});
+
+test('cant update item with quantity above the maximum', function ($quantity) {
+    $product = Product::make()->price(1000)->data(['title' => 'Food']);
+    $product->save();
+
+    $cart = Order::make()->lineItems([
+        [
+            'id' => Stache::generateId(),
+            'product' => $product->id,
+            'quantity' => 1,
+            'total' => 1000,
+        ],
+    ]);
+
+    $cart->save();
+
+    $this
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->postJson(route('statamic.simple-commerce.cart-items.update', [
+            'item' => $cart->lineItems()->toArray()[0]->id(),
+        ]), ['quantity' => $quantity])
+        ->assertJsonValidationErrors('quantity');
+
+    expect($cart->fresh()->lineItems()->toArray()[0]->quantity())->toBe(1);
+})->with([
+    'one above the maximum' => LineItem::MAXIMUM_QUANTITY + 1,
+    'near PHP_INT_MAX' => PHP_INT_MAX - 1,
+]);
 
 test('can update item with extra data', function () {
     Config::set('simple-commerce.field_whitelist.line_items', ['gift_note']);
