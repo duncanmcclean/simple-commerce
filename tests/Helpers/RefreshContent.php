@@ -9,9 +9,9 @@ trait RefreshContent
 {
     public function refreshContent()
     {
-        File::deleteDirectory(base_path('content/collections/customers'));
-        File::deleteDirectory(base_path('content/collections/orders'));
-        File::deleteDirectory(base_path('content/collections/products'));
+        File::deleteDirectory(Stache::store('entries')->directory().'customers');
+        File::deleteDirectory(Stache::store('entries')->directory().'orders');
+        File::deleteDirectory(Stache::store('entries')->directory().'products');
 
         Stache::store('entries')->clear();
     }
