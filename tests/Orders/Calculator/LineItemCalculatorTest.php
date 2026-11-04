@@ -1,6 +1,7 @@
 <?php
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\Calculator\LineItemCalculator;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
@@ -203,3 +204,13 @@ it('calculates total for variant product and ensures decimals are striped out', 
 
     expect($order->lineItems()->first()->total())->toBe(1550);
 });
+
+it('prevents checkout when the line item total overflows', function () {
+    $product = Product::make()->price(PHP_INT_MAX)->save();
+
+    $order = Order::make()->lineItems([
+        ['id' => '123', 'product' => $product->id, 'quantity' => 2],
+    ]);
+
+    Pipeline::send($order)->through([LineItemCalculator::class])->thenReturn();
+})->throws(PreventCheckout::class);
