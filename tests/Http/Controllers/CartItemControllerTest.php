@@ -1586,6 +1586,24 @@ test('cant store item with negative quantity', function () {
     $response->assertSessionHasErrors();
 });
 
+test('cant store item with zero or fractional quantity', function ($quantity) {
+    $product = Product::make()->price(1000)->data(['title' => 'Dog Food', 'slug' => 'dog-food']);
+    $product->save();
+
+    $this
+        ->from('/products/'.$product->get('slug'))
+        ->post(route('statamic.simple-commerce.cart-items.store'), [
+            'product' => $product->id,
+            'quantity' => $quantity,
+        ])
+        ->assertSessionHasErrors('quantity')
+        ->assertSessionMissing('simple-commerce-cart');
+})->with([
+    'zero' => 0,
+    'less than one' => '0.4',
+    'fractional' => '1.5',
+]);
+
 test('can update item', function () {
     $product = Product::make()
         ->price(1000)
@@ -1701,6 +1719,31 @@ test('cant update item with zero item quantity', function () {
     $cart = $cart->fresh();
 
     expect($cart->lineItems()->toArray()[0]->quantity())->toBe(1);
+});
+
+test('cant update item with fractional quantity', function () {
+    $product = Product::make()->price(1000)->data(['title' => 'Food']);
+    $product->save();
+
+    $cart = Order::make()->lineItems([
+        [
+            'id' => Stache::generateId(),
+            'product' => $product->id,
+            'quantity' => 1,
+            'total' => 1000,
+        ],
+    ]);
+
+    $cart->save();
+
+    $this
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->postJson(route('statamic.simple-commerce.cart-items.update', [
+            'item' => $cart->lineItems()->toArray()[0]->id(),
+        ]), ['quantity' => 0.5])
+        ->assertJsonValidationErrors('quantity');
+
+    expect($cart->fresh()->lineItems()->toArray()[0]->quantity())->toBe(1);
 });
 
 test('can update item with extra data', function () {

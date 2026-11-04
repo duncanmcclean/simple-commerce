@@ -75,25 +75,23 @@ class DownloadController extends Controller
 
                     return $assetContainer->asset($assetPath);
                 })
-                ->each(function (Asset $asset) use ($request, $order, $item, $product, $productVariant, &$zip) {
-                    if (config('sc-digital-products.download_history')) {
-                        if ($item->metadata()->has('download_history') && $productVariant->has('download_limit') && $product->get('download_limit') !== null) {
-                            if (collect($item->metadata()->get('download_history'))->count() >= $productVariant->get('download_limit')) {
-                                abort(405, "You've reached the download limit for this product.");
-                            }
+                ->each(function (Asset $asset) use ($request, $order, $item, $productVariant, &$zip) {
+                    if ($item->metadata()->has('download_history') && $productVariant->has('download_limit')) {
+                        if (collect($item->metadata()->get('download_history'))->count() >= $productVariant->get('download_limit')) {
+                            abort(405, "You've reached the download limit for this product.");
                         }
-
-                        $order->updateLineItem($item->id(), [
-                            'metadata' => array_merge($item->metadata()->toArray(), [
-                                'download_history' => array_merge([
-                                    [
-                                        'timestamp' => now()->timestamp,
-                                        'ip_address' => $request->ip(),
-                                    ],
-                                ], $item->metadata()->get('download_history', [])),
-                            ]),
-                        ]);
                     }
+
+                    $order->updateLineItem($item->id(), [
+                        'metadata' => array_merge($item->metadata()->toArray(), [
+                            'download_history' => array_merge([
+                                [
+                                    'timestamp' => now()->timestamp,
+                                    'ip_address' => $request->ip(),
+                                ],
+                            ], $item->metadata()->get('download_history', [])),
+                        ]),
+                    ]);
 
                     $zip->addFile($asset->resolvedPath(), "{$productVariant->key()}/{$asset->basename()}");
                 });
