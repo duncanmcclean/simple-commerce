@@ -91,7 +91,8 @@ it('gets the order ID from the request', function () {
     $order = Order::make()->id('abc')->save();
     $order->save();
 
-    get('/!/simple-commerce/gateways/callback_test/callback?_order_id=abc&_redirect=/order-complete')
+    withSession(['simple-commerce-cart' => 'abc'])
+        ->get('/!/simple-commerce/gateways/callback_test/callback?_order_id=abc&_redirect=/order-complete')
         ->assertSessionMissing('simple-commerce-cart')
         ->assertSessionHas('simple-commerce.checkout.success')
         ->assertRedirect('/order-complete');
@@ -100,6 +101,29 @@ it('gets the order ID from the request', function () {
 
     CallbackTestGateway::$expectedCallbackResult = null;
 });
+
+it('refuses an order ID from the request that is not the current cart', function (?string $cartId) {
+    CallbackTestGateway::$expectedCallbackResult = true;
+    SimpleCommerce::registerGateway(CallbackTestGateway::class, []);
+
+    Order::make()->id('attacker')->save();
+
+    $order = Order::make()->id('victim')->status(OrderStatus::Dispatched)->paymentStatus(PaymentStatus::Paid);
+    $order->save();
+
+    withSession(array_filter(['simple-commerce-cart' => $cartId]))
+        ->getJson('/!/simple-commerce/gateways/callback_test/callback?_order_id=victim&_redirect=/order-complete')
+        ->assertForbidden()
+        ->assertJsonMissing(['id' => 'victim'])
+        ->assertSessionMissing('simple-commerce.checkout.success');
+
+    expect($order->fresh()->status())->toBe(OrderStatus::Dispatched);
+
+    CallbackTestGateway::$expectedCallbackResult = null;
+})->with([
+    'another cart' => 'attacker',
+    'no cart' => null,
+]);
 
 it('throws an exception when the provided gateway does not exist', function () {
     $order = Order::make()->id('abc')->save();
