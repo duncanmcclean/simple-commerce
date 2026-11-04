@@ -3,8 +3,12 @@
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Gateways\Builtin\MollieGateway;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\Invader;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Mollie\Api\HttpAdapter\MollieHttpAdapterInterface;
+use Mollie\Api\MollieApiClient;
 use Statamic\Facades\Collection;
 
 beforeEach(function () {
@@ -97,3 +101,70 @@ test('can hit webhook', function () {
 
     expect(null)->toBe($webhook);
 })->skip('Mollie test account is not activated.');
+
+test('can hit webhook with paid payment', function () {
+    $order = Order::make()->grandTotal(1234)->merge([
+        'mollie' => ['id' => $molliePaymentId = 'tr_'.Str::random()],
+    ]);
+
+    $order->save();
+
+    $gateway = fakeMollieGateway(['id' => $molliePaymentId, 'amount' => ['value' => '12.34', 'currency' => 'GBP']]);
+
+    $gateway->webhook(new Request([], ['id' => $molliePaymentId]));
+
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
+});
+
+test('cant hit webhook with paid payment when amount paid does not match order', function (array $amount) {
+    $order = Order::make()->grandTotal(50000)->merge([
+        'mollie' => ['id' => $molliePaymentId = 'tr_'.Str::random()],
+    ]);
+
+    $order->save();
+
+    $gateway = fakeMollieGateway(['id' => $molliePaymentId, 'amount' => $amount]);
+
+    $gateway->webhook(new Request([], ['id' => $molliePaymentId]));
+
+    expect(PaymentStatus::Unpaid)->toBe($order->fresh()->paymentStatus());
+})->with([
+    'amount less than order total' => [['value' => '12.34', 'currency' => 'GBP']],
+    'different currency' => [['value' => '500.00', 'currency' => 'EUR']],
+]);
+
+function fakeMollieGateway(array $payment): MollieGateway
+{
+    $payment = array_merge([
+        'resource' => 'payment',
+        'status' => 'paid',
+    ], $payment);
+
+    return new class($payment) extends MollieGateway
+    {
+        public function __construct(private array $payment)
+        {
+            parent::__construct([], 'mollie');
+        }
+
+        protected function setupMollie()
+        {
+            $this->mollie = new MollieApiClient(new class($this->payment) implements MollieHttpAdapterInterface
+            {
+                public function __construct(private array $payment) {}
+
+                public function send($httpMethod, $url, $headers, $httpBody)
+                {
+                    return json_decode(json_encode($this->payment));
+                }
+
+                public function versionString()
+                {
+                    return 'Fake/1.0';
+                }
+            });
+
+            $this->mollie->setApiKey('test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM');
+        }
+    };
+}

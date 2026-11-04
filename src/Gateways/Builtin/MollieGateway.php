@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Mollie\Api\MollieApiClient;
+use Mollie\Api\Resources\Payment;
 use Mollie\Api\Types\PaymentStatus as MolliePaymentStatus;
 use Statamic\Facades\Site;
 use Statamic\Statamic;
@@ -109,6 +110,10 @@ class MollieGateway extends BaseGateway implements Gateway
                 return;
             }
 
+            if (! $this->paymentMatchesOrder($order, $payment)) {
+                return;
+            }
+
             $order->gatewayData(data: Arr::except((array) $payment, ["\x00*\x00client", '_links']));
             $order->save();
 
@@ -137,6 +142,12 @@ class MollieGateway extends BaseGateway implements Gateway
                 ->clearGatewayData()
                 ->save();
         }
+    }
+
+    private function paymentMatchesOrder(Order $order, Payment $payment): bool
+    {
+        return (int) round($payment->amount->value * 100) === (int) $order->grandTotal()
+            && $payment->amount->currency === Currency::get($order->site())['code'];
     }
 
     public function fieldtypeDisplay($value): array
