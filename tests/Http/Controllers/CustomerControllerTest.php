@@ -25,8 +25,8 @@ test('can get customer on cart', function () {
     $response = $this
         ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->getJson(route('statamic.simple-commerce.customer.index', [
-        'customer' => $customer->id(),
-    ]));
+            'customer' => $customer->id(),
+        ]));
 
     $response
         ->assertOk()
