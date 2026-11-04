@@ -1,13 +1,15 @@
 <?php
 
+use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CustomerUpdateFormRequest;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Entry;
+use Statamic\Facades\User;
 
 uses(SetupCollections::class);
 
-test('can get customer', function () {
+test('can get customer on cart', function () {
     $customer = Entry::make()
         ->collection('customers')
         ->slug('duncan_double_three_digital')
@@ -20,7 +22,9 @@ test('can get customer', function () {
     $customer->save();
     $customer->fresh();
 
-    $response = $this->getJson(route('statamic.simple-commerce.customer.index', [
+    $response = $this
+        ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
+        ->getJson(route('statamic.simple-commerce.customer.index', [
         'customer' => $customer->id(),
     ]));
 
@@ -31,6 +35,55 @@ test('can get customer', function () {
         ])
         ->assertSee('Duncan McClean')
         ->assertSee('duncan@doublethree.digital');
+});
+
+test('can get customer as logged in user', function () {
+    $customer = Entry::make()
+        ->collection('customers')
+        ->slug('duncan_double_three_digital')
+        ->data([
+            'title' => 'Duncan McClean <duncan@doublethree.digital>',
+            'name' => 'Duncan McClean',
+            'email' => 'duncan@doublethree.digital',
+        ]);
+
+    $customer->save();
+
+    $user = User::make()->email('duncan@doublethree.digital');
+    $user->save();
+
+    $this
+        ->actingAs($user)
+        ->getJson(route('statamic.simple-commerce.customer.index', [
+            'customer' => $customer->id(),
+        ]))
+        ->assertOk()
+        ->assertSee('duncan@doublethree.digital');
+});
+
+test('cant get customer belonging to someone else', function () {
+    $customer = Entry::make()
+        ->collection('customers')
+        ->slug('duncan_double_three_digital')
+        ->data([
+            'title' => 'Duncan McClean <duncan@doublethree.digital>',
+            'name' => 'Duncan McClean',
+            'email' => 'duncan@doublethree.digital',
+        ]);
+
+    $customer->save();
+
+    $user = User::make()->email('joe.bloggs@example.com');
+    $user->save();
+
+    $this
+        ->actingAs($user)
+        ->withSession(['simple-commerce-cart' => Order::make()->save()->id()])
+        ->getJson(route('statamic.simple-commerce.customer.index', [
+            'customer' => $customer->id(),
+        ]))
+        ->assertForbidden()
+        ->assertDontSee('duncan@doublethree.digital');
 });
 
 test('can update customer', function () {
@@ -55,6 +108,7 @@ test('can update customer', function () {
     ];
 
     $response = $this
+        ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->from('/account')
         ->post(route('statamic.simple-commerce.customer.update', [
             'customer' => $customer->id(),
@@ -89,6 +143,7 @@ test('can update customer and request json', function () {
     ];
 
     $response = $this
+        ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->from('/account')
         ->postJson(route('statamic.simple-commerce.customer.update', [
             'customer' => $customer->id(),
@@ -103,6 +158,33 @@ test('can update customer and request json', function () {
     $customer->fresh();
 
     expect(true)->toBe($customer->data()->get('vip'));
+});
+
+test('cant update customer belonging to someone else', function () {
+    Config::set('simple-commerce.field_whitelist.customers', [
+        'name', 'email', 'vip',
+    ]);
+
+    $customer = Entry::make()
+        ->collection('customers')
+        ->slug('duncan_double_three_digital')
+        ->data([
+            'title' => 'Duncan McClean <duncan@doublethree.digital>',
+            'name' => 'Duncan McClean',
+            'email' => 'duncan@doublethree.digital',
+        ]);
+
+    $customer->save();
+
+    $this
+        ->withSession(['simple-commerce-cart' => Order::make()->save()->id()])
+        ->postJson(route('statamic.simple-commerce.customer.update', [
+            'customer' => $customer->id(),
+        ]), ['email' => 'attacker@example.com', 'vip' => true])
+        ->assertForbidden();
+
+    expect($customer->fresh()->get('email'))->toBe('duncan@doublethree.digital');
+    expect($customer->fresh()->get('vip'))->toBeNull();
 });
 
 test('cant update customer when email contains path characters', function (string $email) {
@@ -122,6 +204,7 @@ test('cant update customer when email contains path characters', function (strin
     $customer->save();
 
     $this
+        ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->from('/account')
         ->post(route('statamic.simple-commerce.customer.update', [
             'customer' => $customer->id(),
@@ -154,6 +237,7 @@ test('can update customer and ensure custom form request is used', function () {
     ];
 
     $response = $this
+        ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->from('/account')
         ->post(route('statamic.simple-commerce.customer.update', [
             'customer' => $customer->id(),
@@ -170,6 +254,11 @@ test('can update customer and ensure custom form request is used', function () {
 });
 
 // Helpers
+function cartBelongingTo($customer)
+{
+    return Order::make()->customer($customer->id())->save();
+}
+
 function authorize()
 {
     return true;
