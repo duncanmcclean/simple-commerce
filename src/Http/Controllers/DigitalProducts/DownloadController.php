@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\DigitalProducts;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -20,6 +21,8 @@ class DownloadController extends Controller
         if (! $item->metadata()->has('license_key') || $item->metadata()->get('license_key') !== $request->get('license_key')) {
             abort(401);
         }
+
+        abort_unless($order->paymentStatus() === PaymentStatus::Paid, 403);
 
         $product = $item->product();
 
@@ -75,25 +78,23 @@ class DownloadController extends Controller
 
                     return $assetContainer->asset($assetPath);
                 })
-                ->each(function (Asset $asset) use ($request, $order, $item, $product, $productVariant, &$zip) {
-                    if (config('sc-digital-products.download_history')) {
-                        if ($item->metadata()->has('download_history') && $productVariant->has('download_limit') && $product->get('download_limit') !== null) {
-                            if (collect($item->metadata()->get('download_history'))->count() >= $productVariant->get('download_limit')) {
-                                abort(405, "You've reached the download limit for this product.");
-                            }
+                ->each(function (Asset $asset) use ($request, $order, $item, $productVariant, &$zip) {
+                    if ($item->metadata()->has('download_history') && $productVariant->has('download_limit')) {
+                        if (collect($item->metadata()->get('download_history'))->count() >= $productVariant->get('download_limit')) {
+                            abort(405, "You've reached the download limit for this product.");
                         }
-
-                        $order->updateLineItem($item->id(), [
-                            'metadata' => array_merge($item->metadata()->toArray(), [
-                                'download_history' => array_merge([
-                                    [
-                                        'timestamp' => now()->timestamp,
-                                        'ip_address' => $request->ip(),
-                                    ],
-                                ], $item->metadata()->get('download_history', [])),
-                            ]),
-                        ]);
                     }
+
+                    $order->updateLineItem($item->id(), [
+                        'metadata' => array_merge($item->metadata()->toArray(), [
+                            'download_history' => array_merge([
+                                [
+                                    'timestamp' => now()->timestamp,
+                                    'ip_address' => $request->ip(),
+                                ],
+                            ], $item->metadata()->get('download_history', [])),
+                        ]),
+                    ]);
 
                     $zip->addFile($asset->resolvedPath(), "{$productVariant->key()}/{$asset->basename()}");
                 });

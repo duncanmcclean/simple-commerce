@@ -8,6 +8,8 @@ use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartUpdateFormRequ
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartUpdateWithNoRulesFormRequest;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
@@ -105,6 +107,42 @@ test('cant update cart if fields not whitelisted in config', function () {
     expect($cart->get('shipping_note'))->toBeNull();
 });
 
+test('can update cart with form parameter validation disabled', function (?string $redirect, string $expectedRedirect) {
+    app()->detectEnvironment(fn () => 'production');
+
+    Config::set('simple-commerce.disable_form_parameter_validation', true);
+
+    $cart = Order::make();
+    $cart->save();
+
+    $this
+        ->withoutMiddleware(ValidateCsrfToken::class)
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), array_filter(['_redirect' => $redirect]))
+        ->assertRedirect($expectedRedirect);
+})->with([
+    'without redirect' => [null, '/cart'],
+    'with relative redirect' => ['/checkout', '/checkout'],
+    'with redirect to another host' => ['https://evil.example', '/cart'],
+]);
+
+test('cant update cart with a custom form request that is not a form request', function () {
+    app()->detectEnvironment(fn () => 'production');
+
+    Config::set('simple-commerce.disable_form_parameter_validation', true);
+
+    $cart = Order::make();
+    $cart->save();
+
+    $this
+        ->withoutMiddleware(ValidateCsrfToken::class)
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), ['_request' => Collection::class])
+        ->assertStatus(400);
+});
+
 test('can update cart and ensure custom form request is used', function () {
     Config::set('simple-commerce.field_whitelist.orders', ['shipping_note']);
 
@@ -181,7 +219,7 @@ test('can update cart with customer already in cart', function () {
     expect($customer->id)->toBe($cart->customer()->id());
 });
 
-test('can update cart with customer already in cart and ensure the customer email is updated', function () {
+test('can update cart with customer already in cart and ensure a different email switches the customer', function () {
     $customer = Customer::make()
         ->email('dan.smith@example.com')
         ->data([
@@ -206,8 +244,81 @@ test('can update cart with customer already in cart and ensure the customer emai
 
     $cart = $cart->fresh();
 
-    expect($customer->id)->toBe($cart->customer()->id());
-    expect('dan@smith.test')->toBe($cart->customer()->email());
+    expect($cart->customer()->id())->not->toBe($customer->id);
+    expect($cart->customer()->email())->toBe('dan@smith.test');
+    expect(Customer::find($customer->id)->email())->toBe('dan.smith@example.com');
+});
+
+test('can update cart and change the email of the logged in users customer', function () {
+    setupUserCustomerRepository();
+
+    $user = User::make()->email('james@example.com');
+    $user->save();
+
+    $cart = Order::make()->customer($user->id());
+    $cart->save();
+
+    $this
+        ->actingAs($user)
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), ['email' => 'james@example.org'])
+        ->assertRedirect('/cart');
+
+    expect($cart->fresh()->customer()->id())->toBe($user->id());
+    expect(User::find($user->id())->email())->toBe('james@example.org');
+
+    tearDownUserCustomerRepository();
+});
+
+test('cant update cart and change the email of the logged in users customer to another users email', function () {
+    setupUserCustomerRepository();
+
+    $admin = User::make()->email('admin@example.com')->makeSuper();
+    $admin->save();
+
+    $user = User::make()->email('james@example.com');
+    $user->save();
+
+    $cart = Order::make()->customer($user->id());
+    $cart->save();
+
+    $this
+        ->actingAs($user)
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), ['email' => 'admin@example.com'])
+        ->assertRedirect('/cart');
+
+    expect(User::find($admin->id())->email())->toBe('admin@example.com');
+    expect(User::find($admin->id())->isSuper())->toBeTrue();
+    expect(User::find($user->id())->email())->toBe('james@example.com');
+    expect($cart->fresh()->customer()->id())->toBe($admin->id());
+
+    tearDownUserCustomerRepository();
+});
+
+test('cant update cart and change the email of another users customer', function () {
+    setupUserCustomerRepository();
+
+    $admin = User::make()->email('admin@example.com')->makeSuper();
+    $admin->save();
+
+    $cart = Order::make();
+    $cart->save();
+
+    $this
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), ['email' => 'admin@example.com']);
+
+    $this
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), ['email' => 'attacker@example.com']);
+
+    expect(User::find($admin->id())->email())->toBe('admin@example.com');
+    expect($cart->fresh()->customer()->email())->toBe('attacker@example.com');
+
+    tearDownUserCustomerRepository();
 });
 
 /**

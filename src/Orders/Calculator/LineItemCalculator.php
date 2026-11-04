@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Orders\Calculator;
 
 use Closure;
 use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
@@ -34,7 +35,7 @@ class LineItemCalculator
                     }
 
                     $lineItem->total(
-                        $productPrice * $lineItem->quantity()
+                        $this->multiply($productPrice, $lineItem->quantity())
                     );
                 }
 
@@ -54,7 +55,7 @@ class LineItemCalculator
                     }
 
                     $lineItem->total(
-                        $productPrice * $lineItem->quantity()
+                        $this->multiply($productPrice, $lineItem->quantity())
                     );
                 }
 
@@ -62,5 +63,16 @@ class LineItemCalculator
             });
 
         return $next($order);
+    }
+
+    private function multiply($productPrice, $quantity): int
+    {
+        $total = (int) $productPrice * (int) $quantity;
+
+        if (! is_int($total)) {
+            throw new PreventCheckout(__('This order cannot be completed as the total of one of its items is too large.'));
+        }
+
+        return $total;
     }
 }

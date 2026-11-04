@@ -1,6 +1,7 @@
 <?php
 
 use DuncanMcClean\SimpleCommerce\Contracts\Order as ContractsOrder;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayHasNotImplementedMethod;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
@@ -11,8 +12,9 @@ use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Stripe\ApiRequestor;
 use Stripe\Customer as StripeCustomer;
+use Stripe\HttpClient\ClientInterface;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Stripe;
@@ -32,6 +34,10 @@ beforeEach(function () {
         'secret' => env('STRIPE_SECRET'),
         'mode' => 'payment_elements',
     ]);
+});
+
+afterEach(function () {
+    ApiRequestor::setHttpClient(null);
 });
 
 test('has a name', function () {
@@ -247,68 +253,53 @@ test('can prepare with payment intent data closure', function () {
 })->skip(! env('STRIPE_SECRET'));
 
 test('can checkout when in card elements mode', function () {
-    Stripe::setApiKey(env('STRIPE_SECRET'));
-
-    $product = Product::make()
-        ->price(1234)
-        ->data([
-            'title' => 'Zoo Ticket',
-        ]);
-
-    $product->save();
-
-    $order = Order::make()->lineItems([
-        [
-            'id' => app('stache')->generateId(),
-            'product' => $product->id,
-            'quantity' => 1,
-            'total' => 1234,
-            'metadata' => [],
-        ],
-    ])->grandTotal(1234)->merge([
-        'title' => '#0004',
-        'stripe' => [
-            'intent' => $paymentIntent = PaymentIntent::create([
-                'amount' => 1234,
-                'currency' => 'GBP',
-                'automatic_payment_methods' => ['enabled' => true, 'allow_redirects' => 'never'],
-            ])->id,
-        ],
+    $order = Order::make()->grandTotal(1234)->merge([
+        'stripe' => ['intent' => 'pi_123456789122345'],
     ]);
 
     $order->save();
 
-    $paymentMethod = PaymentMethod::create([
-        'type' => 'card',
-        'card' => [
-            'number' => '4242424242424242',
-            'exp_month' => 7,
-            'exp_year' => now()->addYear()->year,
-            'cvc' => '314',
-        ],
+    fakeStripeApi([
+        '/v1/payment_intents/pi_123456789122345' => stripePaymentIntent(),
+        '/v1/payment_methods/pm_123' => stripePaymentMethod(),
     ]);
 
-    PaymentIntent::retrieve($paymentIntent)->confirm([
-        'payment_method' => $paymentMethod->id,
-    ]);
+    $gateway = new StripeGateway(['secret' => 'sk_test_123', 'mode' => 'card_elements']);
 
-    $request = new Request(['payment_method' => $paymentMethod->id]);
+    $checkout = $gateway->checkout(new Request(['payment_method' => 'pm_123']), $order);
 
-    $checkout = $this->cardElementsGateway->checkout($request, $order);
-
-    expect($checkout)->toBeArray();
-
-    expect($paymentMethod->id)->toBe($checkout['id']);
-    expect($paymentMethod->object)->toBe($checkout['object']);
-    expect($paymentMethod->customer)->toBe($checkout['customer']);
-    expect($paymentMethod->livemode)->toBe($checkout['livemode']);
-    expect($paymentIntent)->toBe($checkout['payment_intent']);
+    expect($checkout['id'])->toBe('pm_123');
+    expect($checkout['payment_intent'])->toBe('pi_123456789122345');
 
     $order = $order->fresh();
 
     expect(PaymentStatus::Paid)->toBe($order->paymentStatus());
     $this->assertNotNull($order->statusLogIncludes(PaymentStatus::Paid));
-})->skip(! env('STRIPE_SECRET'));
+});
+
+test('cant checkout when in card elements mode and payment is incomplete or does not match order', function (array $paymentIntent) {
+    $order = Order::make()->grandTotal(1234)->merge([
+        'stripe' => ['intent' => 'pi_123456789122345'],
+    ]);
+
+    $order->save();
+
+    fakeStripeApi([
+        '/v1/payment_intents/pi_123456789122345' => stripePaymentIntent($paymentIntent),
+        '/v1/payment_methods/pm_123' => stripePaymentMethod(),
+    ]);
+
+    $gateway = new StripeGateway(['secret' => 'sk_test_123', 'mode' => 'card_elements']);
+
+    expect(fn () => $gateway->checkout(new Request(['payment_method' => 'pm_123']), $order))
+        ->toThrow(GatewayCheckoutFailed::class);
+
+    expect(PaymentStatus::Unpaid)->toBe($order->fresh()->paymentStatus());
+})->with([
+    'not succeeded' => [['status' => 'requires_payment_method', 'amount_received' => 0]],
+    'amount less than order total' => [['amount_received' => 100]],
+    'different currency' => [['currency' => 'usd']],
+]);
 
 test('cant checkout when in payment elements mode', function () {
     Stripe::setApiKey(env('STRIPE_SECRET'));
@@ -420,24 +411,16 @@ test('can refund charge', function () {
 })->skip(! env('STRIPE_SECRET'));
 
 test('can hit webhook with payment intent succeeded event', function () {
-    $order = Order::make();
+    $order = Order::make()->grandTotal(1234);
     $order->save();
 
-    $payload = [
-        'type' => 'payment_intent.succeeded',
-        'data' => [
-            'object' => [
-                'id' => $paymentIntent = 'pi_123456789122345',
-                'metadata' => [
-                    'order_id' => $order->id(),
-                ],
-            ],
-        ],
-    ];
+    fakeStripeApi(['/v1/events/evt_123' => paymentIntentSucceededEvent($order)]);
 
-    $webhook = $this->paymentElementsGateway->webhook(new Request([], [], [], [], [], [], json_encode($payload)));
+    $gateway = new StripeGateway(['secret' => 'sk_test_123']);
 
-    expect($webhook instanceof Response)->toBeTrue();
+    $webhook = $gateway->webhook(stripeWebhookRequest(json_encode(['id' => 'evt_123'])));
+
+    expect($webhook->getStatusCode())->toBe(200);
 
     $order->fresh();
 
@@ -447,10 +430,43 @@ test('can hit webhook with payment intent succeeded event', function () {
     expect($order->gatewayData()->toArray())->toBe([
         'use' => StripeGateway::handle(),
         'data' => [
-            'id' => $paymentIntent,
+            'id' => 'pi_123456789122345',
         ],
         'refund' => null,
     ]);
+});
+
+test('cant hit webhook with payment intent succeeded event when amount paid does not match order', function (array $paymentIntent) {
+    $order = Order::make()->grandTotal(50000);
+    $order->save();
+
+    fakeStripeApi(['/v1/events/evt_123' => paymentIntentSucceededEvent($order, $paymentIntent)]);
+
+    $gateway = new StripeGateway(['secret' => 'sk_test_123']);
+
+    $webhook = $gateway->webhook(stripeWebhookRequest(json_encode(['id' => 'evt_123'])));
+
+    expect($webhook->getStatusCode())->toBe(400);
+    expect(PaymentStatus::Unpaid)->toBe($order->fresh()->paymentStatus());
+})->with([
+    'amount less than order total' => [['amount_received' => 1234]],
+    'different currency' => [['amount_received' => 50000, 'currency' => 'usd']],
+]);
+
+test('cant hit webhook with event unknown to stripe', function () {
+    $order = Order::make();
+    $order->save();
+
+    fakeStripeApi();
+
+    $gateway = new StripeGateway(['secret' => 'sk_test_123']);
+
+    $payload = json_encode(paymentIntentSucceededEvent($order));
+
+    $webhook = $gateway->webhook(stripeWebhookRequest($payload));
+
+    expect($webhook->getStatusCode())->toBe(400);
+    expect(PaymentStatus::Unpaid)->toBe($order->fresh()->paymentStatus());
 });
 
 test('returns array from payment display', function () {
@@ -488,3 +504,66 @@ test('does not return array from payment display if no payment intent is set', f
         'url' => null,
     ], $fieldtypeDisplay);
 });
+
+function paymentIntentSucceededEvent(ContractsOrder $order, array $paymentIntent = []): array
+{
+    return [
+        'id' => 'evt_123',
+        'object' => 'event',
+        'type' => 'payment_intent.succeeded',
+        'data' => [
+            'object' => stripePaymentIntent(array_merge([
+                'amount_received' => $order->grandTotal(),
+                'metadata' => ['order_id' => $order->id()],
+            ], $paymentIntent)),
+        ],
+    ];
+}
+
+function stripePaymentIntent(array $attributes = []): array
+{
+    return array_merge([
+        'id' => 'pi_123456789122345',
+        'object' => 'payment_intent',
+        'status' => 'succeeded',
+        'amount' => 1234,
+        'amount_received' => 1234,
+        'currency' => 'gbp',
+        'metadata' => [],
+    ], $attributes);
+}
+
+function stripePaymentMethod(): array
+{
+    return [
+        'id' => 'pm_123',
+        'object' => 'payment_method',
+        'card' => ['brand' => 'visa', 'last4' => '4242'],
+        'customer' => null,
+        'livemode' => false,
+    ];
+}
+
+function stripeWebhookRequest(string $payload): Request
+{
+    return new Request([], [], [], [], [], [], $payload);
+}
+
+function fakeStripeApi(array $responses = []): void
+{
+    ApiRequestor::setHttpClient(new class($responses) implements ClientInterface
+    {
+        public function __construct(private array $responses) {}
+
+        public function request($method, $absUrl, $headers, $params, $hasFile)
+        {
+            $path = parse_url($absUrl, PHP_URL_PATH);
+
+            if (isset($this->responses[$path])) {
+                return [json_encode($this->responses[$path]), 200, []];
+            }
+
+            return [json_encode(['error' => ['type' => 'invalid_request_error', 'message' => 'No such resource']]), 404, []];
+        }
+    });
+}

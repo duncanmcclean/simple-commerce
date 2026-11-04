@@ -9,6 +9,7 @@ use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\DestroyRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\StoreRequest;
 use DuncanMcClean\SimpleCommerce\Http\Requests\CartItem\UpdateRequest;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use Illuminate\Support\Arr;
@@ -91,8 +92,14 @@ class CartItemController extends BaseActionController
         }
 
         if ($alreadyExistsQuery->count() >= 1) {
+            $quantity = (int) $alreadyExistsQuery->first()->quantity() + $request->quantity;
+
+            if ($quantity > LineItem::MAXIMUM_QUANTITY) {
+                return $this->withErrors($request, __('You cannot add any more of this item to your cart.'));
+            }
+
             $cart->updateLineItem($alreadyExistsQuery->first()->id(), [
-                'quantity' => (int) $alreadyExistsQuery->first()->quantity() + $request->quantity,
+                'quantity' => $quantity,
             ]);
         } else {
             $item = [
@@ -135,7 +142,7 @@ class CartItemController extends BaseActionController
 
         $data = Arr::only($request->all(), 'quantity', 'variant');
 
-        if (isset($data['quantity']) && is_string($data['quantity'])) {
+        if (isset($data['quantity'])) {
             $data['quantity'] = (int) $data['quantity'];
         }
 

@@ -4,6 +4,8 @@ namespace DuncanMcClean\SimpleCommerce\Http\Controllers\CP;
 
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\StatusLogEvent;
+use DuncanMcClean\SimpleCommerce\Support\Runway;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Statamic\Facades\User;
@@ -17,6 +19,15 @@ class StatusLogController
         ]);
 
         $order = Order::find($validated['order_id']);
+        $orderResource = $order->resource();
+
+        $authorized = $orderResource instanceof Model
+            ? User::current()->can('view', [Runway::orderModel(), $orderResource])
+            : User::current()->can('view', $orderResource);
+
+        if (! $authorized) {
+            abort(403);
+        }
 
         return $order->statusLog()
             ->reverse()

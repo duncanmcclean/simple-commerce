@@ -9,6 +9,9 @@ use DuncanMcClean\SimpleCommerce\Customers\EloquentCustomerRepository;
 use DuncanMcClean\SimpleCommerce\Orders\EloquentOrderRepository;
 use DuncanMcClean\SimpleCommerce\Orders\OrderModel;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
+use StatamicRadPack\Runway\Policies\ResourcePolicy;
+use StatamicRadPack\Runway\Resource;
 use StatamicRadPack\Runway\Runway;
 
 trait UseDatabaseContentDrivers
@@ -57,6 +60,7 @@ trait UseDatabaseContentDrivers
         ]);
 
         Runway::discoverResources();
+        Gate::policy(Resource::class, ResourcePolicy::class);
 
         $this->app->bind(
             CustomerRepository::class,

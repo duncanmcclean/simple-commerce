@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Http\Requests\CartItem;
 
 use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -17,7 +18,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'quantity' => ['sometimes', 'numeric', 'gt:0'],
+            'quantity' => ['sometimes', 'integer', 'min:1', 'max:'.LineItem::MAXIMUM_QUANTITY],
         ];
 
         if ($formRequest = $this->get('_request')) {
