@@ -8,12 +8,7 @@ use Statamic\Rules\EmailWithoutPathCharacters;
 
 class UpdateRequest extends FormRequest
 {
-    use AcceptsFormRequests;
-
-    public function authorize()
-    {
-        return true;
-    }
+    use AcceptsFormRequests, AuthorizesCustomer;
 
     public function rules()
     {

@@ -873,7 +873,7 @@ test('can store item with customer already in present in order', function () {
     expect('goofy@clubhouse.disney')->toBe($cart->customer()->email());
 });
 
-test('can store item with customer already in present in order and ensure the customer email is updated', function () {
+test('can store item with customer already in present in order and ensure a different email switches the customer', function () {
     $product = Product::make()
         ->price(1000)
         ->data([
@@ -914,11 +914,9 @@ test('can store item with customer already in present in order and ensure the cu
 
     expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id);
 
-    // Assert customer has been created with provided details
-    $this->assertNotNull($cart->customer());
-
-    expect('Goofy')->toBe($cart->customer()->name());
-    expect('goofy@mickeymouse.clubhouse')->toBe($cart->customer()->email());
+    expect($cart->customer()->id())->not->toBe($customer->id);
+    expect($cart->customer()->email())->toBe('goofy@mickeymouse.clubhouse');
+    expect(Customer::find($customer->id)->email())->toBe('goofy@clubhouse.disney');
 });
 
 test('can store item with customer present in request', function () {

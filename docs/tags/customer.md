@@ -22,6 +22,10 @@ This tag allows you to update an existing customer. Remember to provide the `id`
 {{ /sc:customer:update }}
 ```
 
+:::note Note!
+A customer can only be updated by the logged in user with the same email address, or when they're the customer on the current cart.
+:::
+
 ### Get orders by customer
 
 This tag allows you to loop through orders created by a customer. Remember to provide the `customer` parameter which should be the ID of the customer.
