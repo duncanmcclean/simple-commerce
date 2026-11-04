@@ -6,7 +6,6 @@ use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Http\Request;
-use PayPalHttp\HttpResponse;
 
 uses(SetupCollections::class);
 uses(RefreshContent::class);
@@ -115,7 +114,7 @@ function fakePayPalGateway(array $capture): PayPalGateway
                 {
                     $this->capturedOrderIds[] = explode('/', $request->path)[4];
 
-                    return new HttpResponse(201, json_decode(json_encode($this->capture)), []);
+                    return (object) ['result' => json_decode(json_encode($this->capture))];
                 }
             };
         }

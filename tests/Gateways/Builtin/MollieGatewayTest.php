@@ -5,9 +5,12 @@ use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Gateways\Builtin\MollieGateway;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\Invader;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Mollie\Api\HttpAdapter\MollieHttpAdapterInterface;
 use Mollie\Api\MollieApiClient;
 use Statamic\Facades\Collection;
 
@@ -149,20 +152,11 @@ function fakeMollieGateway(array $payment): MollieGateway
 
         protected function setupMollie()
         {
-            $this->mollie = new MollieApiClient(new class($this->payment) implements MollieHttpAdapterInterface
-            {
-                public function __construct(private array $payment) {}
-
-                public function send($httpMethod, $url, $headers, $httpBody)
-                {
-                    return json_decode(json_encode($this->payment));
-                }
-
-                public function versionString()
-                {
-                    return 'Fake/1.0';
-                }
-            });
+            $this->mollie = new MollieApiClient(new GuzzleClient([
+                'handler' => HandlerStack::create(new MockHandler([
+                    new GuzzleResponse(200, [], json_encode($this->payment)),
+                ])),
+            ]));
 
             $this->mollie->setApiKey('test_dHar4XY7LxsDOtmnkVtjNVWXLSlXsM');
         }
