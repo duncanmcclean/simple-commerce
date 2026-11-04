@@ -1,9 +1,15 @@
 # Changelog
 
-## v8.1.1 (2026-10-07)
+## v8.1.1 (2026-11-04)
 
 ### What's fixed
 - Harden email address validation [#1289](https://github.com/duncanmcclean/simple-commerce/issues/1289) by @duncanmcclean
+- Harden CP authorization [#1295](https://github.com/duncanmcclean/simple-commerce/issues/1295) by @duncanmcclean
+- Cart & checkout tweaks [#1297](https://github.com/duncanmcclean/simple-commerce/issues/1297) by @duncanmcclean
+- Harden customer handling [#1299](https://github.com/duncanmcclean/simple-commerce/issues/1299) [#1302](https://github.com/duncanmcclean/simple-commerce/issues/1302) by @duncanmcclean
+- Harden payment gateways [#1298](https://github.com/duncanmcclean/simple-commerce/issues/1298) by @duncanmcclean
+- Cap cart line item quantities [#1301](https://github.com/duncanmcclean/simple-commerce/issues/1301) by @duncanmcclean
+- Fix gateway webhooks on Laravel 13 [#1306](https://github.com/duncanmcclean/simple-commerce/issues/1306) by @duncanmcclean
 
 
 
