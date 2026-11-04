@@ -7,7 +7,6 @@ use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways\CallbackTestGateway;
 
-use function Pest\Laravel\get;
 use function Pest\Laravel\withoutExceptionHandling;
 use function Pest\Laravel\withSession;
 

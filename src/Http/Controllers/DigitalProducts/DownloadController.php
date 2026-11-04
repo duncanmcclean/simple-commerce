@@ -75,7 +75,7 @@ class DownloadController extends Controller
 
                     return $assetContainer->asset($assetPath);
                 })
-                ->each(function (Asset $asset) use ($request, $order, $item, $product, $productVariant, &$zip) {
+                ->each(function (Asset $asset) use ($request, $order, $item, $productVariant, &$zip) {
                     if ($item->metadata()->has('download_history') && $productVariant->has('download_limit')) {
                         if (collect($item->metadata()->get('download_history'))->count() >= $productVariant->get('download_limit')) {
                             abort(405, "You've reached the download limit for this product.");
