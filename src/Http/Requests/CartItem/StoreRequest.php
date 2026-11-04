@@ -36,8 +36,8 @@ class StoreRequest extends FormRequest
             ],
             'quantity' => [
                 'required',
-                'numeric',
-                'gt:0',
+                'integer',
+                'min:1',
             ],
             'email' => [
                 'nullable',

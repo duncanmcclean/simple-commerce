@@ -135,7 +135,7 @@ class CartItemController extends BaseActionController
 
         $data = Arr::only($request->all(), 'quantity', 'variant');
 
-        if (isset($data['quantity']) && is_string($data['quantity'])) {
+        if (isset($data['quantity'])) {
             $data['quantity'] = (int) $data['quantity'];
         }
 

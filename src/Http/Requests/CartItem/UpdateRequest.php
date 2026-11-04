@@ -17,7 +17,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'quantity' => ['sometimes', 'numeric', 'gt:0'],
+            'quantity' => ['sometimes', 'integer', 'min:1'],
         ];
 
         if ($formRequest = $this->get('_request')) {
