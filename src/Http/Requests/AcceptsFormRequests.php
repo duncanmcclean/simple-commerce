@@ -11,6 +11,8 @@ trait AcceptsFormRequests
     {
         // If the class itself just exists, use it...
         if (class_exists($class = $formRequestClass)) {
+            abort_unless(is_subclass_of($class, FormRequest::class), 400);
+
             return new $class(
                 $request->query(),
                 $request->all(),
@@ -23,6 +25,8 @@ trait AcceptsFormRequests
         }
 
         if (class_exists($class = "App\\Http\\Requests\\$formRequestClass")) {
+            abort_unless(is_subclass_of($class, FormRequest::class), 400);
+
             return new $class(
                 $request->query(),
                 $request->all(),

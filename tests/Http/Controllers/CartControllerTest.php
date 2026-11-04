@@ -8,6 +8,8 @@ use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartUpdateFormRequ
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartUpdateWithNoRulesFormRequest;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Statamic\Facades\Stache;
 use Statamic\Facades\User;
@@ -103,6 +105,42 @@ test('cant update cart if fields not whitelisted in config', function () {
     $cart = $cart->fresh();
 
     expect($cart->get('shipping_note'))->toBeNull();
+});
+
+test('can update cart with form parameter validation disabled', function (?string $redirect, string $expectedRedirect) {
+    app()->detectEnvironment(fn () => 'production');
+
+    Config::set('simple-commerce.disable_form_parameter_validation', true);
+
+    $cart = Order::make();
+    $cart->save();
+
+    $this
+        ->withoutMiddleware(ValidateCsrfToken::class)
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), array_filter(['_redirect' => $redirect]))
+        ->assertRedirect($expectedRedirect);
+})->with([
+    'without redirect' => [null, '/cart'],
+    'with relative redirect' => ['/checkout', '/checkout'],
+    'with redirect to another host' => ['https://evil.example', '/cart'],
+]);
+
+test('cant update cart with a custom form request that is not a form request', function () {
+    app()->detectEnvironment(fn () => 'production');
+
+    Config::set('simple-commerce.disable_form_parameter_validation', true);
+
+    $cart = Order::make();
+    $cart->save();
+
+    $this
+        ->withoutMiddleware(ValidateCsrfToken::class)
+        ->from('/cart')
+        ->withSession(['simple-commerce-cart' => $cart->id])
+        ->post(route('statamic.simple-commerce.cart.update'), ['_request' => Collection::class])
+        ->assertStatus(400);
 });
 
 test('can update cart and ensure custom form request is used', function () {

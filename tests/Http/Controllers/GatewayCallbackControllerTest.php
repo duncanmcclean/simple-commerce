@@ -125,6 +125,37 @@ it('refuses an order ID from the request that is not the current cart', function
     'no cart' => null,
 ]);
 
+it('redirects to a same-host url after a successful callback', function () {
+    CallbackTestGateway::$expectedCallbackResult = true;
+    SimpleCommerce::registerGateway(CallbackTestGateway::class, []);
+
+    Order::make()->id('abc')->save();
+
+    withSession(['simple-commerce-cart' => 'abc'])
+        ->get('/!/simple-commerce/gateways/callback_test/callback?_redirect='.urlencode(url('/order-complete')))
+        ->assertRedirect(url('/order-complete'));
+
+    CallbackTestGateway::$expectedCallbackResult = null;
+});
+
+it('does not redirect to another host after a callback', function (bool $callbackResult, string $parameter, string $url) {
+    CallbackTestGateway::$expectedCallbackResult = $callbackResult;
+    SimpleCommerce::registerGateway(CallbackTestGateway::class, []);
+
+    Order::make()->id('abc')->save();
+
+    withSession(['simple-commerce-cart' => 'abc'])
+        ->from('/checkout')
+        ->get("/!/simple-commerce/gateways/callback_test/callback?{$parameter}=".urlencode($url))
+        ->assertRedirect('/checkout');
+
+    CallbackTestGateway::$expectedCallbackResult = null;
+})->with([
+    'successful callback' => [true, '_redirect', 'https://evil.example'],
+    'unsuccessful callback' => [false, '_error_redirect', 'https://evil.example'],
+    'protocol-relative url' => [true, '_redirect', '//evil.example'],
+]);
+
 it('throws an exception when the provided gateway does not exist', function () {
     $order = Order::make()->id('abc')->save();
     $order->save();
