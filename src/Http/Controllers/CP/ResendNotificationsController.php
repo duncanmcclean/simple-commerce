@@ -8,7 +8,10 @@ use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Listeners\SendConfiguredNotifications;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
+use DuncanMcClean\SimpleCommerce\Support\Runway;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Statamic\Facades\User;
 
 class ResendNotificationsController
 {
@@ -20,6 +23,16 @@ class ResendNotificationsController
         ]);
 
         $order = Order::find($validated['order_id']);
+        $orderResource = $order->resource();
+
+        $authorized = $orderResource instanceof Model
+            ? User::current()->can('edit', [Runway::orderModel(), $orderResource])
+            : User::current()->can('edit', $orderResource);
+
+        if (! $authorized) {
+            abort(403);
+        }
+
         $status = $this->getStatusFromValue($validated['status']);
 
         if ($status instanceof OrderStatus) {

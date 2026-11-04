@@ -6,10 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class IndexRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return true;
-    }
+    use AuthorizesCustomer;
 
     public function rules()
     {

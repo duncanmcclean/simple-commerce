@@ -4,6 +4,7 @@ namespace DuncanMcClean\SimpleCommerce\Http\Requests\CartItem;
 
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Http\Requests\AcceptsFormRequests;
+use DuncanMcClean\SimpleCommerce\Orders\LineItem;
 use DuncanMcClean\SimpleCommerce\Orders\Order as EntryOrder;
 use DuncanMcClean\SimpleCommerce\Products\ProductType;
 use DuncanMcClean\SimpleCommerce\Rules\ProductExists;
@@ -36,8 +37,9 @@ class StoreRequest extends FormRequest
             ],
             'quantity' => [
                 'required',
-                'numeric',
-                'gt:0',
+                'integer',
+                'min:1',
+                'max:'.LineItem::MAXIMUM_QUANTITY,
             ],
             'email' => [
                 'nullable',

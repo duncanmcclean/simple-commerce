@@ -14,9 +14,12 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Session;
 use Statamic\Facades\Antlers;
 use Statamic\Statamic;
+use Statamic\View\Antlers\Language\Runtime\GlobalRuntimeState;
 
 beforeEach(function () {
     $this->useBasicTaxEngine();
+
+    GlobalRuntimeState::$isEvaluatingUserData = false;
 
     $this->tag = resolve(CheckoutTags::class)
         ->setParser(Antlers::parser())
@@ -33,6 +36,10 @@ beforeEach(function () {
     SimpleCommerce::registerGateway(TestOffsiteGateway::class, [
         'is-duncan-cool' => 'no',
     ]);
+});
+
+afterEach(function () {
+    GlobalRuntimeState::$isEvaluatingUserData = true;
 });
 
 test('can output checkout form', function () {

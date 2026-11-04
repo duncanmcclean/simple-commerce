@@ -6,6 +6,7 @@ use DuncanMcClean\SimpleCommerce\Contracts\Gateway;
 use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Currency;
 use DuncanMcClean\SimpleCommerce\Events\OrderPaymentFailed;
+use DuncanMcClean\SimpleCommerce\Exceptions\GatewayCheckoutFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\RefundFailed;
 use DuncanMcClean\SimpleCommerce\Exceptions\StripeSecretMissing;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
@@ -17,6 +18,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Statamic\Facades\Site;
 use Stripe\Customer as StripeCustomer;
+use Stripe\Event;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
@@ -102,9 +104,15 @@ class StripeGateway extends BaseGateway implements Gateway
         $paymentIntent = PaymentIntent::retrieve($order->get('stripe')['intent']);
         $paymentMethod = PaymentMethod::retrieve($request->payment_method);
 
-        if ($paymentIntent->status === 'succeeded') {
-            $this->markOrderAsPaid($order);
+        if ($paymentIntent->status !== 'succeeded') {
+            throw new GatewayCheckoutFailed('The payment has not been completed. Please try again.');
         }
+
+        if (! $this->paymentMatchesOrder($order, $paymentIntent->amount_received, $paymentIntent->currency)) {
+            throw new GatewayCheckoutFailed('The amount paid does not match the order total. Please try again.');
+        }
+
+        $this->markOrderAsPaid($order);
 
         return [
             'id' => $paymentMethod->id,
@@ -114,6 +122,12 @@ class StripeGateway extends BaseGateway implements Gateway
             'livemode' => $paymentMethod->livemode,
             'payment_intent' => $paymentIntent->id,
         ];
+    }
+
+    private function paymentMatchesOrder(OrderContract $order, int $amount, string $currency): bool
+    {
+        return $amount === (int) $order->grandTotal()
+            && strtoupper($currency) === Currency::get($order->site())['code'];
     }
 
     public function checkoutRules(): array
@@ -181,7 +195,18 @@ class StripeGateway extends BaseGateway implements Gateway
     {
         $this->setUpWithStripe();
 
-        $payload = json_decode($request->getContent(), true);
+        $eventId = json_decode($request->getContent(), true)['id'] ?? null;
+
+        if (! $eventId) {
+            return new Response('Webhook received but no event ID found', 400);
+        }
+
+        try {
+            $payload = Event::retrieve($eventId)->toArray();
+        } catch (ApiErrorException $e) {
+            return new Response('Webhook received but event could not be found in Stripe', 400);
+        }
+
         $method = 'handle'.Str::studly(str_replace('.', '_', $payload['type']));
 
         $data = $payload['data']['object'];
@@ -192,6 +217,10 @@ class StripeGateway extends BaseGateway implements Gateway
 
         if ($method === 'handlePaymentIntentSucceeded') {
             $order = Order::find($data['metadata']['order_id']);
+
+            if (! $this->paymentMatchesOrder($order, $data['amount_received'], $data['currency'])) {
+                return new Response('Webhook received but the amount paid does not match the order total', 400);
+            }
 
             $order->gatewayData(data: ['id' => $data['id']]);
             $order->save();

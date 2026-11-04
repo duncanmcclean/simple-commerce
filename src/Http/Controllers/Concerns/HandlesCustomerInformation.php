@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers\Concerns;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Customer as CustomerContract;
 use DuncanMcClean\SimpleCommerce\Contracts\Order as OrderContract;
 use DuncanMcClean\SimpleCommerce\Customers\UserCustomerRepository;
 use DuncanMcClean\SimpleCommerce\Exceptions\CustomerNotFound;
@@ -10,6 +11,7 @@ use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Statamic\Facades\User;
 
 trait HandlesCustomerInformation
 {
@@ -60,11 +62,16 @@ trait HandlesCustomerInformation
 
     private function findOrCreateCustomer(OrderContract $cart, string $email): OrderContract
     {
-        // If the order already has a customer assigned, update the email on the existing customer.
         if ($customer = $cart->customer()) {
-            $customer->email($email)->save();
+            if ($customer->email() === $email) {
+                return $cart;
+            }
 
-            return $cart;
+            if ($this->belongsToCurrentUser($customer) && ! $this->emailBelongsToAnotherCustomer($email, $customer)) {
+                $customer->email($email)->save();
+
+                return $cart;
+            }
         }
 
         // Otherwise, find or create a customer with the provided email.
@@ -77,6 +84,22 @@ trait HandlesCustomerInformation
         }
 
         return $cart;
+    }
+
+    private function belongsToCurrentUser(CustomerContract $customer): bool
+    {
+        $user = User::current();
+
+        return $user && $user->email() === $customer->email();
+    }
+
+    private function emailBelongsToAnotherCustomer(string $email, CustomerContract $customer): bool
+    {
+        try {
+            return Customer::findByEmail($email)->id() !== $customer->id();
+        } catch (CustomerNotFound $e) {
+            return false;
+        }
     }
 
     private function updateCustomer(OrderContract $cart, array $data): OrderContract
