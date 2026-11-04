@@ -8,6 +8,7 @@ use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartUpdateFormRequ
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartUpdateWithNoRulesFormRequest;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
@@ -116,7 +117,7 @@ test('can update cart with form parameter validation disabled', function (?strin
     $cart->save();
 
     $this
-        ->withoutMiddleware(ValidateCsrfToken::class)
+        ->withoutMiddleware([ValidateCsrfToken::class, PreventRequestForgery::class])
         ->from('/cart')
         ->withSession(['simple-commerce-cart' => $cart->id])
         ->post(route('statamic.simple-commerce.cart.update'), array_filter(['_redirect' => $redirect]))
@@ -136,7 +137,7 @@ test('cant update cart with a custom form request that is not a form request', f
     $cart->save();
 
     $this
-        ->withoutMiddleware(ValidateCsrfToken::class)
+        ->withoutMiddleware([ValidateCsrfToken::class, PreventRequestForgery::class])
         ->from('/cart')
         ->withSession(['simple-commerce-cart' => $cart->id])
         ->post(route('statamic.simple-commerce.cart.update'), ['_request' => Collection::class])
