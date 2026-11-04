@@ -8,7 +8,9 @@ use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Role;
 use Statamic\Facades\Stache;
+use Statamic\Facades\User;
 
 beforeEach(function () {
     $this->action = new RefundAction;
@@ -65,6 +67,24 @@ test('is not able to be run in bulk', function () {
 
     expect($action)->toBeFalse();
 })->skip();
+
+test('can be run by users who can edit orders', function () {
+    Role::make('order-editor')->permissions(['access cp', 'view orders entries', 'edit orders entries'])->save();
+
+    $user = tap(User::make()->assignRole('order-editor'))->save();
+    $order = tap(Entry::make()->collection('orders')->id(Stache::generateId()))->save();
+
+    expect($this->action->authorize($user, $order))->toBeTrue();
+});
+
+test('cant be run by users who can only view orders', function () {
+    Role::make('order-viewer')->permissions(['access cp', 'view orders entries'])->save();
+
+    $user = tap(User::make()->assignRole('order-viewer'))->save();
+    $order = tap(Entry::make()->collection('orders')->id(Stache::generateId()))->save();
+
+    expect($this->action->authorize($user, $order))->toBeFalse();
+});
 
 test('order can be refunded', function () {
     Collection::make('orders')->save();

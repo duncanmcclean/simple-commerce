@@ -42,9 +42,9 @@ class EnsureFormParametersArriveIntact
         // user's input and encrypt it, so it can be used later in this middleware.
         if (config('simple-commerce.disable_form_parameter_validation')) {
             $request->merge([
-                '_request' => encrypt($request->get('_request') ?? $request->header('referer') ?? '/'),
+                '_redirect' => encrypt($request->get('_redirect') ?? $request->header('referer') ?? '/'),
                 '_error_redirect' => encrypt($request->get('_error_redirect') ?? $request->header('referer') ?? '/'),
-                '_redirect' => encrypt($request->get('_redirect') ?? 'Empty'),
+                '_request' => encrypt($request->get('_request') ?? 'Empty'),
             ]);
         }
 

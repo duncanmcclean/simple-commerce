@@ -5,6 +5,8 @@ namespace DuncanMcClean\SimpleCommerce\Actions;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Orders\EntryOrderRepository;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
+use DuncanMcClean\SimpleCommerce\Support\Runway;
+use Illuminate\Database\Eloquent\Model;
 use Statamic\Actions\Action;
 use Statamic\Entries\Entry;
 
@@ -35,6 +37,18 @@ class RefundAction extends Action
     public function visibleToBulk($items)
     {
         return false;
+    }
+
+    public function authorize($user, $item)
+    {
+        switch (true) {
+            case $item instanceof Entry:
+                return $user->can('edit', $item);
+            case $item instanceof Model:
+                return $user->can('edit', [Runway::orderModel(), $item]);
+            default:
+                return false;
+        }
     }
 
     public function run($items, $values)

@@ -33,8 +33,8 @@ class BaseActionController extends Controller
             unset($data['cart']);
         }
 
-        return $request->_redirect ?
-            redirect($request->_redirect)->with($data)
+        return $this->isSafeRedirect($request->_redirect)
+            ? redirect($request->_redirect)->with($data)
             : back()->with($data);
     }
 
@@ -47,8 +47,17 @@ class BaseActionController extends Controller
             ]);
         }
 
-        return $request->_error_redirect
+        return $this->isSafeRedirect($request->_error_redirect)
             ? redirect($request->_error_redirect)->withErrors($errorMessage)
             : back()->withErrors($errorMessage);
+    }
+
+    private function isSafeRedirect(?string $url): bool
+    {
+        if (! $url) {
+            return false;
+        }
+
+        return parse_url(url($url), PHP_URL_HOST) === request()->getHost();
     }
 }
