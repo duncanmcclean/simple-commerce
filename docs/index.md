@@ -10,4 +10,4 @@ Simple Commerce has been replaced by [Cargo](https://builtwithcargo.dev), the na
 * **A massive overhaul to discounting**, allowing for automatic site-wide discounts, as well as traditional coupon-style discounts.
 * **Pre-built Checkout Page**, allowing you to level up your customer's purchasing experience.
 
-While Simple Commerce v8 is compatible with Statamic 5 and 6, you should investigate migrating to Cargo when possible. You can find more information on the migration process over on the [Cargo documentation](https://builtwithcargo.dev/docs/migrating-from-simple-commerce).
+While Simple Commerce v8 is compatible with Statamic 6, you should consider migrating to Cargo soon, as Simple Commerce won't be updated for Statamic 7 and will **stop receiving security updates at the end of January 2027**. You can find more information on the migration process over on the [Cargo documentation](https://builtwithcargo.dev/docs/migrating-from-simple-commerce).
