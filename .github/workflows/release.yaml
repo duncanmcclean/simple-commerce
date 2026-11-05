@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   release:
-    uses: duncanmcclean/.github/.github/workflows/release.yaml@b657c0da7472a6b46d4fbce61aab416d45f7f835
+    uses: duncanmcclean/.github/.github/workflows/release.yaml@21c725e83dc894f8876b10a6de09ea2077d45e25 # v1.0.1
     permissions: {}
     secrets:
       RELEASE_APP_CLIENT_ID: ${{ secrets.RELEASE_APP_CLIENT_ID }}
