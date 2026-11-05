@@ -42,6 +42,12 @@ test('customer information in storefront tags requires authenticated ownership',
     $customer = Customer::make()->email('private@example.com')->data(['name' => 'Private Customer'])->save();
     $cart = Order::make()->customer($customer->id())->set('shipping_name', 'Order Recipient')->save();
 
+    $cart->resource()->blueprint()->ensureField('customer', [
+        'type' => 'entries',
+        'max_items' => 1,
+        'collections' => ['customers'],
+    ]);
+
     if ($email) {
         $this->actingAs(User::make()->email($email)->save());
     }
