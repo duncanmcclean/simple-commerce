@@ -21,7 +21,7 @@ Some of the bigger changes include:
 * **A massive overhaul to discounting**, allowing for automatic site-wide discounts, as well as traditional coupon-style discounts.
 * **Pre-built checkout page**, allowing you to level up your customer's purchasing experience.
 
-While Simple Commerce 8 supports Statamic 6, please consider migrating to Cargo as Simple Commerce won't be updated for Statamic 7. For more details on the migration process, please read the [Cargo migration guide](https://builtwithcargo.dev/docs/migrating-from-simple-commerce).
+While Simple Commerce 8 supports Statamic 6, please consider migrating to Cargo soon as Simple Commerce won't be updated for Statamic 7 and will **stop receiving security updates at the end of January 2027**. For more details on the migration process, please read the [Cargo migration guide](https://builtwithcargo.dev/docs/migrating-from-simple-commerce).
 
 ## Links
 
