@@ -1,9 +1,11 @@
 # Changelog
 
-## Unreleased
+## v8.1.2 (2026-11-05)
 
 ### What's fixed
-- Harden customer profile access.
+- Mention end date for security fixes [#1310](https://github.com/duncanmcclean/simple-commerce/issues/1310) by @duncanmcclean
+- Fix Mollie order lookup and PayPal capture status in webhooks [#1313](https://github.com/duncanmcclean/simple-commerce/issues/1313) by @terminalstate
+- Harden customer profile access [#1315](https://github.com/duncanmcclean/simple-commerce/issues/1315) by @duncanmcclean
 
 ### Breaking changes
 
