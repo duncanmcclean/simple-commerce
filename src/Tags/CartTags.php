@@ -3,6 +3,7 @@
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
 use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Customers\Concerns\AuthorizesCustomerAccess;
 use DuncanMcClean\SimpleCommerce\Orders\Cart\Drivers\CartDriver;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -10,13 +11,16 @@ use Statamic\Facades\Site;
 
 class CartTags extends SubTag
 {
+    use AuthorizesCustomerAccess;
     use CartDriver;
     use Concerns\FormBuilder;
 
     public function index()
     {
         if ($this->hasCart()) {
-            return $this->getOrMakeCart()->toAugmentedArray();
+            $cart = $this->getOrMakeCart();
+
+            return $this->filterCustomerInformation($cart, $cart->toAugmentedArray());
         }
 
         return [];
@@ -267,7 +271,7 @@ class CartTags extends SubTag
 
         return $this->createForm(
             route('statamic.simple-commerce.cart.update'),
-            $cart->toAugmentedArray(),
+            $this->filterCustomerInformation($cart, $cart->toAugmentedArray()),
             'POST'
         );
     }
@@ -300,6 +304,14 @@ class CartTags extends SubTag
         }
 
         $cart = $this->getCart();
+
+        if (in_array($method, ['customer', 'customer_id', 'resource', 'data']) && ! $this->belongsToCurrentUser($cart->customer())) {
+            return match ($method) {
+                'resource' => $this->filterCustomerInformation($cart, $cart->toAugmentedArray()),
+                'data' => collect($this->filterCustomerInformation($cart, $cart->data()->toArray())),
+                default => null,
+            };
+        }
 
         if (method_exists($this, $method)) {
             return $this->{$method}();

@@ -1,6 +1,7 @@
 <?php
 
 use DuncanMcClean\SimpleCommerce\Currency;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Facades\TaxCategory;
@@ -14,6 +15,7 @@ use Statamic\Facades\Antlers;
 use Statamic\Facades\Collection;
 use Statamic\Facades\Site;
 use Statamic\Facades\Stache;
+use Statamic\Facades\User;
 use Statamic\Fields\Value;
 use Statamic\Statamic;
 
@@ -35,6 +37,37 @@ test('can get index', function () {
     expect((string) tag('{{ sc:cart }}{{ note }}{{ /sc:cart }}'))->toBe('Special note.');
     expect((string) tag('{{ sc:cart }}{{ if {is_paid} }}true{{ else }}false{{ /if }}{{ /sc:cart }}'))->toBe('false');
 });
+
+test('customer information in storefront tags requires authenticated ownership', function (string $template, bool $showsName, ?string $email) {
+    $customer = Customer::make()->email('private@example.com')->data(['name' => 'Private Customer'])->save();
+    $cart = Order::make()->customer($customer->id())->set('shipping_name', 'Order Recipient')->save();
+
+    if ($email) {
+        $this->actingAs(User::make()->email($email)->save());
+    }
+
+    fakeCart($cart);
+
+    $output = (string) tag($template);
+
+    if ($email === 'private@example.com') {
+        expect($output)->toContain($showsName ? 'Private Customer' : $customer->id());
+    } else {
+        expect($output)->not->toContain('Private Customer', 'private@example.com', $customer->id());
+    }
+
+    expect((string) tag('{{ sc:cart }}{{ shipping_name }}{{ /sc:cart }}'))->toBe('Order Recipient');
+    expect((string) tag('{{ sc:cart:resource }}{{ shipping_name }}{{ /sc:cart:resource }}'))->toBe('Order Recipient');
+})->with([
+    'cart' => ['{{ sc:cart }}{{ customer }}{{ name }}{{ /customer }}{{ /sc:cart }}', true],
+    'cart update' => ['{{ sc:cart:update }}{{ customer }}{{ name }}{{ /customer }}{{ /sc:cart:update }}', true],
+    'cart resource' => ['{{ sc:cart:resource }}{{ customer }}{{ name }}{{ /customer }}{{ /sc:cart:resource }}', true],
+    'customer wildcard' => ['{{ sc:cart:customer }}', false],
+])->with([
+    'guest' => null,
+    'owner' => 'private@example.com',
+    'different user' => 'other@example.com',
+]);
 
 test('user has a cart if cart does not exist', function () {
     expect((string) tag('{{ if sc:cart:has }}Has cart{{ else }}No cart{{ /if }}'))->toBe('No cart');

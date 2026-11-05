@@ -2,12 +2,25 @@
 
 namespace DuncanMcClean\SimpleCommerce\Http\Controllers;
 
+use DuncanMcClean\SimpleCommerce\Contracts\Order;
+use DuncanMcClean\SimpleCommerce\Customers\Concerns\AuthorizesCustomerAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Statamic\Http\Controllers\Controller;
 
 class BaseActionController extends Controller
 {
+    use AuthorizesCustomerAccess;
+
+    protected function cartToArray(Order $cart): array
+    {
+        $data = $cart->toAugmentedCollection()
+            ->withRelations(['customer', 'customer_id'])
+            ->withShallowNesting();
+
+        return $this->filterCustomerInformation($cart, $data->toArray());
+    }
+
     protected function withSuccess(Request $request, array $data = [])
     {
         if ($request->wantsJson()) {

@@ -9,7 +9,7 @@ use Statamic\Facades\User;
 
 uses(SetupCollections::class);
 
-test('can get customer on cart', function () {
+test('cant get customer just because they are on the cart', function () {
     $customer = Entry::make()
         ->collection('customers')
         ->slug('duncan_double_three_digital')
@@ -29,12 +29,8 @@ test('can get customer on cart', function () {
         ]));
 
     $response
-        ->assertOk()
-        ->assertJsonStructure([
-            'data',
-        ])
-        ->assertSee('Duncan McClean')
-        ->assertSee('duncan@doublethree.digital');
+        ->assertForbidden()
+        ->assertDontSee('duncan@doublethree.digital');
 });
 
 test('can get customer as logged in user', function () {
@@ -107,7 +103,11 @@ test('can update customer', function () {
         'vip' => true,
     ];
 
+    $user = User::make()->email($customer->get('email'));
+    $user->save();
+
     $response = $this
+        ->actingAs($user)
         ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->from('/account')
         ->post(route('statamic.simple-commerce.customer.update', [
@@ -142,7 +142,11 @@ test('can update customer and request json', function () {
         'vip' => true,
     ];
 
+    $user = User::make()->email($customer->get('email'));
+    $user->save();
+
     $response = $this
+        ->actingAs($user)
         ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->from('/account')
         ->postJson(route('statamic.simple-commerce.customer.update', [
@@ -177,7 +181,7 @@ test('cant update customer belonging to someone else', function () {
     $customer->save();
 
     $this
-        ->withSession(['simple-commerce-cart' => Order::make()->save()->id()])
+        ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->postJson(route('statamic.simple-commerce.customer.update', [
             'customer' => $customer->id(),
         ]), ['email' => 'attacker@example.com', 'vip' => true])
@@ -203,7 +207,11 @@ test('cant update customer when email contains path characters', function (strin
 
     $customer->save();
 
+    $user = User::make()->email($customer->get('email'));
+    $user->save();
+
     $this
+        ->actingAs($user)
         ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->from('/account')
         ->post(route('statamic.simple-commerce.customer.update', [
@@ -236,7 +244,11 @@ test('can update customer and ensure custom form request is used', function () {
         'vip' => true,
     ];
 
+    $user = User::make()->email($customer->get('email'));
+    $user->save();
+
     $response = $this
+        ->actingAs($user)
         ->withSession(['simple-commerce-cart' => cartBelongingTo($customer)->id()])
         ->from('/account')
         ->post(route('statamic.simple-commerce.customer.update', [

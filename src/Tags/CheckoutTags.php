@@ -2,6 +2,7 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
+use DuncanMcClean\SimpleCommerce\Customers\Concerns\AuthorizesCustomerAccess;
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
 use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
 use DuncanMcClean\SimpleCommerce\Facades\Gateway;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Session;
 
 class CheckoutTags extends SubTag
 {
+    use AuthorizesCustomerAccess;
     use CartDriver;
     use Concerns\FormBuilder;
 
@@ -100,7 +102,7 @@ class CheckoutTags extends SubTag
 
             $data = [
                 'success' => __('Checkout Complete!'),
-                'cart' => $cart->toAugmentedArray(),
+                'cart' => $this->filterCustomerInformation($cart, $cart->toAugmentedArray()),
                 'is_checkout_request' => true,
             ];
 

@@ -52,7 +52,7 @@ class CartItemController extends BaseActionController
             /** @var Customer $customer */
             $customer = $cart->customer();
 
-            if (! $customer) {
+            if (! $this->belongsToCurrentUser($customer)) {
                 return $this->withErrors($request, __('Please login/register before purchasing this product.'));
             }
 
@@ -127,11 +127,7 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Added to Cart'),
-            'cart' => $cart
-                ->toAugmentedCollection()
-                ->withRelations(['customer', 'customer_id'])
-                ->withShallowNesting()
-                ->toArray(),
+            'cart' => $this->cartToArray($cart),
         ]);
     }
 
@@ -175,11 +171,7 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Line Item Updated'),
-            'cart' => $cart
-                ->toAugmentedCollection()
-                ->withRelations(['customer', 'customer_id'])
-                ->withShallowNesting()
-                ->toArray(),
+            'cart' => $this->cartToArray($cart),
         ]);
     }
 
@@ -191,11 +183,7 @@ class CartItemController extends BaseActionController
 
         return $this->withSuccess($request, [
             'message' => __('Item Removed from Cart'),
-            'cart' => $cart
-                ->toAugmentedCollection()
-                ->withRelations(['customer', 'customer_id'])
-                ->withShallowNesting()
-                ->toArray(),
+            'cart' => $this->cartToArray($cart),
         ]);
     }
 
