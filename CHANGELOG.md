@@ -13,8 +13,6 @@ This security update changes access to saved customer information. Please review
 - For guests, `customer` and `customer_id` are no longer available in cart JSON responses or cart tags. Custom JavaScript and forms relying on these values, saved-profile prefilling, or guest profile updates will need adjusting.
 - Customer and order-history tags now require the matching customer to be logged in. Purchasing products with a previous-purchase requirement also requires the matching customer to be logged in.
 
-Guest checkout, new customer creation, and shipping and billing updates on the order remain supported.
-
 ## v7.8.11 (2026-11-04)
 
 ### Breaking changes
