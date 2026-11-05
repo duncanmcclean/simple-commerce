@@ -793,7 +793,7 @@ test('can post checkout with customer array with additional information', functi
 /**
  * https://github.com/duncanmcclean/simple-commerce/issues/658
  */
-test('can post checkout with customer array and existing customer with additional information', function () {
+test('can post checkout with an existing customer without updating their profile', function () {
     Config::set('simple-commerce.field_whitelist.customers', [
         'name', 'email', 'dob',
     ]);
@@ -829,18 +829,21 @@ test('can post checkout with customer array and existing customer with additiona
 
     $this
         ->withSession(['simple-commerce-cart' => $order->id])
-        ->post(route('statamic.simple-commerce.checkout.store'), [
+        ->postJson(route('statamic.simple-commerce.checkout.store'), [
             'customer' => [
-                'name' => 'Joe Doe',
+                'name' => 'Changed Name',
                 'email' => 'joe.doe@example.com',
                 'dob' => '01/01/2000',
             ],
+            'shipping_name' => 'Order Recipient',
             'gateway' => DummyGateway::handle(),
             'card_number' => '4242424242424242',
             'expiry_month' => '01',
             'expiry_year' => '2025',
             'cvc' => '123',
-        ]);
+        ])->assertOk()
+        ->assertJsonMissingPath('cart.customer')
+        ->assertJsonMissingPath('cart.customer_id');
 
     $order = $order->fresh();
 
@@ -858,7 +861,8 @@ test('can post checkout with customer array and existing customer with additiona
     expect($customer->id)->toBe($order->customer()->id());
     expect('Joe Doe')->toBe($order->customer()->name());
     expect('joe.doe@example.com')->toBe($order->customer()->email());
-    expect('01/01/2000')->toBe($order->customer()->get('dob'));
+    expect($order->customer()->get('dob'))->toBeNull();
+    expect($order->get('shipping_name'))->toBe('Order Recipient');
 
     $this->assertSame($order->customer()->orders()->pluck('id')->unique()->toArray(), [
         $order->id,

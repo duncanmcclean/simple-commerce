@@ -2,17 +2,25 @@
 
 namespace DuncanMcClean\SimpleCommerce\Tags;
 
+use DuncanMcClean\SimpleCommerce\Customers\Concerns\AuthorizesCustomerAccess;
 use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order as OrderAPI;
 use DuncanMcClean\SimpleCommerce\Orders\Order;
 
 class CustomerTags extends SubTag
 {
+    use AuthorizesCustomerAccess;
     use Concerns\FormBuilder;
 
     public function index()
     {
-        return Customer::find($this->params->get('id'))->resource()->toAugmentedArray();
+        $customer = Customer::find($this->params->get('id'));
+
+        if (! $this->belongsToCurrentUser($customer)) {
+            return [];
+        }
+
+        return $customer->resource()->toAugmentedArray();
     }
 
     public function update()
@@ -30,8 +38,13 @@ class CustomerTags extends SubTag
 
     public function orders()
     {
-        return Customer::find($this->params->get('customer'))
-            ->orders()
+        $customer = Customer::find($this->params->get('customer'));
+
+        if (! $this->belongsToCurrentUser($customer)) {
+            return [];
+        }
+
+        return $customer->orders()
             ->map(function (Order $order) {
                 return $order->resource()->toAugmentedArray();
             })
@@ -40,6 +53,12 @@ class CustomerTags extends SubTag
 
     public function order()
     {
-        return OrderAPI::find($this->params->get('id'))->toAugmentedArray();
+        $order = OrderAPI::find($this->params->get('id'));
+
+        if (! $order || ! $this->belongsToCurrentUser($order->customer())) {
+            return [];
+        }
+
+        return $order->toAugmentedArray();
     }
 }

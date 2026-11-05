@@ -6,6 +6,10 @@ This tag allows you to checkout the cart. Inside the tag, you can use any of the
 
 Like with the update cart tag, you can also pass information to the customer entry. Don't forget the `email` field though as it's required.
 
+:::note Note!
+New customers are created with the submitted details. When the email belongs to an existing customer, checkout still works, but their profile is only updated when the logged in user has the same email address. Shipping and billing fields on the order remain editable. Customer profiles are omitted from checkout JSON responses unless the logged in user has the same email address.
+:::
+
 ```antlers
 {{ sc:checkout redirect="/thanks" }}
   {{ if is_paid }}

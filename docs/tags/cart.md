@@ -6,6 +6,8 @@ title: 'Cart'
 
 `{{ sc:cart }}` returns an augmented version of the Cart entry.
 
+The `customer` and `customer_id` variables are only available when the logged in user has the customer's email address. Attaching a customer to the cart does not grant access to their saved profile. This also applies to `sc:cart:update` forms and `sc:cart:customer`.
+
 ```antlers
 {{ sc:cart }}
   	<h2>Order {{ title }}</h2>
@@ -172,6 +174,10 @@ If you want to also update the customer at the same time, something like the bel
 <input type="text" name="customer[name]">
 <input type="email" name="customer[email]">
 ```
+
+:::note Note!
+These fields are saved when creating a new customer. If the email belongs to an existing customer, their profile is only updated when the logged in user has the same email address. Logged-out customers can still check out with their existing email, but their saved profile details remain unchanged. Shipping and billing fields on the order can still be updated. Customer profiles are omitted from cart JSON responses and cart tags unless the logged in user has the same email address, so guest forms cannot use saved customer details to prefill their fields.
+:::
 
 ## Empty Cart
 

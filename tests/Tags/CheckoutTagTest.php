@@ -1,6 +1,7 @@
 <?php
 
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
@@ -106,10 +107,11 @@ test('can redirect user to offsite gateway with redirect url', function () {
 });
 
 test('can redirect user to confirmation page instead of offsite gateway when order total is 0', function () {
+    $customer = Customer::make()->email('free-checkout@example.com')->data(['name' => 'Private Name'])->save();
     $product = Product::make()->price(1500);
     $product->save();
 
-    $cart = Order::make()->lineItems([
+    $cart = Order::make()->customer($customer->id())->lineItems([
         [
             'product' => $product->id(),
             'quantity' => 1,
@@ -140,6 +142,7 @@ test('can redirect user to confirmation page instead of offsite gateway when ord
     $usage = $this->tag->wildcard('testoffsitegateway');
 
     expect(PaymentStatus::Paid)->toBe($cart->fresh()->paymentStatus());
+    expect($usage->getSession()->get('cart'))->not->toHaveKey('customer')->not->toHaveKey('customer_id');
 });
 
 /**

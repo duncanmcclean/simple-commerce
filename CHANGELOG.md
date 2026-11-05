@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### What's fixed
+- Harden customer profile access.
+
+### Breaking changes
+
+This security update changes access to saved customer information. Please review custom checkout forms and integrations before upgrading.
+
+- Customers must be logged in to read or update their saved profile information.
+- For guests, `customer` and `customer_id` are no longer available in cart JSON responses or cart tags. Custom JavaScript and forms relying on these values, saved-profile prefilling, or guest profile updates will need adjusting.
+- Customer and order-history tags now require the matching customer to be logged in. Purchasing products with a previous-purchase requirement also requires the matching customer to be logged in.
+
+
+
 ## v8.1.1 (2026-11-04)
 
 ### What's fixed
@@ -10,6 +25,12 @@
 - Harden payment gateways [#1298](https://github.com/duncanmcclean/simple-commerce/issues/1298) by @duncanmcclean
 - Cap cart line item quantities [#1301](https://github.com/duncanmcclean/simple-commerce/issues/1301) by @duncanmcclean
 - Fix gateway webhooks on Laravel 13 [#1306](https://github.com/duncanmcclean/simple-commerce/issues/1306) by @duncanmcclean
+
+### Breaking changes
+This release fixes several security issues, including two changes to customer handling:
+
+- Updating an existing customer's email through `sc:cart` or `sc:checkout` now requires that customer to be logged in. Otherwise, entering a different email links the cart to another customer or creates a new one, leaving the original profile unchanged.
+- The `/!/simple-commerce/customer` endpoints now require the requested customer to be attached to the current cart or belong to the logged-in user. Other requests return `403 Forbidden`.
 
 
 
