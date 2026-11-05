@@ -139,10 +139,10 @@ test('can hit webhook with paid payment after a newer payment was prepared for t
     expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
 });
 
-test('cant hit webhook with failed or expired payment once the order has been paid', function (string $status) {
+test('cant hit webhook with failed or expired payment once the order has been paid or refunded', function (string $status, PaymentStatus $paymentStatus) {
     Event::fake([OrderPaymentFailed::class]);
 
-    $order = Order::make()->grandTotal(1234)->paymentStatus(PaymentStatus::Paid)->merge([
+    $order = Order::make()->grandTotal(1234)->paymentStatus($paymentStatus)->merge([
         'mollie' => ['id' => $molliePaymentId = 'tr_'.Str::random()],
     ]);
 
@@ -160,7 +160,7 @@ test('cant hit webhook with failed or expired payment once the order has been pa
 
     expect($order->fresh()->gatewayData()->data()->get('id'))->toBe($paidMolliePaymentId);
     Event::assertNotDispatched(OrderPaymentFailed::class);
-})->with(['failed', 'expired']);
+})->with(['failed', 'expired'])->with([PaymentStatus::Paid, PaymentStatus::Refunded]);
 
 test('cant hit webhook with paid payment when amount paid does not match order', function (array $amount) {
     $order = Order::make()->grandTotal(50000)->merge([
