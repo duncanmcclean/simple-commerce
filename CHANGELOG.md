@@ -15,19 +15,18 @@ This security update changes access to saved customer information. Please review
 
 ## v7.8.11 (2026-11-04)
 
-### Breaking changes
-
-This release fixes several security issues, including two changes to customer handling:
-
-- Updating an existing customer's email through `sc:cart` or `sc:checkout` now requires that customer to be logged in. Otherwise, entering a different email links the cart to another customer or creates a new one, leaving the original profile unchanged.
-- The `/!/simple-commerce/customer` endpoints now require the requested customer to be attached to the current cart or belong to the logged-in user. Other requests return `403 Forbidden`.
-
 ### What's fixed
 - Harden CP authorization #1295 by @duncanmcclean
 - Cart & checkout tweaks #1297 by @duncanmcclean
 - Harden customer handling #1299 #1302 by @duncanmcclean
 - Harden payment gateways #1298 by @duncanmcclean
 - Cap cart line item quantities #1301 by @duncanmcclean
+
+### Breaking changes
+This release fixes several security issues, including two changes to customer handling:
+
+- Updating an existing customer's email through `sc:cart` or `sc:checkout` now requires that customer to be logged in. Otherwise, entering a different email links the cart to another customer or creates a new one, leaving the original profile unchanged.
+- The `/!/simple-commerce/customer` endpoints now require the requested customer to be attached to the current cart or belong to the logged-in user. Other requests return `403 Forbidden`.
 
 
 
