@@ -1,5 +1,6 @@
 <?php
 
+use DuncanMcClean\SimpleCommerce\Events\OrderPaymentFailed;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Gateways\Builtin\MollieGateway;
@@ -10,6 +11,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Mollie\Api\MollieApiClient;
 use Statamic\Facades\Collection;
@@ -118,6 +120,47 @@ test('can hit webhook with paid payment', function () {
 
     expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
 });
+
+test('can hit webhook with paid payment after a newer payment was prepared for the order', function () {
+    $order = Order::make()->grandTotal(1234)->merge([
+        'mollie' => ['id' => 'tr_'.Str::random()],
+    ]);
+
+    $order->save();
+
+    $gateway = fakeMollieGateway([
+        'id' => $molliePaymentId = 'tr_'.Str::random(),
+        'amount' => ['value' => '12.34', 'currency' => 'GBP'],
+        'metadata' => ['order_id' => $order->id()],
+    ]);
+
+    $gateway->webhook(new Request([], ['id' => $molliePaymentId]));
+
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
+});
+
+test('cant hit webhook with failed or expired payment once the order has been paid or refunded', function (string $status, PaymentStatus $paymentStatus) {
+    Event::fake([OrderPaymentFailed::class]);
+
+    $order = Order::make()->grandTotal(1234)->paymentStatus($paymentStatus)->merge([
+        'mollie' => ['id' => $molliePaymentId = 'tr_'.Str::random()],
+    ]);
+
+    $order->gatewayData(gateway: 'mollie', data: ['id' => $paidMolliePaymentId = 'tr_'.Str::random()]);
+    $order->save();
+
+    $gateway = fakeMollieGateway([
+        'id' => $molliePaymentId,
+        'status' => $status,
+        'amount' => ['value' => '12.34', 'currency' => 'GBP'],
+        'metadata' => ['order_id' => $order->id()],
+    ]);
+
+    $gateway->webhook(new Request([], ['id' => $molliePaymentId]));
+
+    expect($order->fresh()->gatewayData()->data()->get('id'))->toBe($paidMolliePaymentId);
+    Event::assertNotDispatched(OrderPaymentFailed::class);
+})->with(['failed', 'expired'])->with([PaymentStatus::Paid, PaymentStatus::Refunded]);
 
 test('cant hit webhook with paid payment when amount paid does not match order', function (array $amount) {
     $order = Order::make()->grandTotal(50000)->merge([

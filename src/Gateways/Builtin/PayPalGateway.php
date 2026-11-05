@@ -230,7 +230,8 @@ class PayPalGateway extends BaseGateway implements Gateway
 
     private function captureMatchesOrder(Order $order, array $capture): bool
     {
-        return (int) round($capture['amount']['value'] * 100) === (int) $order->grandTotal()
+        return $capture['status'] === 'COMPLETED'
+            && (int) round($capture['amount']['value'] * 100) === (int) $order->grandTotal()
             && $capture['amount']['currency_code'] === Currency::get($order->site())['code'];
     }
 
