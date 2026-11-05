@@ -16,9 +16,11 @@ concurrency:
 
 jobs:
   release:
-    uses: duncanmcclean/.github/.github/workflows/release.yaml@cf61113f3bcbc7fb40ab88d094d2be7b8a474f50 # v1.0.0
+    uses: duncanmcclean/.github/.github/workflows/release.yaml@b657c0da7472a6b46d4fbce61aab416d45f7f835
     permissions: {}
-    secrets: inherit
+    secrets:
+      RELEASE_APP_CLIENT_ID: ${{ secrets.RELEASE_APP_CLIENT_ID }}
+      RELEASE_APP_PRIVATE_KEY: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
     with:
       version: ${{ inputs.version }}
       assets: dist
