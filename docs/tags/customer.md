@@ -6,6 +6,8 @@ title: Customer
 
 This tag allows you to get a customer by their ID. Remember to provide the `id` parameter which should be the ID of the customer.
 
+Customer information and order history are only returned when the logged in user has the customer's email address. Otherwise, these tags return no data. This applies to `sc:customer`, `sc:customer:orders`, and `sc:customer:order`.
+
 ```antlers
 {{ sc:customer id="ff7ddbf2-cd01-4689-a57f-26cb2e7c96f9" }}
   Your name is {{ name }} and your email is {{ email }}.
@@ -23,7 +25,7 @@ This tag allows you to update an existing customer. Remember to provide the `id`
 ```
 
 :::note Note!
-A customer can only be updated by the logged in user with the same email address, or when they're the customer on the current cart.
+A customer can only be updated by the logged in user with the same email address. Being attached to the current cart does not grant access to the customer's profile. Requests to the customer JSON endpoint also require a logged in user with the same email address.
 :::
 
 ### Get orders by customer

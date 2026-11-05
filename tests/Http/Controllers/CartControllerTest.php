@@ -321,6 +321,73 @@ test('cant update cart and change the email of another users customer', function
     tearDownUserCustomerRepository();
 });
 
+test('cart association does not grant access to an existing customer profile', function (bool $users, string $input, bool $loggedIn) {
+    if ($users) {
+        setupUserCustomerRepository();
+    }
+
+    try {
+        Config::set('simple-commerce.field_whitelist.customers', ['name', 'email', 'dob']);
+
+        $customer = Customer::make()->email('victim@example.com')->data([
+            'name' => 'Original Name',
+            'dob' => '1st January 1980',
+        ])->save();
+
+        if ($loggedIn) {
+            $user = User::make()->email('someone-else@example.com');
+            $user->save();
+            $this->actingAs($user);
+        }
+
+        $cart = Order::make()->save();
+
+        $data = match ($input) {
+            'email' => ['email' => $customer->email(), 'name' => 'Changed Name'],
+            'customer email' => ['customer' => ['email' => $customer->email(), 'name' => 'Changed Name', 'dob' => '2nd February 1990']],
+            'customer id' => ['customer' => $customer->id()],
+        };
+
+        $this->withSession(['simple-commerce-cart' => $cart->id()])
+            ->postJson(route('statamic.simple-commerce.cart.update'), $data)
+            ->assertOk()
+            ->assertJsonMissingPath('cart.customer')
+            ->assertJsonMissingPath('cart.customer_id');
+
+        expect($cart->fresh()->customer()->id())->toBe($customer->id());
+
+        $this->postJson(route('statamic.simple-commerce.cart.update'), [
+            'customer' => ['name' => 'Changed Name', 'dob' => '2nd February 1990'],
+            'shipping_name' => 'Order Recipient',
+        ])->assertOk();
+
+        expect($customer->fresh()->name())->toBe('Original Name');
+        expect($customer->get('dob'))->toBe('1st January 1980');
+        expect($cart->fresh()->get('shipping_name'))->toBe('Order Recipient');
+
+        $this->getJson(route('statamic.simple-commerce.cart.index'))
+            ->assertOk()
+            ->assertJsonMissingPath('data.customer')
+            ->assertJsonMissingPath('data.customer_id');
+
+        $this->getJson(route('statamic.simple-commerce.customer.index', $customer->id()))
+            ->assertForbidden();
+
+        $this->postJson(route('statamic.simple-commerce.customer.update', $customer->id()), [
+            'name' => 'Changed Name', 'email' => 'attacker@example.com',
+        ])->assertForbidden();
+
+        expect($customer->fresh()->name())->toBe('Original Name');
+        expect($customer->email())->toBe('victim@example.com');
+    } finally {
+        if ($users) {
+            tearDownUserCustomerRepository();
+        }
+    }
+})->with(['entries' => false, 'users' => true])
+    ->with(['email', 'customer email', 'customer id'])
+    ->with(['guest' => false, 'different user' => true]);
+
 /**
  * https://github.com/duncanmcclean/simple-commerce/issues/658
  */
@@ -338,6 +405,10 @@ test('can update cart with customer already in cart with additional data', funct
         ]);
 
     $customer->save();
+
+    $user = User::make()->email($customer->email());
+    $user->save();
+    $this->actingAs($user);
 
     $cart = Order::make()->customer($customer->id);
     $cart->save();
@@ -464,6 +535,10 @@ test('can update cart and existing customer by id', function () {
 
     $customer->save();
 
+    $user = User::make()->email($customer->email());
+    $user->save();
+    $this->actingAs($user);
+
     $cart = Order::make()->customer($customer->id);
     $cart->save();
 
@@ -493,6 +568,10 @@ test('can update cart and existing customer by email', function () {
 
     $customer->save();
 
+    $user = User::make()->email($customer->email());
+    $user->save();
+    $this->actingAs($user);
+
     $cart = Order::make();
     $cart->save();
 
@@ -506,9 +585,12 @@ test('can update cart and existing customer by email', function () {
     $response = $this
         ->from('/cart')
         ->withSession(['simple-commerce-cart' => $cart->id])
-        ->post(route('statamic.simple-commerce.cart.update'), $data);
+        ->postJson(route('statamic.simple-commerce.cart.update'), $data);
 
-    $response->assertRedirect('/cart');
+    $response->assertOk()->assertJsonStructure(['cart' => ['customer']]);
+
+    $this->getJson(route('statamic.simple-commerce.cart.index'))
+        ->assertOk()->assertJsonStructure(['data' => ['customer']]);
 
     $cart = $cart->fresh();
 
@@ -528,6 +610,10 @@ test('can update cart and existing customer by email with additional data', func
     ]);
 
     $customer->save();
+
+    $user = User::make()->email($customer->email());
+    $user->save();
+    $this->actingAs($user);
 
     $cart = Order::make();
     $cart->save();
@@ -581,6 +667,46 @@ test('can update cart and create new customer via customer array', function () {
     expect('Rebecca Logan')->toBe($customer->name());
     expect('rebecca.logan@example.com')->toBe($customer->email());
 });
+
+test('can create a customer from mixed top level and nested fields', function (array $data, string $email, string $name, bool $users) {
+    if ($users) {
+        setupUserCustomerRepository();
+    }
+
+    try {
+        Config::set('simple-commerce.field_whitelist.customers', ['name', 'email', 'dob']);
+
+        $cart = Order::make()->save();
+
+        $this->withSession(['simple-commerce-cart' => $cart->id()])
+            ->postJson(route('statamic.simple-commerce.cart.update'), $data)
+            ->assertOk();
+
+        $customer = Customer::findByEmail($email);
+
+        expect($cart->fresh()->customer()->id())->toBe($customer->id());
+        expect($customer->name())->toBe($name);
+        expect($customer->get('dob'))->toBe('1st January 1980');
+        expect(Customer::all())->toHaveCount(1);
+    } finally {
+        if ($users) {
+            tearDownUserCustomerRepository();
+        }
+    }
+})->with([
+    'top level email and nested details' => [
+        ['email' => 'mixed@example.com', 'customer' => ['name' => 'Nested Name', 'dob' => '1st January 1980']],
+        'mixed@example.com', 'Nested Name',
+    ],
+    'nested values take precedence' => [
+        ['email' => 'top@example.com', 'name' => 'Top Name', 'customer' => ['email' => 'nested@example.com', 'name' => 'Nested Name', 'dob' => '1st January 1980']],
+        'nested@example.com', 'Nested Name',
+    ],
+    'empty nested values do not replace top level details' => [
+        ['email' => 'mixed@example.com', 'name' => 'Top Name', 'customer' => ['name' => null, 'dob' => '1st January 1980']],
+        'mixed@example.com', 'Top Name',
+    ],
+])->with(['entries' => false, 'users' => true]);
 
 test('can update cart and create new customer via customer array with first name and last name', function () {
     Config::set('simple-commerce.field_whitelist.customers', [

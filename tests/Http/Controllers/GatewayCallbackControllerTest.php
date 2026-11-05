@@ -1,11 +1,14 @@
 <?php
 
 use DuncanMcClean\SimpleCommerce\Exceptions\GatewayDoesNotExist;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
+use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\OrderStatus;
 use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Gateways\CallbackTestGateway;
+use Statamic\Facades\Stache;
 
 use function Pest\Laravel\withoutExceptionHandling;
 use function Pest\Laravel\withSession;
@@ -22,6 +25,30 @@ it('handles a successful callback response from the gateway', function () {
         ->assertSessionMissing('simple-commerce-cart')
         ->assertSessionHas('simple-commerce.checkout.success')
         ->assertRedirect('/order-complete');
+
+    expect($order->fresh()->status())->toBe(OrderStatus::Placed);
+
+    CallbackTestGateway::$expectedCallbackResult = null;
+});
+
+it('does not expose the customer profile in a successful callback response', function () {
+    CallbackTestGateway::$expectedCallbackResult = true;
+    SimpleCommerce::registerGateway(CallbackTestGateway::class, []);
+
+    $customer = Customer::make()->email('callback-customer@example.com')->data(['name' => 'Private Name'])->save();
+    $product = Product::make()->price(1234)->data(['title' => 'Callback Product', 'sku' => 'SKU-123'])->save();
+    $order = Order::make()->customer($customer->id())->lineItems([
+        ['id' => Stache::generateId(), 'product' => $product->id(), 'quantity' => 1, 'total' => 1234],
+    ])->save();
+
+    withSession(['simple-commerce-cart' => $order->id()])
+        ->getJson('/!/simple-commerce/gateways/callback_test/callback')
+        ->assertOk()
+        ->assertJsonPath('cart.id', $order->id())
+        ->assertJsonPath('cart.items.0.product.sku', 'SKU-123')
+        ->assertJsonPath('cart.items.0.product.raw_price', 1234)
+        ->assertJsonMissingPath('cart.customer')
+        ->assertJsonMissingPath('cart.customer_id');
 
     expect($order->fresh()->status())->toBe(OrderStatus::Placed);
 
