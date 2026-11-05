@@ -128,6 +128,10 @@ class MollieGateway extends BaseGateway implements Gateway
                 throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
             }
 
+            if ($order->paymentStatus() === PaymentStatus::Paid) {
+                return;
+            }
+
             event(new OrderPaymentFailed($order));
         }
 
@@ -136,6 +140,10 @@ class MollieGateway extends BaseGateway implements Gateway
 
             if (! $order) {
                 throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
+            }
+
+            if ($order->paymentStatus() === PaymentStatus::Paid) {
+                return;
             }
 
             $order
