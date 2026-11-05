@@ -119,6 +119,24 @@ test('can hit webhook with paid payment', function () {
     expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
 });
 
+test('can hit webhook with paid payment after a newer payment was prepared for the order', function () {
+    $order = Order::make()->grandTotal(1234)->merge([
+        'mollie' => ['id' => 'tr_'.Str::random()],
+    ]);
+
+    $order->save();
+
+    $gateway = fakeMollieGateway([
+        'id' => $molliePaymentId = 'tr_'.Str::random(),
+        'amount' => ['value' => '12.34', 'currency' => 'GBP'],
+        'metadata' => ['order_id' => $order->id()],
+    ]);
+
+    $gateway->webhook(new Request([], ['id' => $molliePaymentId]));
+
+    expect(PaymentStatus::Paid)->toBe($order->fresh()->paymentStatus());
+});
+
 test('cant hit webhook with paid payment when amount paid does not match order', function (array $amount) {
     $order = Order::make()->grandTotal(50000)->merge([
         'mollie' => ['id' => $molliePaymentId = 'tr_'.Str::random()],
