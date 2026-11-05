@@ -100,7 +100,8 @@ class MollieGateway extends BaseGateway implements Gateway
         $payment = $this->mollie->payments->get($mollieId);
 
         if ($payment->status === MolliePaymentStatus::STATUS_PAID) {
-            $order = $this->getOrderFromWebhookRequest($request, $payment);
+            $order = OrderFacade::find($payment->metadata->order_id ?? null)
+                ?? $this->getOrderFromWebhookRequest($request);
 
             if (! $order) {
                 throw new OrderNotFound("Order related to Mollie transaction [{$mollieId}] could not be found.");
@@ -190,12 +191,8 @@ class MollieGateway extends BaseGateway implements Gateway
             || $class === $classToCheckAgainst;
     }
 
-    protected function getOrderFromWebhookRequest(Request $request, ?Payment $payment = null): ?Order
+    protected function getOrderFromWebhookRequest(Request $request): ?Order
     {
-        if (isset($payment->metadata->order_id) && $order = OrderFacade::find($payment->metadata->order_id)) {
-            return $order;
-        }
-
         return OrderFacade::query()
             ->where('mollie->id', $request->get('id'))
             ->orWhere('gateway', 'like', "%{$request->get('id')}%")
