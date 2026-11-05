@@ -1,9 +1,10 @@
 # Changelog
 
-## Unreleased
+## v7.8.12 (2026-11-05)
 
 ### What's fixed
-- Harden customer profile access.
+- Fix Mollie order lookup and PayPal capture status in webhooks [#1313](https://github.com/duncanmcclean/simple-commerce/issues/1313) by @terminalstate
+- Harden customer profile access [#1315](https://github.com/duncanmcclean/simple-commerce/issues/1315) by @duncanmcclean
 
 ### Breaking changes
 
@@ -12,6 +13,8 @@ This security update changes access to saved customer information. Please review
 - Customers must be logged in to read or update their saved profile information.
 - For guests, `customer` and `customer_id` are no longer available in cart JSON responses or cart tags. Custom JavaScript and forms relying on these values, saved-profile prefilling, or guest profile updates will need adjusting.
 - Customer and order-history tags now require the matching customer to be logged in. Purchasing products with a previous-purchase requirement also requires the matching customer to be logged in.
+
+
 
 ## v7.8.11 (2026-11-04)
 
