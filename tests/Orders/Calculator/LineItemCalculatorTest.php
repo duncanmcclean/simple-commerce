@@ -1,7 +1,7 @@
 <?php
 
-use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Exceptions\PreventCheckout;
+use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\Calculator\LineItemCalculator;
 use DuncanMcClean\SimpleCommerce\SimpleCommerce;
