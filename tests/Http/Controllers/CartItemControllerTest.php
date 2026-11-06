@@ -5,6 +5,7 @@ use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Facades\Order;
 use DuncanMcClean\SimpleCommerce\Facades\Product;
 use DuncanMcClean\SimpleCommerce\Orders\LineItem;
+use DuncanMcClean\SimpleCommerce\Orders\PaymentStatus;
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartItemStoreFormRequest;
 use DuncanMcClean\SimpleCommerce\Tests\Fixtures\Http\Requests\CartItemUpdateFormRequest;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\RefreshContent;
@@ -1100,7 +1101,7 @@ test('can store item with customer array and additional customer information', f
 /**
  * https://github.com/duncanmcclean/simple-commerce/issues/658
  */
-test('can store item with customer array and existing customer and additional customer information', function () {
+test('can store item with an existing customer without updating their profile', function () {
     Config::set('simple-commerce.field_whitelist.customers', [
         'name', 'email', 'dob',
     ]);
@@ -1127,15 +1128,18 @@ test('can store item with customer array and existing customer and additional cu
         'quantity' => 1,
         'customer' => [
             'email' => 'pluto@clubhouse.disney',
+            'name' => 'Changed Name',
             'dob' => '01/01/2000',
         ],
     ];
 
     $response = $this
         ->from('/products/'.$product->get('slug'))
-        ->post(route('statamic.simple-commerce.cart-items.store'), $data);
+        ->postJson(route('statamic.simple-commerce.cart-items.store'), $data);
 
-    $response->assertRedirect('/products/'.$product->get('slug'));
+    $response->assertOk()
+        ->assertJsonMissingPath('cart.customer')
+        ->assertJsonMissingPath('cart.customer_id');
     $response->assertSessionHas('simple-commerce-cart');
 
     $cart = Order::find(session()->get('simple-commerce-cart'));
@@ -1149,7 +1153,7 @@ test('can store item with customer array and existing customer and additional cu
 
     expect('Pluto')->toBe($cart->customer()->name());
     expect('pluto@clubhouse.disney')->toBe($cart->customer()->email());
-    expect('01/01/2000')->toBe($cart->customer()->get('dob'));
+    expect($cart->customer()->get('dob'))->toBeNull();
 });
 
 test('can store item and use logged in user as customer', function () {
@@ -1248,6 +1252,54 @@ test('can store item where product requires prerequisite product and customer ha
 
     expect(json_encode($cart->lineItems()->toArray()))->toContain($product->id());
 })->skip();
+
+test('prerequisite purchases require authenticated ownership', function (?string $email, bool $purchased, string $input, bool $users) {
+    if ($users) {
+        setupUserCustomerRepository();
+    }
+
+    try {
+        $customer = Customer::make()->email('purchaser@example.com')->data(['name' => 'Purchaser'])->save();
+        $prerequisite = Product::make()->price(1000)->data(['title' => 'Prerequisite'])->save();
+        $product = Product::make()->price(2000)->data(['title' => 'Restricted', 'prerequisite_product' => $prerequisite->id()])->save();
+
+        if ($purchased) {
+            $purchase = Order::make()->customer($customer->id())->paymentStatus(PaymentStatus::Paid)->lineItems([
+                ['id' => 'past-item', 'product' => $prerequisite->id(), 'quantity' => 1, 'total' => 1000],
+            ])->save();
+            $customer->set('orders', [$purchase->id()])->save();
+        }
+
+        if ($email) {
+            $this->actingAs(User::findByEmail($email) ?? User::make()->email($email)->save());
+        }
+
+        $cart = Order::make()->save();
+        $data = $input === 'email' ? ['email' => $customer->email()] : ['customer' => $customer->id()];
+
+        $response = $this->withSession(['simple-commerce-cart' => $cart->id()])
+            ->postJson(route('statamic.simple-commerce.cart-items.store'), array_merge($data, [
+                'product' => $product->id(), 'quantity' => 1,
+            ]))->assertOk();
+
+        if ($email === 'purchaser@example.com' && $purchased) {
+            $response->assertJsonPath('status', 'success');
+            expect($cart->fresh()->lineItems()->first()->product()->id())->toBe($product->id());
+        } else {
+            $response->assertJsonPath('status', 'error');
+            expect($cart->fresh()->lineItems())->toHaveCount(0);
+        }
+    } finally {
+        if ($users) {
+            tearDownUserCustomerRepository();
+        }
+    }
+})->with([
+    'owner with purchase' => ['purchaser@example.com', true],
+    'owner without purchase' => ['purchaser@example.com', false],
+    'guest with purchase' => [null, true],
+    'different user with purchase' => ['other@example.com', true],
+])->with(['email', 'id'])->with(['entries' => false, 'users' => true]);
 
 test('cant store item where product requires prerequisite product and no customer available', function () {
     $prerequisiteProduct = Product::make()

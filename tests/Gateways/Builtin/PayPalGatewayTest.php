@@ -41,19 +41,21 @@ test('can hit webhook with approved order and ignores the order id in the posted
     expect(PaymentStatus::Paid)->toBe($cheapOrder->fresh()->paymentStatus());
 });
 
-test('cant hit webhook with approved order when capture does not match order', function (string $status, string $amount, string $currency) {
+test('cant hit webhook with approved order when capture does not match order', function (string $status, string $amount, string $currency, string $captureStatus) {
     $order = Order::make()->grandTotal(50000);
     $order->save();
 
-    $gateway = fakePayPalGateway(paypalCapture($order->id(), $amount, $currency, $status));
+    $gateway = fakePayPalGateway(paypalCapture($order->id(), $amount, $currency, $status, $captureStatus));
 
     $gateway->webhook(paypalWebhookRequest('PAYPAL_ORDER_123', $order->id()));
 
     expect(PaymentStatus::Unpaid)->toBe($order->fresh()->paymentStatus());
 })->with([
-    'capture not completed' => ['PENDING', '500.00', 'GBP'],
-    'amount less than order total' => ['COMPLETED', '0.01', 'GBP'],
-    'different currency' => ['COMPLETED', '500.00', 'USD'],
+    'order not completed' => ['PENDING', '500.00', 'GBP', 'COMPLETED'],
+    'capture pending' => ['COMPLETED', '500.00', 'GBP', 'PENDING'],
+    'capture declined' => ['COMPLETED', '500.00', 'GBP', 'DECLINED'],
+    'amount less than order total' => ['COMPLETED', '0.01', 'GBP', 'COMPLETED'],
+    'different currency' => ['COMPLETED', '500.00', 'USD', 'COMPLETED'],
 ]);
 
 function paypalWebhookRequest(string $paypalOrderId, string $customId): Request
@@ -67,7 +69,7 @@ function paypalWebhookRequest(string $paypalOrderId, string $customId): Request
     ]));
 }
 
-function paypalCapture(string $orderId, string $amount, string $currency = 'GBP', string $status = 'COMPLETED'): array
+function paypalCapture(string $orderId, string $amount, string $currency = 'GBP', string $status = 'COMPLETED', string $captureStatus = 'COMPLETED'): array
 {
     return [
         'id' => 'PAYPAL_ORDER_123',
@@ -83,7 +85,7 @@ function paypalCapture(string $orderId, string $amount, string $currency = 'GBP'
                     'captures' => [
                         [
                             'id' => 'CAPTURE_123',
-                            'status' => 'COMPLETED',
+                            'status' => $captureStatus,
                             'amount' => ['value' => $amount, 'currency_code' => $currency],
                         ],
                     ],

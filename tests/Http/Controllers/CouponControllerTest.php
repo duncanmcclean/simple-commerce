@@ -2,6 +2,7 @@
 
 use DuncanMcClean\SimpleCommerce\Events\CouponRedeemed;
 use DuncanMcClean\SimpleCommerce\Facades\Coupon;
+use DuncanMcClean\SimpleCommerce\Facades\Customer;
 use DuncanMcClean\SimpleCommerce\Tests\Helpers\SetupCollections;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
@@ -65,6 +66,9 @@ test('can store coupon and request json response', function () {
 
     [$product, $cart] = buildCartWithProducts();
 
+    $customer = Customer::make()->email('coupon-customer@example.com')->data(['name' => 'Private Name'])->save();
+    $cart->customer($customer->id())->save();
+
     $coupon = Coupon::make()
         ->code('halav-price')
         ->value(50)
@@ -91,7 +95,8 @@ test('can store coupon and request json response', function () {
         'status',
         'message',
         'cart',
-    ]);
+    ])->assertJsonMissingPath('cart.customer')
+        ->assertJsonMissingPath('cart.customer_id');
 
     $cart = $cart->fresh();
 
@@ -99,6 +104,11 @@ test('can store coupon and request json response', function () {
     $this->assertNotSame($cart->couponTotal(), 0000);
 
     Event::assertDispatched(CouponRedeemed::class);
+
+    $this->deleteJson(route('statamic.simple-commerce.coupon.destroy'))
+        ->assertOk()
+        ->assertJsonMissingPath('cart.customer')
+        ->assertJsonMissingPath('cart.customer_id');
 });
 
 test('cant store invalid coupon', function () {
